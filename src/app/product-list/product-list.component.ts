@@ -1,17 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NgFor, NgClass } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, RouterModule], 
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-
   private productService = inject(ProductService);
   
   products: Product[] = [];
@@ -21,7 +21,7 @@ export class ProductListComponent implements OnInit {
       this.products = res.products.map(product => ({
         ...product,
         liked: false,
-        headphoneType: 'Over-Ear', 
+        headphoneType: 'Over-Ear',  
         rating: parseFloat((Math.random() * 2 + 3).toFixed(1)) 
       }));
     });
@@ -31,3 +31,4 @@ export class ProductListComponent implements OnInit {
     product.liked = !product.liked;
   }
 }
+ 

@@ -1,0 +1,8 @@
+img.img-thumbnail {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+img.img-thumbnail:hover {
+  transform: scale(1.1);
+}

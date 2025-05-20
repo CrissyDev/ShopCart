@@ -6,6 +6,8 @@ export interface ProductsResponse {
 }
 
 export interface Product {
+colors: any;
+name: any;
   id: number;
   title: string;
   description: string;
@@ -28,10 +30,9 @@ export interface Product {
   meta: Meta;
   images: string[];
   thumbnail: string;
-
-  // 🆕 Custom UI properties (optional)
-  liked?: boolean; // Track like status
-  headphoneType?: 'Over-Ear' | 'In-Ear' | 'On-Ear'; // Limit to known types
+// added this page for extra styling
+  liked?: boolean; 
+  headphoneType?: 'Over-Ear' | 'In-Ear' | 'On-Ear'; 
 }
 
 export interface Dimensions {

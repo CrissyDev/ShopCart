@@ -1,1 +1,86 @@
-<p>product-details works!</p>
+<div *ngIf="product" class="container py-5">
+  <div class="row">
+  
+    <div class="col-md-6">
+      <img [src]="selectedImage" class="img-fluid mb-3" alt="{{ product.title }}" />
+
+      <div class="d-flex gap-2">
+        <img
+          *ngFor="let img of product.images"
+          [src]="img"
+          alt="Product thumbnail"
+          class="img-thumbnail"
+          [class.border-primary]="selectedImage === img"
+          (click)="selectedImage = img"
+          style="width: 80px; height: 80px; cursor: pointer; border: 2px solid transparent;"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h2>{{ product.title }}</h2>
+      <p class="text-muted">{{ product.description }}</p>
+      <p class="fs-5 fw-bold">${{ product.price }}</p>
+      <p><strong>Rating:</strong> ⭐ {{ product.rating }} / 5</p>
+
+      <div class="mb-3">
+        <strong>Choose a Color:</strong>
+        <div class="d-flex gap-2 mt-2">
+          <div
+            *ngFor="let color of ['red','black','gray','green','blue']"
+            class="rounded-circle"
+            [style.background]="color"
+            (click)="selectImage(color)"
+            style="width: 30px; height: 30px; border: 1px solid #ccc; cursor: pointer;">
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center my-3">
+  <button class="btn btn-outline-secondary me-2" (click)="decreaseQuantity()">-</button>
+  <span>{{ quantity }}</span>
+  <button class="btn btn-outline-secondary ms-2" (click)="increaseQuantity()">+</button>
+</div>
+
+
+      <div class="d-flex gap-3">
+        <button class="btn btn-dark" (click)="buyNow()">Buy Now</button>
+        <button class="btn btn-outline-success" (click)="addToCart()">Add to Cart</button>
+      </div>
+
+      <!-- Payment Form -->
+      <div *ngIf="showPaymentForm" class="mt-4 border p-3 rounded shadow-sm bg-light">
+        <h5>Payment Details</h5>
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Name on Card</label>
+            <input type="text" class="form-control" placeholder=" " />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-control" placeholder=" " />
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="form-label">Expiry</label>
+              <input type="text" class="form-control" placeholder="MM/YY" />
+            </div>
+            <div class="col">
+              <label class="form-label">CVV</label>
+              <input type="text" class="form-control" placeholder="123" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3 w-100">Pay ${{ product.price }}</button>
+        </form>
+      </div>
+
+      <hr />
+      <p class="text-muted">
+        <i class="fas fa-truck me-2"></i>Free Delivery — Enter your postal code for availability
+      </p>
+      <p class="text-muted">
+        <i class="fas fa-undo me-2"></i>Return Delivery — 30 days return policy
+      </p>
+    </div>
+  </div>
+</div>
