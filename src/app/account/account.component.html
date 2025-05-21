@@ -1,0 +1,36 @@
+<div *ngIf="loading">Loading user information...</div>
+
+<div *ngIf="!loading && user" class="account-container">
+  <div class="sidebar">
+    <div class="profile-circle">{{ user.firstName.charAt(0) }}</div>
+    <h4>{{ user.firstName }} {{ user.lastName }}</h4>
+    <ul>
+      <li>My Account</li>
+      <li>My Assets</li>
+      <li class="active">My Orders</li>
+      <li>Return/Refund</li>
+      <li>Wish List</li>
+      <li>Recent Views</li>
+      <li>Message</li>
+      <li>Chats with Sellers</li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <nav class="order-tabs">
+      <span class="active">Unpaid</span>
+      <span>To be Shipped</span>
+      <span>Shipped</span>
+      <span>Completed</span>
+      <span>Cancelled</span>
+    </nav>
+    <div class="no-orders">
+      <img src="https://images.pexels.com/photos/2169427/pexels-photo-2169427.jpeg?auto=compress&cs=tinysrgb&w=600" alt="No orders">
+      <p>No order</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading && (status == 401)">
+<h1>Please login to view  your Account  </h1>
+<app-login></app-login>
+</div>

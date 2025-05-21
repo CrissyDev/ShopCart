@@ -1,4 +1,9 @@
 <form class="d-flex ms-3">
-    <input class="form-control" type="search" placeholder="Search Product" aria-label="Search">
-  </form>
-  
+  <input
+    class="form-control"
+    type="search"
+    placeholder="Search Product"
+    aria-label="Search"
+    (input)="onInput($event)"
+  />
+</form>

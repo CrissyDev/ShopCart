@@ -1,40 +1,47 @@
-
 <div class="bg-success text-white py-1 px-3 d-flex justify-content-between small">
-    <div>+0701234567890</div>
-    <div>Get 50% Off on Selected Items | <a href="#" class="text-white text-decoration-underline">Shop Now</a></div>
-    <div>Eng ▼ | Location ▼</div>
+  <div>+0701234567890</div>
+  <div>
+    Get 50% Off on Selected Items |
+    <a [routerLink]="'/deals'" class="text-white text-decoration-underline">Shop Now</a>
   </div>
-  
-  
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
-    <a class="navbar-brand text-success fw-bold" href="#">Shopcart</a>
-  
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto ms-3">
-        <li class="nav-item"><a class="nav-link" href="#">Categories ▼</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Deals</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">What's New</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Delivery</a></li>
-      </ul>
-  
-      <app-search></app-search>
-  
-      <ul class="navbar-nav ms-4 d-flex align-items-center gap-3">
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center" href="#">
-            <i class="fa fa-user" aria-hidden="true"></i> Account
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center" href="#">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  
+  <div>Eng ▼ | Location ▼</div>
+</div>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+  <a class="navbar-brand text-success fw-bold" [routerLink]="'/'">Shopcart</a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto ms-3">
+      <li class="nav-item"><a class="nav-link" [routerLink]="'/categories'">Categories ▼</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="'/deals'">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="'/new'">What's New</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="'/delivery'">Delivery</a></li>
+    </ul>
+
+    
+    <app-search></app-search>
+
+    <ul class="navbar-nav ms-4 d-flex align-items-center gap-3">
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" [routerLink]="'/account'">
+          <i class="fa fa-user" aria-hidden="true"></i>  My Account 
+
+          @if(user != null){
+            ({{ user.firstName }})
+          }
+
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" [routerLink]="'/cart'">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

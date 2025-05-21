@@ -1,0 +1,37 @@
+<div class="login-container">
+  <ng-lottie
+    [options]="lottieOptions"
+    style="width: 100%; max-width: 700px; height: auto;">
+  </ng-lottie>
+
+  <div class="right-side">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form (ngSubmit)="onLogin()">
+        <input type="text" [(ngModel)]="username" name="username" placeholder="Email or Username" required />
+        <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+
+        <div class="options">
+          <label><input type="checkbox" /> Remember me</label>
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Login</button>
+
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <div class="social-login">
+          <p>Login with</p>
+          <div class="icons">
+            <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" />
+            <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" />
+          </div>
+        </div>
+      </form>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+    </div>
+  </div>
+</div>
