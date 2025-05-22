@@ -5,30 +5,32 @@
     <div class="profile-circle">{{ user.firstName.charAt(0) }}</div>
     <h4>{{ user.firstName }} {{ user.lastName }}</h4>
     <ul>
-      <li>My Account</li>
-      <li>My Assets</li>
-      <li class="active">My Orders</li>
-      <li>Return/Refund</li>
-      <li>Wish List</li>
-      <li>Recent Views</li>
-      <li>Message</li>
-      <li>Chats with Sellers</li>
+      <li 
+        *ngFor="let option of ['My Account', 'My Assets', 'My Orders', 'Return/Refund', 'Wish List', 'Recent Views', 'Message', 'Chats with Sellers']"
+        [class.active]="activeSidebar === option"
+        (click)="setSidebar(option)">
+        {{ option }}
+      </li>
     </ul>
   </div>
+
   <div class="main-content">
     <nav class="order-tabs">
-      <span class="active">Unpaid</span>
-      <span>To be Shipped</span>
-      <span>Shipped</span>
-      <span>Completed</span>
-      <span>Cancelled</span>
+      <span 
+        *ngFor="let tab of ['Unpaid', 'To be Shipped', 'Shipped', 'Completed', 'Cancelled']"
+        [class.active]="activeTab === tab"
+        (click)="setTab(tab)">
+        {{ tab }}
+      </span>
     </nav>
-    <div class="no-orders">
-      <p>No order</p>
+
+    <div *ngIf="!hasOrders(activeTab)" class="no-orders">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100" alt="No Orders">
+      <p>No orders under "{{ activeTab }}"</p>
     </div>
   </div>
 </div>
 
-<div *ngIf="!loading && (status == 401)">
-<app-login></app-login>
+<div *ngIf="!loading && (status === 401)">
+  <app-login></app-login>
 </div>

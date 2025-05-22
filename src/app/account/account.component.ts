@@ -16,12 +16,15 @@ export class AccountComponent implements OnInit {
   loading = true;
   status: number = 99;
 
+  activeSidebar: string = 'My Orders';
+  activeTab: string = 'Unpaid';
+
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe({
       next: (res) => {
-        console.log("myAccount res",res);
+        console.log("myAccount res", res);
         this.user = res;
         this.loading = false;
       },
@@ -31,5 +34,17 @@ export class AccountComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  setSidebar(option: string): void {
+    this.activeSidebar = option;
+  }
+
+  setTab(tab: string): void {
+    this.activeTab = tab;
+  }
+
+  hasOrders(tab: string): boolean {
+return false; 
   }
 }

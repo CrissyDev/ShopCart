@@ -6,5 +6,6 @@ export interface User {
   age: number
   gender: string
   email: string
+  username:String
   image: string
 }
