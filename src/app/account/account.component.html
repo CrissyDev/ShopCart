@@ -24,13 +24,11 @@
       <span>Cancelled</span>
     </nav>
     <div class="no-orders">
-      <img src="https://images.pexels.com/photos/2169427/pexels-photo-2169427.jpeg?auto=compress&cs=tinysrgb&w=600" alt="No orders">
       <p>No order</p>
     </div>
   </div>
 </div>
 
 <div *ngIf="!loading && (status == 401)">
-<h1>Please login to view  your Account  </h1>
 <app-login></app-login>
 </div>

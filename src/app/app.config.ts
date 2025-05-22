@@ -1,14 +1,11 @@
-import { provideLottieOptions } from 'ngx-lottie';
-import player from 'lottie-web';
 import { ApplicationConfig } from '@angular/core';
-
-export function playerFactory() {
-  return player;
-}
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideLottieOptions({ player: playerFactory }),
-    
+    provideRouter(routes),
+    provideHttpClient()  
   ]
 };
