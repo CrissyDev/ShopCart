@@ -85,6 +85,6 @@
   </div>
 </div>
 
-<div *ngIf="!loading && status === 401">
+<div *ngIf="!loading && (status === 401 || !user)">
   <app-login></app-login>
 </div>

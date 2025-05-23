@@ -34,6 +34,8 @@ export class LoginComponent {
     this.auth.login(this.username, this.password).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.accessToken);
+        localStorage.setItem('id', res.id);
+
         this.router.navigate(['/account']);
       },
       error: () => this.error = 'Login failed. Please check your credentials.'

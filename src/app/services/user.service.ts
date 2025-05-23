@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { User } from '../models/users.interface';
 
 @Injectable({
@@ -12,8 +12,10 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<User> {
-    const token = localStorage.getItem('token'); 
-    if (!token) throw new Error('No token found');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(() => new Error('No token found in localStorage'));
+    }
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

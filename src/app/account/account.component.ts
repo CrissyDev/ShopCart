@@ -12,7 +12,7 @@ import { LoginComponent } from "../login/login.component";
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  user: User | null = null;
+  user!: User;
   loading: boolean = true;
   status: number = 99;
 
@@ -48,7 +48,7 @@ export class AccountComponent implements OnInit {
 
   setSidebar(option: string): void {
     this.activeSidebar = option;
-    // Optional: Reset tab if sidebar changes
+  
     if (option === 'My Orders') {
       this.activeTab = 'Unpaid';
     }
@@ -59,7 +59,7 @@ export class AccountComponent implements OnInit {
   }
 
   hasOrders(tab: string): boolean {
-    // Placeholder: return false for now (no real order data)
+    
     return false;
   }
 
