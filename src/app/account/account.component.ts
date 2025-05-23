@@ -13,7 +13,7 @@ import { LoginComponent } from "../login/login.component";
 })
 export class AccountComponent implements OnInit {
   user: User | null = null;
-  loading = true;
+  loading: boolean = true;
   status: number = 99;
 
   activeSidebar: string = 'My Orders';
@@ -48,6 +48,10 @@ export class AccountComponent implements OnInit {
 
   setSidebar(option: string): void {
     this.activeSidebar = option;
+    // Optional: Reset tab if sidebar changes
+    if (option === 'My Orders') {
+      this.activeTab = 'Unpaid';
+    }
   }
 
   setTab(tab: string): void {
@@ -55,7 +59,24 @@ export class AccountComponent implements OnInit {
   }
 
   hasOrders(tab: string): boolean {
-    // Replace this logic with actual order check later
+    // Placeholder: return false for now (no real order data)
     return false;
+  }
+
+  getTabIcon(tab: string): string {
+    switch (tab) {
+      case 'Unpaid':
+        return 'https://cdn-icons-png.flaticon.com/512/190/190411.png';
+      case 'To be Shipped':
+        return 'https://cdn-icons-png.flaticon.com/512/2908/2908120.png';
+      case 'Shipped':
+        return 'https://cdn-icons-png.flaticon.com/512/633/633652.png';
+      case 'Completed':
+        return 'https://cdn-icons-png.flaticon.com/512/845/845646.png';
+      case 'Cancelled':
+        return 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png';
+      default:
+        return '';
+    }
   }
 }

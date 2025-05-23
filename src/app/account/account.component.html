@@ -15,8 +15,8 @@
   </div>
 
   <div class="main-content">
-    <!-- My orders tab -->
-    <nav  class="order-tabs">
+
+    <nav class="order-tabs">
       <span 
         *ngFor="let tab of ['Unpaid', 'To be Shipped', 'Shipped', 'Completed', 'Cancelled']"
         [class.active]="activeTab === tab"
@@ -25,7 +25,13 @@
       </span>
     </nav>
 
-    <!-- Sidebar  content -->
+    <ng-container *ngIf="activeSidebar === 'My Orders'">
+      <div *ngIf="!hasOrders(activeTab)" class="no-orders">
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="No Orders">
+        <p>No orders under "{{ activeTab }}"</p>
+      </div>
+    </ng-container>
+
     <ng-container [ngSwitch]="activeSidebar">
       <div *ngSwitchCase="'My Account'" class="section-content">
         <h3>Account Details</h3>
@@ -40,13 +46,6 @@
           <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg" alt="Asset 1">
           <img src="https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg" alt="Asset 2">
           <img src="https://images.pexels.com/photos/373076/pexels-photo-373076.jpeg" alt="Asset 3">
-        </div>
-      </div>
-
-      <div *ngSwitchCase="'My Orders'" class="section-content">
-        <div *ngIf="!hasOrders(activeTab)" class="no-orders">
-          <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100" alt="No Orders">
-          <p>No orders under "{{ activeTab }}"</p>
         </div>
       </div>
 
