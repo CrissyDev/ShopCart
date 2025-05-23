@@ -1,26 +1,25 @@
 .account-container {
   display: flex;
   padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .sidebar {
   width: 250px;
   border-right: 1px solid #eee;
   padding-right: 20px;
+  text-align: center;
 }
 
-.profile-circle {
-  width: 60px;
-  height: 60px;
-  background: #004f91;
-  color: white;
-  font-size: 28px;
+.sidebar-profile-img {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 10px;
-  text-align:center;
+}
+
+.sidebar h4 {
+  margin-bottom: 20px;
 }
 
 .sidebar ul {
@@ -31,10 +30,16 @@
 .sidebar li {
   margin: 10px 0;
   cursor: pointer;
+  transition: color 0.3s;
+}
+
+.sidebar li:hover {
+  color: #007bff;
 }
 
 .sidebar li.active {
-  color: red;
+  color: #d9534f;
+  font-weight: bold;
 }
 
 .main-content {
@@ -42,19 +47,52 @@
   padding-left: 20px;
 }
 
+.order-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
 .order-tabs span {
   margin-right: 20px;
   cursor: pointer;
-  padding-bottom:5px;
-}
-
-.order-tabs .active {
-  border-bottom: 2px solid #007bff;
-  font-weight: bold;
+  padding-bottom: 5px;
 }
 
 .order-tabs span.active {
   border-bottom: 2px solid red;
+  font-weight: bold;
+}
+
+.section-content {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.section-content h3 {
+  margin-top: 0;
+}
+
+.grid-gallery {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.grid-gallery img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.info-img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
 .no-orders {

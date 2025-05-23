@@ -19,16 +19,26 @@ export class AccountComponent implements OnInit {
   activeSidebar: string = 'My Orders';
   activeTab: string = 'Unpaid';
 
+  sidebarOptions: string[] = [
+    'My Account',
+    'My Assets',
+    'My Orders',
+    'Return/Refund',
+    'Wish List',
+    'Recent Views',
+    'Message',
+    'Chats with Sellers'
+  ];
+
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe({
-      next: (res) => {
-        console.log("myAccount res", res);
+      next: (res: User) => {
         this.user = res;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error fetching user:', err);
         this.status = err.status;
         this.loading = false;
@@ -45,6 +55,7 @@ export class AccountComponent implements OnInit {
   }
 
   hasOrders(tab: string): boolean {
-return false; 
+    // Replace this logic with actual order check later
+    return false;
   }
 }

@@ -2,11 +2,11 @@
 
 <div *ngIf="!loading && user" class="account-container">
   <div class="sidebar">
-    <div class="profile-circle">{{ user.firstName.charAt(0) }}</div>
+    <img class="sidebar-profile-img" src="https://i.pravatar.cc/100?u={{ user.email }}" alt="Profile">
     <h4>{{ user.firstName }} {{ user.lastName }}</h4>
     <ul>
       <li 
-        *ngFor="let option of ['My Account', 'My Assets', 'My Orders', 'Return/Refund', 'Wish List', 'Recent Views', 'Message', 'Chats with Sellers']"
+        *ngFor="let option of sidebarOptions"
         [class.active]="activeSidebar === option"
         (click)="setSidebar(option)">
         {{ option }}
@@ -15,7 +15,8 @@
   </div>
 
   <div class="main-content">
-    <nav class="order-tabs">
+    <!-- My orders tab -->
+    <nav  class="order-tabs">
       <span 
         *ngFor="let tab of ['Unpaid', 'To be Shipped', 'Shipped', 'Completed', 'Cancelled']"
         [class.active]="activeTab === tab"
@@ -24,13 +25,67 @@
       </span>
     </nav>
 
-    <div *ngIf="!hasOrders(activeTab)" class="no-orders">
-      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100" alt="No Orders">
-      <p>No orders under "{{ activeTab }}"</p>
-    </div>
+    <!-- Sidebar  content -->
+    <ng-container [ngSwitch]="activeSidebar">
+      <div *ngSwitchCase="'My Account'" class="section-content">
+        <h3>Account Details</h3>
+        <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Member Since:</strong> {{ user.createdAt | date }}</p>
+      </div>
+
+      <div *ngSwitchCase="'My Assets'" class="section-content">
+        <h3>My Digital Assets</h3>
+        <div class="grid-gallery">
+          <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg" alt="Asset 1">
+          <img src="https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg" alt="Asset 2">
+          <img src="https://images.pexels.com/photos/373076/pexels-photo-373076.jpeg" alt="Asset 3">
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'My Orders'" class="section-content">
+        <div *ngIf="!hasOrders(activeTab)" class="no-orders">
+          <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100" alt="No Orders">
+          <p>No orders under "{{ activeTab }}"</p>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'Return/Refund'" class="section-content">
+        <h3>Return & Refund</h3>
+        <p>If you are not satisfied with your order, you may request a return or refund within 14 days.</p>
+        <img src="https://images.pexels.com/photos/5632391/pexels-photo-5632391.jpeg" class="info-img" alt="Returns">
+      </div>
+
+      <div *ngSwitchCase="'Wish List'" class="section-content">
+        <h3>Your Wish List</h3>
+        <div class="grid-gallery">
+          <img src="https://images.pexels.com/photos/298864/pexels-photo-298864.jpeg" alt="Wish 1">
+          <img src="https://images.pexels.com/photos/914668/pexels-photo-914668.jpeg" alt="Wish 2">
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'Recent Views'" class="section-content">
+        <h3>Recently Viewed</h3>
+        <ul>
+          <li>Wireless Bluetooth Headphones</li>
+          <li>Smartwatch Series 5</li>
+          <li>USB-C Fast Charger</li>
+        </ul>
+      </div>
+
+      <div *ngSwitchCase="'Message'" class="section-content">
+        <h3>Messages</h3>
+        <p>You have no new messages.</p>
+      </div>
+
+      <div *ngSwitchCase="'Chats with Sellers'" class="section-content">
+        <h3>Chats</h3>
+        <p>No active conversations with sellers.</p>
+      </div>
+    </ng-container>
   </div>
 </div>
 
-<div *ngIf="!loading && (status === 401)">
+<div *ngIf="!loading && status === 401">
   <app-login></app-login>
 </div>
