@@ -21,10 +21,6 @@ export class CategoriesComponent implements OnInit {
     furniture: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg',
     fragrances: 'https://images.pexels.com/photos/965991/pexels-photo-965991.jpeg?auto=compress&cs=tinysrgb&w=600',
     groceries: 'https://images.pexels.com/photos/7879964/pexels-photo-7879964.jpeg?auto=compress&cs=tinysrgb&w=600',
-    //include more categories here
-    // bag: 'https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg',
-    // laptop: 'https://images.pexels.com/photos/18105/pexels-photo.jpg',
-    // book: 'https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg'
   };
 
   ngOnInit(): void {
