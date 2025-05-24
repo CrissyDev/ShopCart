@@ -1,1 +1,24 @@
-<p>categories works!</p>
+<div class="container py-4">
+  <h4 class="mb-4">Popular Categories</h4>
+  <div class="row g-4">
+    <div
+      class="col-12 col-sm-6 col-md-4"
+      *ngFor="let category of categories"
+    >
+      <a
+        [routerLink]="['/products']"
+        [queryParams]="{ category: category.name }"
+        class="category-card d-flex align-items-center justify-content-between shadow-sm p-3 rounded text-decoration-none bg-white"
+      >
+        <div class="d-flex align-items-center gap-3">
+          <img [src]="category.image" alt="{{ category.name }}" width="50" height="50" class="rounded-circle object-fit-cover" />
+          <div>
+            <h6 class="mb-0 text-capitalize fw-semibold">{{ category.name }}</h6>
+            <small class="text-muted">{{ category.count }} Item Available</small>
+          </div>
+        </div>
+        <i class="fas fa-angle-right text-muted"></i>
+      </a>
+    </div>
+  </div>
+</div>
