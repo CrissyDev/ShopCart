@@ -1,1 +1,23 @@
-<p>delivery works!</p>
+<div class="hero-section">
+  <div class="content text-center">
+    <h1>Fast, reliable and <br>convenient delivery</h1>
+    <p>Enjoy your free time while we deliver everything you need.</p>
+    <div class="buttons mt-4">
+      <button class="btn btn-dark">Order delivery <i class="fas fa-arrow-right"></i></button>
+      <a href="#" class="link ms-3">See all of our features</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let feature of features">
+      <div class="feature-card p-3 text-center">
+        <i [class]="feature.icon + ' fa-2x text-primary mb-2'"></i>
+        <h5 class="mb-2">{{ feature.title }}</h5>
+        <p class="text-muted">{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>
