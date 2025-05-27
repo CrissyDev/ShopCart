@@ -1,0 +1,39 @@
+.promo-banner-full {
+  width: 100%;
+  background-color: #f6fdf9;
+  border-radius: 0;
+}
+
+.promo-banner-full .container {
+  max-width: 1140px;
+}
+
+.hero-text h2 {
+  font-size: 2rem;
+  color: #222;
+}
+
+.input-group input {
+  border: 1px solid #ccc;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.footer-section {
+  background-color: #222;
+  color: #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+}
+
+.footer-section a {
+  color: #ccc;
+}
+
+.footer-section a:hover {
+  color: #0f0;
+  text-decoration: underline;
+}
