@@ -5,7 +5,7 @@ import { ProductDetailComponent } from './product-details/product-details.compon
 import { ProductListComponent } from './product-list/product-list.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { DealsComponent } from './deals/deals.component';
-import { WhatsnewComponent } from './whatsnew/whatsnew.component';
+import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { AccountComponent } from './account/account.component';
 import { CartComponent } from './cart/cart.component';
@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent }, 
   { path: 'categories', component: CategoriesComponent },
   { path: 'deals', component: DealsComponent },
-  { path: 'new', component: WhatsnewComponent },
+  { path: 'new', component: WhatsNewComponent },
   { path: 'delivery', component: DeliveryComponent },
   { path: 'account', component: AccountComponent },
   { path: 'cart', component: CartComponent },

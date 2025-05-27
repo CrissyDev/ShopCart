@@ -1,11 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.interface';
 
 @Component({
-  selector: 'app-whatsnew',
-  imports: [],
+  selector: 'app-whats-new',
+  standalone: true,
+  imports :[CommonModule, RouterModule],
   templateUrl: './whatsnew.component.html',
-  styleUrl: './whatsnew.component.css'
+  styleUrls: ['./whatsnew.component.css']
 })
-export class WhatsnewComponent {
+export class WhatsNewComponent implements OnInit {
+  private productService = inject(ProductService);
 
+  products: Product[] = [];
+  uniqueCategories: string[] = [];
+
+  ngOnInit(): void {
+    this.productService.getProducts().subscribe((res) => {
+      this.products = res.products.map(product => ({
+        ...product,
+        liked: false
+      }));
+      this.uniqueCategories = [...new Set(this.products.map(p => p.category))];
+    });
+  }
+
+  getProductsByCategory(category: string): Product[] {
+    return this.products.filter(p => p.category === category);
+  }
+
+  toggleLike(product: Product): void {
+    product.liked = !product.liked;
+  }
 }

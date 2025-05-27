@@ -1,0 +1,16 @@
+.flicker-card {
+  transition: all 0.3s ease-in-out;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.flicker-card:hover {
+  animation: flicker 0.5s infinite;
+  transform: scale(1.02);
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.85; }
+  100% { opacity: 1; }
+}

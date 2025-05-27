@@ -1,1 +1,32 @@
-<p>whatsnew works!</p>
+<div class="container py-5">
+  <h2 class="mb-4">What's New</h2>
+
+  <div *ngFor="let category of uniqueCategories" class="mb-5">
+    <h4 class="fw-bold">{{ category }}</h4>
+
+    <div class="d-flex flex-nowrap overflow-auto gap-4 pt-3">
+      <div *ngFor="let product of getProductsByCategory(category)" class="card flicker-card border-0 shadow-sm rounded-4" style="min-width: 250px;">
+        <div class="position-relative">
+          <img [src]="product.thumbnail" alt="{{ product.title }}" class="card-img-top rounded-top-4" style="height: 220px; object-fit: cover;">
+          <i
+            class="fas fa-heart position-absolute top-0 end-0 m-2 text-danger"
+            [ngClass]="{ 'fa-heart': product.liked, 'fa-heart-broken': !product.liked }"
+            (click)="toggleLike(product)"
+            title="Like"
+            style="cursor: pointer;"
+          ></i>
+        </div>
+
+        <div class="card-body">
+          <h6 class="card-title fw-semibold">{{ product.title }}</h6>
+          <p class="text-muted small mb-1">{{ product.category }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-success">${{ product.price }}</span>
+            <button class="btn btn-sm btn-dark">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
