@@ -1,4 +1,3 @@
-<!-- Hero Discount Banner -->
 <section class="hero-banner d-flex flex-wrap align-items-center justify-content-between mb-5 p-4 rounded shadow-sm">
   <div class="hero-text mb-3 mb-md-0" style="flex: 1 1 50%;">
     <p class="text-success mb-2 fw-semibold">— Try it now!</p>
@@ -16,7 +15,6 @@
            class="img-fluid rounded"
            alt="Happy shopper"
            style="max-height: 300px; object-fit: cover;">
-      <!-- Overlay discounts and thumbnails -->
       <div class="position-absolute top-0 end-0 bg-success text-white p-2 rounded-start">10% OFF</div>
       <div class="position-absolute bottom-0 start-0 bg-white p-2 rounded shadow-sm" style="width: 220px;">
         <small class="d-block fw-bold text-dark mb-1">GET NOW <span class="text-success">25% OFF</span></small>
@@ -33,8 +31,8 @@
   </div>
 </section>
 
+<!-- Offer Section -->
 <div class="container py-4">
-  <!-- Offer Section -->
   <section class="offer-section mb-5">
     <h2 class="fw-bold">What We Offer</h2>
     <div class="row mt-4">
@@ -62,28 +60,25 @@
     </div>
   </section>
 
-  <!-- Flash Deals -->
-  <section class="flash-deals">
-    <h4 class="fw-bold mb-4">Flash Deals</h4>
-    <div class="row g-4">
-      <div class="col-md-4" *ngFor="let deal of flashDeals">
-        <div class="card h-100 flash-card shadow-sm">
-          <img [src]="deal.thumbnail" class="card-img-top" [alt]="deal.title" style="height: 200px; object-fit: cover;">
-          <div class="card-body d-flex flex-column">
-            <h6 class="card-title">{{ deal.title }}</h6>
-            <p class="card-text text-muted">{{ deal.description | slice:0:80 }}...</p>
-            <div class="mt-auto">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <strong class="text-success">\${{ deal.price }}</strong>
-                <span class="badge bg-danger">Ends in: 00:{{ 30 - deal.id }}:00</span>
-              </div>
-              <button class="btn btn-sm btn-outline-primary w-100" (click)="buyNow(deal)">
-                Buy Now
-              </button>
-            </div>
+  <!-- Flash Deals Section -->
+  <h3 class="fw-bold mb-4">Flash Deals (Ends In <span>{{ minutes }}:{{ seconds }}</span>)</h3>
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let product of flashDeals">
+      <div class="card flash-card h-100 shadow-lg rounded hover-shake">
+        <img [src]="product.thumbnail" class="card-img-top rounded-top" [alt]="product.title" height="200" style="object-fit: cover;" />
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text text-muted">{{ product.description | slice:0:80 }}...</p>
+          <div class="mb-2">
+            <span class="text-danger fw-bold h5 me-2">\${{ product.price - product.discountPercentage | number:'1.0-0' }}</span>
+            <span class="text-muted text-decoration-line-through">\${{ product.price }}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-auto">
+            <i class="fas fa-cart-plus text-primary fs-4" (click)="addToCart(product)" style="cursor: pointer;"></i>
+            <button class="btn btn-success ms-auto px-4" (click)="buyNow(product)">Buy Now</button>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
