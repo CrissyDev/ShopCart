@@ -1,11 +1,12 @@
 <div class="container py-4">
- <div class="row mt-2">
-  <h2 class="headphones-title">Products For You!</h2>
- </div>
+  <div class="row mt-2">
+    <h2 class="headphones-title">Products For You!</h2>
+  </div>
+
   <div class="row g-4">
-    @for (product of filteredProducts; track $index) {
-      <div class="col-sm-6 col-md-4 col-lg-3" (click)="productDetail(product.id)">
-        <div class="card product-card h-100 border-0 shadow">
+    @for (product of visibleProducts; track $index) {
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <div class="card product-card h-100 border-0 shadow" (click)="productDetail(product.id)">
           <div class="position-relative">
             <img [src]="product.thumbnail" alt="{{ product.title }}" class="card-img-top" />
             <i
@@ -14,7 +15,7 @@
                 'fa-heart': product.liked,
                 'fa-heart-broken': !product.liked
               }"
-              (click)="toggleLike(product)"
+              (click)="toggleLike(product); $event.stopPropagation()"
               class="like-icon"
               title="Like"
             ></i>
@@ -28,13 +29,48 @@
               <span class="badge bg-secondary text-capitalize">{{ product.category }}</span>
               <span class="fw-bold text-success">${{ product.price }}</span>
             </div>
-
-            <a [routerLink]="['/product', product.id]" class="btn btn-success btn-sm mt-3">
-              <i class="fas fa-eye me-1"></i> View Details
-            </a>
           </div>
         </div>
       </div>
     }
   </div>
+
+  <div class="row mt-4 text-center">
+    <div class="col">
+      <button *ngIf="visibleCount < filteredProducts.length" class="btn btn-outline-primary" (click)="seeMore()">
+        See More
+      </button>
+      <button *ngIf="visibleCount >= filteredProducts.length && filteredProducts.length > 8" class="btn btn-outline-danger" (click)="seeLess()">
+        See Less
+      </button>
+    </div>
+  </div>
 </div>
+
+<!--Offers-->
+<section class="offer-section mb-5">
+    <h2 class="fw-bold">What We Offer</h2>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="offer-card p-4 text-center">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="50">
+          <h5 class="mt-3">Latest Promo Codes</h5>
+          <p>Get access to exclusive discount codes for top brands and marketplaces.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="offer-card p-4 text-center">
+          <img src="https://cdn-icons-png.flaticon.com/512/4729/4729922.png" width="50">
+          <h5 class="mt-3">Cashback Deals</h5>
+          <p>Earn extra savings on your purchases through our cashback partnerships.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="offer-card p-4 text-center">
+          <img src="https://cdn-icons-png.flaticon.com/512/4379/4379185.png" width="50">
+          <h5 class="mt-3">Limited-Time Offers</h5>
+          <p>Never miss out on time-sensitive flash sales and seasonal discounts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
