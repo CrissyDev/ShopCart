@@ -13,6 +13,9 @@ import { SearchService } from '../services/search.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+productDetail(arg0: number) {
+throw new Error('Method not implemented.');
+}
   private productService = inject(ProductService);
   private searchService = inject(SearchService);
   private route = inject(ActivatedRoute);
@@ -54,4 +57,8 @@ export class ProductListComponent implements OnInit {
   toggleLike(product: Product): void {
     product.liked = !product.liked;
   }
+
+//   productDetail(id){
+// this.router
+//   }
 }
