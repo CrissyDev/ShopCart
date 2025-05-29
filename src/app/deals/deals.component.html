@@ -1,84 +1,56 @@
-<section class="hero-banner d-flex flex-wrap align-items-center justify-content-between mb-5 p-4 rounded shadow-sm">
-  <div class="hero-text mb-3 mb-md-0" style="flex: 1 1 50%;">
-    <p class="text-success mb-2 fw-semibold">— Try it now!</p>
-    <h2 class="fw-bold mb-3">Unlock Exclusive Discounts & Cashback Offers</h2>
-    <p class="text-muted mb-3">We curate the latest and most valuable discounts from your online stores, helping you save more on every purchase.</p>
-    <div class="input-group w-75">
-      <input type="email" class="form-control rounded-start" placeholder="Enter your email">
-      <button class="btn btn-success rounded-end">Get Started</button>
+<!-- FEATURED DEALS BANNER -->
+<section class="featured-deals-banner mb-5 rounded text-white p-4 position-relative overflow-hidden">
+  <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="mb-4 mb-md-0">
+      <h2 class="fw-bold fs-1">Featured Deals</h2>
+      <p class="fs-5">SAVE UPTO 60%</p>
+      <button class="btn btn-light btn-sm px-3 py-2 fw-semibold rounded-pill">Explore More</button>
     </div>
-  </div>
-
-  <div class="hero-image text-center" style="flex: 1 1 45%;">
-    <div class="position-relative">
-      <img src="https://images.pexels.com/photos/5717417/pexels-photo-5717417.jpeg?auto=compress&cs=tinysrgb&w=600"
-           class="img-fluid rounded"
-           alt="Happy shopper"
-           style="max-height: 300px; object-fit: cover;">
-      <div class="position-absolute top-0 end-0 bg-success text-white p-2 rounded-start">10% OFF</div>
-      <div class="position-absolute bottom-0 start-0 bg-white p-2 rounded shadow-sm" style="width: 220px;">
-        <small class="d-block fw-bold text-dark mb-1">GET NOW <span class="text-success">25% OFF</span></small>
-        <div class="d-flex justify-content-between">
-          <img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=100"
-               alt="Product 1" width="50" height="50" class="rounded">
-          <img src="https://images.pexels.com/photos/845434/pexels-photo-845434.jpeg?auto=compress&cs=tinysrgb&w=100"
-               alt="Product 2" width="50" height="50" class="rounded">
-          <img src="https://images.pexels.com/photos/298864/pexels-photo-298864.jpeg?auto=compress&cs=tinysrgb&w=100"
-               alt="Product 3" width="50" height="50" class="rounded">
-        </div>
-      </div>
+    <div class="d-flex gap-3">
+      <img src="https://images.pexels.com/photos/1683566/pexels-photo-1683566.jpeg?auto=compress&cs=tinysrgb&w=300"
+           class="img-fluid rounded" style="max-height: 180px; object-fit: cover;" alt="Product">
+      <img src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=300"
+           class="img-fluid rounded" style="max-height: 180px; object-fit: cover;" alt="Product">
+      <img src="https://images.pexels.com/photos/3394662/pexels-photo-3394662.jpeg?auto=compress&cs=tinysrgb&w=300"
+           class="img-fluid rounded" style="max-height: 180px; object-fit: cover;" alt="Product">
     </div>
   </div>
 </section>
 
-<!-- Offer Section -->
-<div class="container py-4">
-  <section class="offer-section mb-5">
-    <h2 class="fw-bold">What We Offer</h2>
-    <div class="row mt-4">
-      <div class="col-md-4">
-        <div class="offer-card p-4 text-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="50">
-          <h5 class="mt-3">Latest Promo Codes</h5>
-          <p>Get access to exclusive discount codes for top brands and marketplaces.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="offer-card p-4 text-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/4729/4729922.png" width="50">
-          <h5 class="mt-3">Cashback Deals</h5>
-          <p>Earn extra savings on your purchases through our cashback partnerships.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="offer-card p-4 text-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/4379/4379185.png" width="50">
-          <h5 class="mt-3">Limited-Time Offers</h5>
-          <p>Never miss out on time-sensitive flash sales and seasonal discounts.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- NEW ARRIVALS SECTION -->
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold">New Arrivals</h3>
+    <a href="#" class="text-primary fw-semibold text-decoration-none">View More</a>
+  </div>
 
-  <!-- Flash Deals Section -->
-  <h3 class="fw-bold mb-4">Flash Deals (Ends In <span>{{ minutes }}:{{ seconds }}</span>)</h3>
-  <div class="row g-4">
-    <div class="col-md-4" *ngFor="let product of flashDeals">
-      <div class="card flash-card h-100 shadow-lg rounded hover-shake">
-        <img [src]="product.thumbnail" class="card-img-top rounded-top" [alt]="product.title" height="200" style="object-fit: cover;" />
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">{{ product.title }}</h5>
-          <p class="card-text text-muted">{{ product.description | slice:0:80 }}...</p>
-          <div class="mb-2">
-            <span class="text-danger fw-bold h5 me-2">\${{ product.price - product.discountPercentage | number:'1.0-0' }}</span>
-            <span class="text-muted text-decoration-line-through">\${{ product.price }}</span>
-          </div>
-          <div class="d-flex justify-content-between align-items-center mt-auto">
-            <i class="fas fa-cart-plus text-primary fs-4" (click)="addToCart(product)" style="cursor: pointer;"></i>
-            <button class="btn btn-success ms-auto px-4" (click)="buyNow(product)">Buy Now</button>
+  <div class="position-relative">
+    <button class="carousel-nav left"><i class="fas fa-chevron-left"></i></button>
+
+    <div class="row flex-nowrap overflow-auto pb-4" style="scrollbar-width: none;">
+      <div class="col-md-3 col-sm-6" *ngFor="let product of flashDeals">
+        <div class="deal-card flicker-hover shadow rounded overflow-hidden position-relative">
+          <img [src]="product.thumbnail" [alt]="product.title" class="w-100" style="height: 200px; object-fit: cover;" />
+          <div class="p-3 d-flex flex-column h-100">
+            <h6 class="fw-bold">{{ product.title }}</h6>
+            <div class="stars mb-2 text-warning">
+              <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]"></i>
+            </div>
+            <div class="price mb-2">
+              <span class="fw-bold text-danger fs-5">${{ product.price }}</span>
+              <span class="text-muted text-decoration-line-through ms-2">${{ product.price + 20 }}</span>
+            </div>
+            <div class="d-flex justify-content-between mt-auto">
+              <button class="btn btn-outline-purple btn-sm" (click)="addToCart(product)">
+                <i class="fas fa-shopping-cart me-1"></i> Add to cart
+              </button>
+              <button class="btn btn-purple btn-sm" (click)="buyNow(product)">Buy</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <button class="carousel-nav right"><i class="fas fa-chevron-right"></i></button>
   </div>
 </div>

@@ -20,101 +20,80 @@
 <div class="filters-section">
   <div class="filters-container">
 
-    <!-- Product Dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('type')">
-      <span>Product Type</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['type']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    <div *ngIf="dropdowns['type']" class="dropdown-content">
-      <p>Over-Ear</p>
-      <p>On-Ear</p>
-      <p>In-Ear</p>
-    </div>
-</div>
-
-    <!-- Price dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('price')">
-      <span>Price</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['price']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    <div *ngIf="dropdowns['price']" class="dropdown-content">
-      <p>Under $50</p>
-      <p>$50 - $100</p>
-      <p>Above $100</p>
-    </div>
+    <!-- Product Type -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Product Type</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Over-Ear</button>
+        <button ngbDropdownItem>On-Ear</button>
+        <button ngbDropdownItem>In-Ear</button>
+      </div>
     </div>
 
-    <!-- Review dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('review')">
-      <span>Review</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['review']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    <div *ngIf="dropdowns['review']" class="dropdown-content">
-      <p>⭐⭐⭐⭐⭐</p>
-      <p>⭐⭐⭐⭐</p>
-      <p>⭐⭐⭐</p>
-    </div>
+    <!-- Price -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Price</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Under $50</button>
+        <button ngbDropdownItem>$50 - $100</button>
+        <button ngbDropdownItem>Above $100</button>
+      </div>
     </div>
 
-    <!-- Filter dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('close')">
-      <span>Close</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['close']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    <div *ngIf="dropdowns['close']" class="dropdown-content">
-      <p>Open Back</p>
-      <p>Closed Back</p>
+    <!-- Review -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Review</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>⭐⭐⭐⭐⭐</button>
+        <button ngbDropdownItem>⭐⭐⭐⭐</button>
+        <button ngbDropdownItem>⭐⭐⭐</button>
+      </div>
     </div>
-</div>
 
-    <!-- Material dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('material')">
-      <span>Material</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['material']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    <div *ngIf="dropdowns['material']" class="dropdown-content">
-      <p>Plastic</p>
-      <p>Metal</p>
-      <p>Leather</p>
+    <!-- Close -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Close</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Open Back</button>
+        <button ngbDropdownItem>Closed Back</button>
+      </div>
     </div>
-</div>
 
-    <!-- Filter dropdown -->
-    <div class="filter-item dropdown" (click)="toggleDropdown('offer')">
-      <span>Offer</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['offer']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-<div *ngIf="dropdowns['offer']" class="dropdown-content">
-      <p>10% Off</p>
-      <p>Buy 1 Get 1</p>
-      <p>Clearance Sale</p>
+    <!-- Material -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Material</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Plastic</button>
+        <button ngbDropdownItem>Metal</button>
+        <button ngbDropdownItem>Leather</button>
+      </div>
     </div>
-</div>
 
-    <!-- All Filters  -->
+    <!-- Offer -->
+    <div ngbDropdown class="filter-item d-inline-block">
+      <button class="btn btn-light dropdown-toggle" ngbDropdownToggle>Offer</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>10% Off</button>
+        <button ngbDropdownItem>Buy 1 Get 1</button>
+        <button ngbDropdownItem>Clearance Sale</button>
+      </div>
+    </div>
+
+    <!-- All Filters -->
     <div class="all-filters">
       <span>All Filters</span>
       <span class="filter-count">2</span>
     </div>
 
-    <!-- Sort By -->
-    <div class="sort-by dropdown" (click)="toggleDropdown('sort')">
-      <span>Sort by</span>
-      <svg class="dropdown-arrow" [class.rotate]="dropdowns['sort']" width="12" height="12" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-    </div>
-    <div *ngIf="dropdowns['sort']" class="dropdown-content">
-      <p>Popularity</p>
-      <p>Price: Low to High</p>
-      <p>Price: High to Low</p>
-      <p>Newest First</p>
+    <!-- Sort by -->
+    <div ngbDropdown class="sort-by d-inline-block">
+      <button class="btn btn-outline-dark dropdown-toggle" ngbDropdownToggle>Sort By</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Popularity</button>
+        <button ngbDropdownItem>Price: Low to High</button>
+        <button ngbDropdownItem>Price: High to Low</button>
+        <button ngbDropdownItem>Newest First</button>
+      </div>
     </div>
 
   </div>

@@ -1,26 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgbDropdownModule],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.css']
 })
-export class HeroComponent {
-  dropdowns: { [key: string]: boolean } = {};
-
-  toggleDropdown(selection: string): void {
-    this.dropdowns[selection] = !this.dropdowns[selection];
-  }
-}
-
-export interface Product {
-  type: string;
-  price: number;
-  review: number;
-  close: string;
-  material: string;
-  offer: string;
-}
+export class HeroComponent {}

@@ -1,3 +1,14 @@
+.offer-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
 .promo-banner-full {
   width: 100%;
   background-color: #f6fdf9;

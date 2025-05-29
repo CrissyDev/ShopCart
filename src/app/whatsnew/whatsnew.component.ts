@@ -7,7 +7,7 @@ import { Product } from '../models/product.interface';
 @Component({
   selector: 'app-whats-new',
   standalone: true,
-  imports :[CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './whatsnew.component.html',
   styleUrls: ['./whatsnew.component.css']
 })
@@ -33,5 +33,19 @@ export class WhatsNewComponent implements OnInit {
 
   toggleLike(product: Product): void {
     product.liked = !product.liked;
+  }
+
+  scrollLeft(category: string): void {
+    const container = document.getElementById('slider-' + category);
+    if (container) {
+      container.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  }
+
+  scrollRight(category: string): void {
+    const container = document.getElementById('slider-' + category);
+    if (container) {
+      container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
   }
 }

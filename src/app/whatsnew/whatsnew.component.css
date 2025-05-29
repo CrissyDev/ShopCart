@@ -1,16 +1,26 @@
-.flicker-card {
-  transition: all 0.3s ease-in-out;
-  border-radius: 1rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.slider-container {
+  scroll-behavior: smooth;
+  transition: scroll-left 0.3s ease-in-out;
 }
 
-.flicker-card:hover {
-  animation: flicker 0.5s infinite;
-  transform: scale(1.02);
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.85; }
-  100% { opacity: 1; }
+.slider-arrow.left {
+  left: -10px;
+}
+
+.slider-arrow.right {
+  right: -10px;
 }

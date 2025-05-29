@@ -15,12 +15,17 @@ export class CategoriesComponent implements OnInit {
   private productService = inject(ProductService);
 
   categories: { name: string; count: number; image: string }[] = [];
+  activeIndex = 0;
 
   categoryImages: { [key: string]: string } = {
     beauty: 'https://images.pexels.com/photos/3373743/pexels-photo-3373743.jpeg',
     furniture: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg',
     fragrances: 'https://images.pexels.com/photos/965991/pexels-photo-965991.jpeg?auto=compress&cs=tinysrgb&w=600',
     groceries: 'https://images.pexels.com/photos/7879964/pexels-photo-7879964.jpeg?auto=compress&cs=tinysrgb&w=600',
+    fashion: 'https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg',
+    weather: 'https://images.pexels.com/photos/1571937/pexels-photo-1571937.jpeg',
+    science: 'https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg',
+    entertainment: 'https://images.pexels.com/photos/799115/pexels-photo-799115.jpeg'
   };
 
   ngOnInit(): void {
@@ -47,5 +52,13 @@ export class CategoriesComponent implements OnInit {
         console.error('Failed to load products:', err);
       }
     });
+  }
+
+  nextSlide(): void {
+    this.activeIndex = (this.activeIndex + 1) % this.categories.length;
+  }
+
+  prevSlide(): void {
+    this.activeIndex = (this.activeIndex - 1 + this.categories.length) % this.categories.length;
   }
 }

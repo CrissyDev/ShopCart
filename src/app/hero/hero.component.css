@@ -68,8 +68,7 @@
     display: block;
   }
   
-  /*additional styling*/
- /* Spacing and typography improvements */
+  
 .filters-section {
     margin-top: 30px;
     margin-bottom: 40px;
@@ -147,4 +146,17 @@
     padding-top: 10px;
     letter-spacing: 0.5px;
     color: #333;
+}
+.btn-light.dropdown-toggle {
+  border-radius: 20px;
+  padding: 6px 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn-outline-dark.dropdown-toggle {
+  border-radius: 20px;
+  padding: 6px 20px;
+  font-weight: 600;
+  font-size: 14px;
 }
