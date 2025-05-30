@@ -24,3 +24,42 @@
 .slider-arrow.right {
   right: -10px;
 }
+/* Slider container with hidden scrollbar */
+.slider-container {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Arrow buttons */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.slider-arrow.left {
+  left: -15px;
+}
+
+.slider-arrow.right {
+  right: -15px;
+}
+
+.flicker-card {
+  transition: all 0.3s ease-in-out;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(0);
+}
+
+.flicker-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}

@@ -6,6 +6,8 @@ export interface ProductsResponse {
 }
 
 export interface Product {
+  
+  closeType: string;
 colors: any;
 name: any;
   id: number;
@@ -33,6 +35,8 @@ name: any;
 // added this page for extra styling
   liked?: boolean; 
   headphoneType?: 'Over-Ear' | 'In-Ear' | 'On-Ear'; 
+  material?: "plastic" | "metal" | "leather";
+  offer?: string;
 }
 
 export interface Dimensions {
