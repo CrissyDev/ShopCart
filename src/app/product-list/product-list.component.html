@@ -98,12 +98,18 @@
     
     @empty {
       <div class="col-12">
-        <div>
-          <button class="btn btn-outline-primary" (click)="resetProducts()">
-          Reset Products
-          </button>
-        </div>
-      </div>
+  <div>
+    <button 
+      class="btn btn-outline-primary"
+      style="padding: 10px 20px; font-size: 16px; font-weight: 500; border-radius: 8px; border-width: 2px; background-color: #f8f9fa; color: #0d6efd; transition: all 0.3s ease;"
+      (click)="resetProducts()"
+      onmouseover="this.style.backgroundColor='#0d6efd'; this.style.color='#fff';"
+      onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#0d6efd';"
+    >
+      Reset Products
+    </button>
+  </div>
+</div>
     }
   </div>
 
