@@ -30,15 +30,22 @@
 .sidebar li {
   margin: 10px 0;
   cursor: pointer;
-  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  transition: all 0.3s;
+  border-radius: 8px;
 }
 
 .sidebar li:hover {
+  background-color: #f0f0f0;
   color: #007bff;
 }
 
 .sidebar li.active {
-  color: #d9534f;
+  background-color: #d9534f;
+  color: white;
   font-weight: bold;
 }
 
@@ -51,17 +58,33 @@
   display: flex;
   margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
+  gap: 20px;
+  padding: 10px 0;
 }
 
 .order-tabs span {
-  margin-right: 20px;
   cursor: pointer;
   padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.order-tabs span:hover {
+  color: #007bff;
 }
 
 .order-tabs span.active {
   border-bottom: 2px solid red;
   font-weight: bold;
+  color: #d9534f;
+}
+
+.tab-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .section-content {
@@ -104,3 +127,96 @@
   width: 150px;
   margin-bottom: 10px;
 }
+
+.account-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar .active {
+  background-color: #28a745;
+  color: white;
+}
+
+.sidebar img {
+  border: 2px solid #28a745;
+}
+
+.account-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 280px;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.sidebar .active {
+  background-color: #28a745;
+  color: white;
+}
+
+.sidebar img {
+  border: 2px solid #28a745;
+  max-width: 100%;
+}
+
+/* Sidebar menu list styling */
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+/* Main content styling */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Section content area styling */
+.section-content {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.info-img {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.card-img-top {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.row.g-4 > [class*="col-"] {
+  margin-bottom: 20px;
+}
+
+

@@ -5,12 +5,10 @@
     <h4 class="fw-bold">{{ category }}</h4>
 
     <div class="position-relative">
-      
       <button class="slider-arrow left" (click)="scrollLeft(category)">
         <i class="fas fa-chevron-left"></i>
       </button>
 
-      
       <div
         class="d-flex gap-4 pt-3 slider-container"
         [id]="'slider-' + category"
@@ -50,7 +48,6 @@
         </div>
       </div>
 
-      
       <button class="slider-arrow right" (click)="scrollRight(category)">
         <i class="fas fa-chevron-right"></i>
       </button>

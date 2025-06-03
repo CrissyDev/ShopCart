@@ -3,31 +3,30 @@
 
   <div class="cart-content">
     <div class="cart-items">
-      <div class="cart-item" *ngFor="let item of cart.products">
+      <div class="cart-item" *ngFor="let item of cart.products; let i = index">
         <img [src]="item.thumbnail" alt="{{ item.title }}" class="product-img">
 
         <div class="item-details">
           <h4>{{ item.title }}</h4>
           <p class="price">Quantity: {{ item.quantity }}</p>
-          <p class="price"> Price: ${{ item.price }}</p>
-          <p class="price">Total: ${{ item.total}}</p>
-          <p class="price"> Discounted Percentage: ${{item.discountedPercentage}}</p>
-          <p class="price"> Discounted Total: ${{item.discountedTotal}}</p>
+          <p class="price">Price: ${{ item.price }}</p>
+          <p class="price">Total: ${{ item.total }}</p>
+          <p class="price">Discounted Percentage: {{ item.discountedPercentage }}%</p>
+          <p class="price">Discounted Total: ${{ item.discountedTotal }}</p>
         </div>
 
         <div class="item-actions">
-          <button>-</button>
+          <button (click)="decreaseQuantity(i)">-</button>
           <span>{{ item.quantity }}</span>
-          <button>+</button>
+          <button (click)="increaseQuantity(i)">+</button>
         </div>
 
-        <button class="delete-btn" title="Remove item">
+        <button class="delete-btn" title="Remove item" (click)="deleteItem(i)">
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
     </div>
 
-    
     <div class="order-summary">
       <h3>Order Summary</h3>
 

@@ -135,3 +135,19 @@ h1 {
   font-size: 1rem;
   cursor: pointer;
 }
+
+.cart-item {
+  transition: all 0.3s ease;
+}
+
+.cart-item.ng-leave {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 0.3s ease-out;
+}
+

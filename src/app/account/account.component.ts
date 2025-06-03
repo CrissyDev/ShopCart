@@ -1,28 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { User } from '../models/users.interface';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from "../login/login.component";
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, LoginComponent],
+  imports: [CommonModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
-  user!: User;
-  loading: boolean = true;
-  status: number = 99;
+export class AccountComponent {
+  user = {
+    name: 'Chloem Morales',
+    email: 'ChloemMorales@gmail.com',
+    phone: '+254 712 345678',
+    address: '123 Market St, Nairobi, Kenya',
+    image: 'https://images.pexels.com/photos/17300044/pexels-photo-17300044/free-photo-of-black-women.jpeg?auto=compress&cs=tinysrgb&w=600'
+  };
 
-  activeSidebar: string = 'My Orders';
-  activeTab: string = 'Unpaid';
+  orders = [
+    {
+      id: 'ORD12345',
+      date: '2025-05-30',
+      status: 'Delivered',
+      total: '$89.99',
+      image: 'https://images.pexels.com/photos/3682292/pexels-photo-3682292.jpeg?auto=compress&cs=tinysrgb&w=600'
+    },
+    {
+      id: 'ORD12346',
+      date: '2025-05-28',
+      status: 'Processing',
+      total: '$45.50',
+      image: 'https://images.pexels.com/photos/3682292/pexels-photo-3682292.jpeg?auto=compress&cs=tinysrgb&w=600'
+    }
+  ];
 
   sidebarOptions: string[] = [
     'My Account',
-    'My Assets',
     'My Orders',
+    'Unpaid Orders',
+    'Paid Orders',
     'Return/Refund',
     'Wish List',
     'Recent Views',
@@ -30,53 +46,24 @@ export class AccountComponent implements OnInit {
     'Chats with Sellers'
   ];
 
-  constructor(private userService: UserService) {}
+  selectedOption: string = 'My Account';
 
-  ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe({
-      next: (res: User) => {
-        this.user = res;
-        this.loading = false;
-      },
-      error: (err: any) => {
-        console.error('Error fetching user:', err);
-        this.status = err.status;
-        this.loading = false;
-      }
-    });
-  }
-
-  setSidebar(option: string): void {
-    this.activeSidebar = option;
-  
-    if (option === 'My Orders') {
-      this.activeTab = 'Unpaid';
+  getSidebarIcon(option: string): string {
+    switch (option) {
+      case 'My Account': return 'fas fa-user-circle';
+      case 'My Orders': return 'fas fa-shopping-bag';
+      case 'Unpaid Orders': return 'fas fa-wallet';
+      case 'Paid Orders': return 'fas fa-money-check-alt';
+      case 'Return/Refund': return 'fas fa-undo';
+      case 'Wish List': return 'fas fa-heart';
+      case 'Recent Views': return 'fas fa-history';
+      case 'Message': return 'fas fa-envelope';
+      case 'Chats with Sellers': return 'fas fa-comments';
+      default: return 'fas fa-circle';
     }
   }
 
-  setTab(tab: string): void {
-    this.activeTab = tab;
-  }
-
-  hasOrders(tab: string): boolean {
-    
-    return false;
-  }
-
-  getTabIcon(tab: string): string {
-    switch (tab) {
-      case 'Unpaid':
-        return 'https://cdn-icons-png.flaticon.com/512/190/190411.png';
-      case 'To be Shipped':
-        return 'https://cdn-icons-png.flaticon.com/512/2908/2908120.png';
-      case 'Shipped':
-        return 'https://cdn-icons-png.flaticon.com/512/633/633652.png';
-      case 'Completed':
-        return 'https://cdn-icons-png.flaticon.com/512/845/845646.png';
-      case 'Cancelled':
-        return 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png';
-      default:
-        return '';
-    }
+  selectOption(option: string) {
+    this.selectedOption = option;
   }
 }
