@@ -1,11 +1,12 @@
 <div class="carousel-container py-5">
   <h2 class="text-center fw-bold display-5 mb-5">LATEST CATEGORIES</h2>
+
   <div class="carousel-3d">
     <div
       class="carousel-card"
       *ngFor="let category of categories; let i = index"
+      [style.transform]="getTransform(i)"
       [class.active]="i === activeIndex"
-      [style.transform]="'rotateY(' + ((i - activeIndex) * 60) + 'deg) translateZ(300px)'"
     >
       <div
         class="card-inner"
@@ -32,10 +33,7 @@
 <div class="container py-4">
   <h2 class="mb-4">Popular Categories</h2>
   <div class="row g-4">
-    <div
-      class="col-12 col-sm-6 col-md-4"
-      *ngFor="let category of categories"
-    >
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let category of categories">
       <a
         [routerLink]="['/products']"
         [queryParams]="{ category: category.name }"

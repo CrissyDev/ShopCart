@@ -101,3 +101,14 @@
 .object-fit-cover {
   object-fit: cover;
 }
+
+.carousel-card {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.carousel-card.active,
+.carousel-card[style*="translateZ"] {
+  opacity: 1;
+  pointer-events: auto;
+}

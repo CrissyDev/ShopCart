@@ -16,6 +16,7 @@ export class CategoriesComponent implements OnInit {
 
   categories: { name: string; count: number; image: string }[] = [];
   activeIndex = 0;
+  visibleRange = 2;
 
   categoryImages: { [key: string]: string } = {
     beauty: 'https://images.pexels.com/photos/3373743/pexels-photo-3373743.jpeg',
@@ -60,5 +61,16 @@ export class CategoriesComponent implements OnInit {
 
   prevSlide(): void {
     this.activeIndex = (this.activeIndex - 1 + this.categories.length) % this.categories.length;
+  }
+
+  getTransform(i: number): string {
+    const offset = i - this.activeIndex;
+    if (Math.abs(offset) > this.visibleRange) return 'scale(0)'; 
+
+    const angle = offset * 30;
+    const zTranslate = 300 - Math.abs(offset) * 50;
+    const xTranslate = offset * 270;
+
+    return `translateX(${xTranslate}px) translateZ(${zTranslate}px) rotateY(${angle}deg)`;
   }
 }
