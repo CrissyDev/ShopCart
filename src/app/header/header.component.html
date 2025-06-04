@@ -1,4 +1,3 @@
-
 <div class="bg-success ">
   <div class="container text-white py-1 px-3 d-flex justify-content-between small">
     <div>+0701234567890</div>
@@ -19,32 +18,62 @@
 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav me-auto ms-3">
-      <li class="nav-item"><a class="nav-link" [routerLink]="'/categories'">Categories ▼</a></li>
-      <li class="nav-item"><a class="nav-link" [routerLink]="'/deals'">Deals</a></li>
-      <li class="nav-item"><a class="nav-link" [routerLink]="'/new'">What's New</a></li>
-      <li class="nav-item"><a class="nav-link" [routerLink]="'/delivery'">Delivery</a></li>
+      <li class="nav-item">
+        <a class="nav-link"
+           [routerLink]="'/categories'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          Categories
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           [routerLink]="'/deals'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          Deals
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           [routerLink]="'/new'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          What's New
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           [routerLink]="'/delivery'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          Delivery
+        </a>
+      </li>
     </ul>
 
-    
     <app-search></app-search>
 
     <ul class="navbar-nav ms-4 d-flex align-items-center gap-3">
       <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" [routerLink]="'/account'">
-          <i class="fa fa-user" aria-hidden="true"></i>  My Account 
-
+        <a class="nav-link d-flex align-items-center"
+           [routerLink]="'/account'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fa fa-user" aria-hidden="true"></i> My Account
           @if(user != null){
             ({{ user.firstName }})
           }
-
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link d-flex align-items-center" [routerLink]="'/cart'">
+        <a class="nav-link d-flex align-items-center"
+           [routerLink]="'/cart'"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
         </a>
       </li>
     </ul>
   </div>
 </nav>
-
