@@ -1,141 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-account',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports:[CommonModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
+
 export class AccountComponent {
-  user = {
-    name: 'Chloem Morales',
-    email: 'ChloemMorales@gmail.com',
-    phone: '+254 712 345678',
-    address: '123 Market St, Nairobi, Kenya',
-    image: 'https://images.pexels.com/photos/17300044/pexels-photo-17300044/free-photo-of-black-women.jpeg?auto=compress&cs=tinysrgb&w=600'
-  };
-
-  orders = [
-    {
-      id: 'ORD12345',
-      date: '2025-05-30',
-      status: 'Delivered',
-      total: '$89.99',
-      image: 'https://images.pexels.com/photos/3682292/pexels-photo-3682292.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  unpaidOrders = [
-    {
-      title: 'Eco-Friendly Mug',
-      price: '$12.99',
-      image: 'https://images.pexels.com/photos/2333059/pexels-photo-2333059.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  paidOrders = [
-    {
-      title: 'Organic T-Shirt',
-      price: '$25.00',
-      image: 'https://images.pexels.com/photos/7679725/pexels-photo-7679725.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Bamboo Toothbrush',
-      price: '$4.99',
-      image: 'https://images.pexels.com/photos/3735201/pexels-photo-3735201.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Reusable Straw Set',
-      price: '$7.50',
-      image: 'https://images.pexels.com/photos/3029333/pexels-photo-3029333.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Solar Powered Charger',
-      price: '$45.00',
-      image: 'https://images.pexels.com/photos/3985601/pexels-photo-3985601.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Recycled Paper Notebook',
-      price: '$9.99',
-      image: 'https://images.pexels.com/photos/1112049/pexels-photo-1112049.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Organic Cotton Tote Bag',
-      price: '$15.00',
-      image: 'https://images.pexels.com/photos/1435178/pexels-photo-1435178.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  returnRefunds = [
-    {
-      title: 'Reusable Straw Set',
-      reason: 'Defective item',
-      dateReturned: '2025-05-20',
-      progress: 60, // percentage
-      image: 'https://images.pexels.com/photos/3029333/pexels-photo-3029333.jpeg?auto=compress&cs=tinysrgb&w=600'
-    },
-    {
-      title: 'Bamboo Toothbrush',
-      reason: 'Changed mind',
-      dateReturned: '2025-05-15',
-      progress: 85,
-      image: 'https://images.pexels.com/photos/3735201/pexels-photo-3735201.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  wishList = [
-    {
-      title: 'Eco Lamp',
-      image: 'https://images.pexels.com/photos/112811/pexels-photo-112811.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  recentViews = [
-    {
-      title: 'Wooden Brush',
-      image: 'https://images.pexels.com/photos/3735201/pexels-photo-3735201.jpeg?auto=compress&cs=tinysrgb&w=600'
-    }
-  ];
-
-  messages = [
-    {
-      id: 1,
-      from: 'Support Team',
-      content: 'Your refund request has been approved.',
-      date: '2025-06-01',
-      unread: true
-    },
-    {
-      id: 2,
-      from: 'Support Team',
-      content: 'We received your inquiry.',
-      date: '2025-05-28',
-      unread: false
-    }
-  ];
-
-  chats = [
-    {
-      id: 1,
-      seller: 'GreenShopKE',
-      message: 'Your product is ready for dispatch.',
-      time: '2 hours ago',
-      unread: true,
-      icon: 'https://cdn-icons-png.flaticon.com/512/2983/2983783.png'
-    },
-    {
-      id: 2,
-      seller: 'EcoGoods',
-      message: 'Can you confirm delivery address?',
-      time: '1 day ago',
-      unread: false,
-      icon: 'https://cdn-icons-png.flaticon.com/512/2922/2922560.png'
-    }
-  ];
-
+buyNow(_t173: { title: string; image: string; }) {
+throw new Error('Method not implemented.');
+}
+addToCart(_t173: { title: string; image: string; }) {
+throw new Error('Method not implemented.');
+}
   sidebarOptions: string[] = [
     'My Account',
     'My Orders',
@@ -150,30 +29,264 @@ export class AccountComponent {
 
   selectedOption: string = 'My Account';
 
-  getSidebarIcon(option: string): string {
-    switch (option) {
-      case 'My Account': return 'fas fa-user-circle';
-      case 'My Orders': return 'fas fa-shopping-bag';
-      case 'Unpaid Orders': return 'fas fa-wallet';
-      case 'Paid Orders': return 'fas fa-money-check-alt';
-      case 'Return/Refund': return 'fas fa-undo';
-      case 'Wish List': return 'fas fa-heart';
-      case 'Recent Views': return 'fas fa-history';
-      case 'Message': return 'fas fa-envelope';
-      case 'Chats with Sellers': return 'fas fa-comments';
-      default: return 'fas fa-circle';
-    }
+  user = {
+    name: 'Chloem Moralez',
+    email: 'chloem@example.com',
+    phone: '+254 712 345678',
+    address: '123 Green Street, Nairobi, Kenya',
+    gender: 'Male',
+    dob: '1990-06-15',
+    country: 'Kenya',
+    joined: '2023-01-10',
+    image: 'https://images.pexels.com/photos/17300288/pexels-photo-17300288/free-photo-of-the-black-women.jpeg?auto=compress&cs=tinysrgb&w=600',
+    billingAddress: '456 Billing Lane, Nairobi, Kenya',
+    paymentMethods: ['PayPal', 'Mpesa'],
+    royaltyPoints: 320
+  };
+
+  orders = Array.from({ length: 6 }, (_, i) => ({
+    id: `ORD-${1000 + i}`,
+    date: `2024-0${(i % 9) + 1}-12`,
+    status: ['Shipped', 'Pending', 'Delivered'][i % 3],
+    total: `$${(50 + i * 10).toFixed(2)}`
+  }));
+
+  unpaidOrders = [
+  {
+    orderNo: '#010',
+    customer: 'Chloem Moralez',
+    seller: 'QuickMart',
+    items: 4,
+    paid: false,
+    totalCost: 120,
+    createdDate: '2024-09-15',
+    status: 'Pending'
+  },
+  {
+    orderNo: '#011',
+    customer: 'Chloem Moralez',
+    seller: 'Discount World',
+    items: 2,
+    paid: false,
+    totalCost: 45,
+    createdDate: '2024-09-16',
+    status: 'Pending'
   }
+];
+
+  paidOrders = [
+  {
+    orderNo: '#001',
+    customer: 'Chloem Moralez',
+    seller: 'ABC Traders',
+    items: 5,
+    paid: true,
+    totalCost: 250,
+    createdDate: '2024-09-12',
+    status: 'Completed'
+  },
+  {
+    orderNo: '#002',
+    customer: 'Chloem Moralez',
+    seller: 'XYZ Supplies',
+    items: 3,
+    paid: true,
+    totalCost: 60,
+    createdDate: '2024-09-13',
+    status: 'Completed'
+  },
+  {
+    orderNo: '#003',
+    customer: 'Chloem Moralez',
+    seller: 'BestBuy Deals',
+    items: 10,
+    paid: true,
+    totalCost: 1000,
+    createdDate: '2024-09-14',
+    status: 'Completed'
+  },
+  {
+    orderNo: '#004',
+    customer: 'Chloem Moralez',
+    seller: 'TechCorp Inc.',
+    items: 2,
+    paid: true,
+    totalCost: 60,
+    createdDate: '2024-09-10',
+    status: 'Completed'
+  },
+  {
+    orderNo: '#005',
+    customer: 'Chloem Moralez',
+    seller: 'TopSeller Pro',
+    items: 1,
+    paid: false,
+    totalCost: 80,
+    createdDate: '2024-09-11',
+    status: 'Completed'
+  }
+];
+
+  returnRefunds = [
+    {
+      title: 'Wireless Headphones',
+      reason: 'Faulty on arrival',
+      dateReturned: '2025-05-20',
+      progress: 85,
+      image: 'https://images.pexels.com/photos/373945/pexels-photo-373945.jpeg'
+    },
+    {
+      title: 'Fitness Tracker',
+      reason: 'Incorrect color delivered',
+      dateReturned: '2025-05-18',
+      progress: 100,
+      image: 'https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg?auto=compress&cs=tinysrgb&w=600'
+    }
+  ];
+
+  wishList = [
+  {
+    brand: 'Louis Vuitton',
+    title: 'Star Trail ankle boot 8CM',
+    image: 'https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg',
+    price: 1350,
+    originalPrice: 1500,
+    discount: '10% Off',
+    inBag: false
+  },
+  {
+    brand: 'Prada',
+    title: 'Saffiano leather medium bag',
+    image: 'https://images.pexels.com/photos/3689163/pexels-photo-3689163.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 1990,
+    inBag: true
+  },
+  {
+    brand: 'Valentino',
+    title: 'Roman stud handle bag',
+    image: 'https://images.pexels.com/photos/1394882/pexels-photo-1394882.jpeg',
+    price: 3150,
+    inBag: false
+  },
+  {
+    brand: 'Balmain',
+    title: 'B-Bold low-top sneakers',
+    image: 'https://images.pexels.com/photos/2529147/pexels-photo-2529147.jpeg',
+    price: 1100,
+    inBag: true
+  },
+  {
+    brand: 'Dior',
+    title: 'Striped handbag',
+    image: 'https://images.pexels.com/photos/12428342/pexels-photo-12428342.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 1980,
+    inBag: false
+  },
+  {
+    brand: 'Gucci',
+    title: 'Monogram leather handbag',
+    image: 'https://images.pexels.com/photos/27035625/pexels-photo-27035625/free-photo-of-a-woman-wearing-black-heels-and-holding-a-bag.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 2200,
+    inBag: false
+  }
+];
+toggleBag(item: any) {
+  item.inBag = !item.inBag;
+}
+
+recentViews = [
+  {
+    brand: 'Fendi',
+    title: 'Mini leather shoulder bag',
+    image: 'https://images.pexels.com/photos/8801089/pexels-photo-8801089.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 1450,
+    viewedOn: 'June 3, 2025'
+  },
+  {
+    brand: 'Versace',
+    title: 'Baroque Print Shirt',
+    image: 'https://images.pexels.com/photos/32408965/pexels-photo-32408965/free-photo-of-stylish-man-in-vintage-floral-shirt-posing-indoors.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 890,
+    viewedOn: 'June 3, 2025'
+  },
+  {
+    brand: 'Chanel',
+    title: 'Leather Flap Bag',
+    image: 'https://images.pexels.com/photos/6538433/pexels-photo-6538433.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 3000,
+    viewedOn: 'June 4, 2025'
+  },
+  {
+    brand: 'Nike',
+    title: 'Air Max 270',
+    image: 'https://images.pexels.com/photos/4252970/pexels-photo-4252970.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 120,
+    viewedOn: 'June 4, 2025'
+  },
+  {
+    brand: 'Adidas',
+    title: 'Ultraboost 22',
+    image: 'https://images.pexels.com/photos/7394378/pexels-photo-7394378.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 140,
+    viewedOn: 'June 5, 2025'
+  },
+  {
+    brand: 'Burberry',
+    title: 'Plaid Trench Coat',
+    image: 'https://images.pexels.com/photos/4057673/pexels-photo-4057673.jpeg?auto=compress&cs=tinysrgb&w=600',
+    price: 1850,
+    viewedOn: 'June 5, 2025'
+  }
+];
+
+  messages = [
+    { from: 'Support', content: 'Your order is confirmed', date: '2025-06-01', unread: true },
+    { from: 'Jane Doe', content: 'Can we talk?', date: '2025-06-02', unread: false }
+  ];
+
+  chats = [
+    {
+      seller: 'Gadget Shop',
+      message: 'Your return is under process',
+      time: '2h ago',
+      unread: true,
+      icon: 'https://randomuser.me/api/portraits/women/45.jpg'
+    },
+    {
+      seller: 'Fashion Store',
+      message: 'Thanks for your purchase!',
+      time: '1 day ago',
+      unread: false,
+      icon: 'https://randomuser.me/api/portraits/men/65.jpg'
+    }
+  ];
 
   selectOption(option: string) {
     this.selectedOption = option;
   }
 
+  getSidebarIcon(option: string): string {
+    switch (option) {
+      case 'My Account': return 'fas fa-user';
+      case 'My Orders': return 'fas fa-box';
+      case 'Unpaid Orders': return 'fas fa-wallet';
+      case 'Paid Orders': return 'fas fa-receipt';
+      case 'Return/Refund': return 'fas fa-undo';
+      case 'Wish List': return 'fas fa-heart';
+      case 'Recent Views': return 'fas fa-eye';
+      case 'Message': return 'fas fa-envelope';
+      case 'Chats with Sellers': return 'fas fa-comment-dots';
+      default: return 'fas fa-question-circle';
+    }
+  }
+
   checkout(order: any) {
-    window.location.href = '/page-not-found';
+    console.log('Checkout for:', order);
   }
 
   deleteOrder(order: any) {
-    this.unpaidOrders = this.unpaidOrders.filter(o => o !== order);
+    console.log('Delete order:', order);
   }
 }
+
+

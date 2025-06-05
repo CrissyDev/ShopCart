@@ -153,7 +153,6 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Sidebar styling */
 .sidebar {
   width: 280px;
   border-right: 1px solid #ddd;
@@ -171,7 +170,6 @@
   max-width: 100%;
 }
 
-/* Sidebar menu list styling */
 .list-group-item {
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -182,13 +180,11 @@
   color: #007bff;
 }
 
-/* Main content styling */
 .main-content {
   flex-grow: 1;
   padding: 20px;
 }
 
-/* Section content area styling */
 .section-content {
   background: #f9f9f9;
   padding: 20px;
@@ -217,5 +213,96 @@
 
 .row.g-4 > [class*="col-"] {
   margin-bottom: 20px;
+}
+
+.wishlist-section h3 {
+  font-weight: 600;
+}
+
+.wishlist-card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
+}
+
+.price {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.badge-discount {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff385c;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 12px;
+}
+
+.btn-outline-dark {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 1px solid #333 !important;
+}
+
+.badge-viewed {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 12px;
+  z-index: 10;
+}
+
+.wishlist-card:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.btn-outline-primary {
+  background-color: #fff;
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+}
+
+.table td, .table th {
+  white-space: nowrap;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
 }
 

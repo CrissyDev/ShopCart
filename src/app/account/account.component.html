@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="account-wrapper d-flex">
     <div class="sidebar bg-light p-3" style="min-width: 250px;">
       <div class="text-center mb-4">
@@ -8,80 +7,184 @@
         <p class="text-muted">{{ user.email }}</p>
       </div>
       <ul class="list-group">
-        <li 
-          *ngFor="let option of sidebarOptions" 
-          class="list-group-item list-group-item-action d-flex align-items-center"
-          [class.active]="selectedOption === option"
-          (click)="selectOption(option)"
-          style="cursor:pointer;"
-        >
+        <li *ngFor="let option of sidebarOptions" 
+            class="list-group-item list-group-item-action d-flex align-items-center"
+            [class.active]="selectedOption === option"
+            (click)="selectOption(option)" style="cursor:pointer;">
           <i [class]="getSidebarIcon(option)" class="me-2"></i> {{ option }}
         </li>
       </ul>
     </div>
-  
+
     <div class="main-content flex-grow-1 p-4">
-  
       <ng-container [ngSwitch]="selectedOption">
-  
+
+        <!-- My Account -->
         <div *ngSwitchCase="'My Account'">
-          <h3>Account Overview</h3>
-          <p><strong>Name:</strong> {{ user.name }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Phone:</strong> {{ user.phone }}</p>
-          <p><strong>Address:</strong> {{ user.address }}</p>
+  <h3>Account Overview</h3>
+
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table">
+        <tbody>
+          <tr><th>Name:</th><td>{{ user.name }}</td></tr>
+          <tr><th>Email:</th><td>{{ user.email }}</td></tr>
+          <tr><th>Phone:</th><td>{{ user.phone }}</td></tr>
+          <tr><th>Gender:</th><td>{{ user.gender }}</td></tr>
+          <tr><th>Date of Birth:</th><td>{{ user.dob }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <table class="table">
+        <tbody>
+          <tr><th>Country:</th><td>{{ user.country }}</td></tr>
+          <tr><th>Joined:</th><td>{{ user.joined }}</td></tr>
+          <tr><th>Address:</th><td>{{ user.address }}</td></tr>
+          <tr><th>Billing Address:</th><td>{{ user.billingAddress }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <i class="fab fa-paypal fa-2x text-primary"></i>
+          <h5 class="card-title mt-2">PayPal</h5>
+          <p>Linked successfully</p>
         </div>
-  
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <i class="fas fa-mobile-alt fa-2x text-success"></i>
+          <h5 class="card-title mt-2">Mpesa</h5>
+          <p>Verified Mpesa Number</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <img src="https://cdn-icons-png.flaticon.com/512/2583/2583171.png" alt="Gold Coin" width="40">
+          <h5 class="card-title mt-2">Royalty Points</h5>
+          <p><strong>{{ user.royaltyPoints }}</strong> points</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <!-- My Orders -->
         <div *ngSwitchCase="'My Orders'">
           <h3>My Orders</h3>
-          <div *ngFor="let order of orders" class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img [src]="order.image" class="img-fluid rounded-start" alt="Order Image">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Order #{{ order.id }}</h5>
-                  <p class="card-text"><strong>Status:</strong> {{ order.status }}</p>
-                  <p class="card-text"><small class="text-muted">Date: {{ order.date }}</small></p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of orders">
+                <td>{{ order.id }}</td>
+                <td>{{ order.date }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.total }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-  
-        <div *ngSwitchCase="'Unpaid Orders'">
-          <h3>Unpaid Orders</h3>
-          <div class="row">
-            <div class="col-md-4" *ngFor="let order of unpaidOrders">
-              <div class="card mb-4">
-                <img [src]="order.image" class="card-img-top" alt="Unpaid Item">
-                <div class="card-body">
-                  <h5 class="card-title">{{ order.title }}</h5>
-                  <p><strong>Price:</strong> {{ order.price }}</p>
-                  <button class="btn btn-success btn-sm me-2" (click)="checkout(order)">Checkout</button>
-                  <button class="btn btn-outline-danger btn-sm" (click)="deleteOrder(order)">Delete</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div *ngSwitchCase="'Paid Orders'">
-          <h3>Paid Orders</h3>
-          <div class="row">
-            <div class="col-md-4" *ngFor="let item of paidOrders">
-              <div class="card mb-4">
-                <img [src]="item.image" class="card-img-top" alt="Paid Item">
-                <div class="card-body">
-                  <h5 class="card-title">{{ item.title }}</h5>
-                  <p><strong>Paid:</strong> {{ item.price }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
+
+        <!-- Unpaid Orders -->
+        <div *ngSwitchCase="'Unpaid Orders'" class="table-responsive">
+  <table class="table table-hover align-middle text-center">
+    <thead class="table-light">
+      <tr>
+        <th><input type="checkbox" /></th>
+        <th>Order No</th>
+        <th>Customer</th>
+        <th>Seller</th>
+        <th>Items</th>
+        <th>Paid</th>
+        <th>Total Cost</th>
+        <th>Created Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of unpaidOrders">
+        <td><input type="checkbox" /></td>
+        <td>{{ order.orderNo }}</td>
+        <td>{{ order.customer }}</td>
+        <td>{{ order.seller }}</td>
+        <td>{{ order.items }}</td>
+        <td>
+          <span>-</span>
+        </td>
+        <td>\${{ order.totalCost }}</td>
+        <td>{{ order.createdDate }}</td>
+        <td>
+          <span class="text-warning fw-semibold">{{ order.status }}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary me-1">View</button>
+          <button class="btn btn-sm btn-outline-secondary">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+        <!-- Paid Orders -->
+        <div *ngSwitchCase="'Paid Orders'" class="table-responsive">
+  <table class="table table-hover align-middle text-center">
+    <thead class="table-light">
+      <tr>
+        <th><input type="checkbox" /></th>
+        <th>Order No</th>
+        <th>Customer</th>
+        <th>Seller</th>
+        <th>Items</th>
+        <th>Paid</th>
+        <th>Total Cost</th>
+        <th>Created Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of paidOrders">
+        <td><input type="checkbox" /></td>
+        <td>{{ order.orderNo }}</td>
+        <td>{{ order.customer }}</td>
+        <td>{{ order.seller }}</td>
+        <td>{{ order.items }}</td>
+        <td>
+          <i *ngIf="order.paid" class="fas fa-check text-success"></i>
+          <span *ngIf="!order.paid">-</span>
+        </td>
+        <td>\${{ order.totalCost }}</td>
+        <td>{{ order.createdDate }}</td>
+        <td>
+          <span class="text-success fw-semibold">{{ order.status }}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary me-1">View</button>
+          <button class="btn btn-sm btn-outline-secondary">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+        <!-- Return & Refund  -->
         <div *ngSwitchCase="'Return/Refund'">
           <h3>Return & Refund Status</h3>
           <div class="row">
@@ -92,20 +195,13 @@
                   <h5 class="card-title">{{ ret.title }}</h5>
                   <p><strong>Reason:</strong> {{ ret.reason }}</p>
                   <p><strong>Date Returned:</strong> {{ ret.dateReturned }}</p>
-  
                   <div class="progress mb-2" style="height: 25px;">
-                    <div 
-                      class="progress-bar progress-bar-striped progress-bar-animated" 
-                      role="progressbar" 
-                      [style.width.%]="ret.progress"
-                     [attr.aria-valuenow]="ret.progress"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" [style.width.%]="ret.progress"
+                         [attr.aria-valuenow]="ret.progress" aria-valuemin="0" aria-valuemax="100">
                       {{ ret.progress }}%
                     </div>
                   </div>
-  
                   <div class="d-flex align-items-center gap-3">
                     <i class="fas fa-truck fa-2x text-primary"></i>
                     <span *ngIf="ret.progress < 100">Processing your return...</span>
@@ -116,67 +212,87 @@
             </div>
           </div>
         </div>
-  
-        <div *ngSwitchCase="'Wish List'">
-          <h3>Wish List</h3>
-          <div class="row">
-            <div class="col-md-4" *ngFor="let wish of wishList">
-              <div class="card mb-4">
-                <img [src]="wish.image" class="card-img-top" alt="Wish List Item">
-                <div class="card-body">
-                  <h5 class="card-title">{{ wish.title }}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
+
+        <!-- Wish List -->
+       <div *ngSwitchCase="'Wish List'" class="wishlist-section">
+  <h3 class="mb-4">My Wish List</h3>
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let item of wishList">
+      <div class="card wishlist-card position-relative">
+        <div *ngIf="item.discount" class="badge badge-discount">{{ item.discount }}</div>
+        <button class="btn btn-light btn-sm position-absolute top-0 end-0 m-2">
+          <i class="fas fa-eye-slash"></i>
+        </button>
+        <img [src]="item.image" class="card-img-top" [alt]="item.title">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ item.brand }}</h5>
+          <p class="card-text">{{ item.title }}</p>
+          <p class="price">
+            <span class="fw-bold">\${{ item.price }}</span>
+            <span *ngIf="item.originalPrice" class="text-muted text-decoration-line-through ms-2">\${{ item.originalPrice }}</span>
+          </p>
+          <button
+            class="btn btn-dark w-100"
+            [class.btn-outline-dark]="item.inBag"
+            (click)="toggleBag(item)"
+          >
+            <i [class]="item.inBag ? 'fas fa-check' : 'fa fa-cart-plus'"></i>
+            {{ item.inBag ? 'Added to Cart' : 'Add to Cart' }}
+          </button>
         </div>
-  
-        <div *ngSwitchCase="'Recent Views'">
-          <h3>Recent Views</h3>
-          <div class="row">
-            <div class="col-md-4" *ngFor="let recent of recentViews">
-              <div class="card mb-4">
-                <img [src]="recent.image" class="card-img-top" alt="Recently Viewed Item">
-                <div class="card-body">
-                  <h5 class="card-title">{{ recent.title }}</h5>
-                </div>
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <!-- Recent Views -->
+       <div *ngSwitchCase="'Recent Views'" class="wishlist-section">
+  <h3 class="mb-4">Recently Viewed Items</h3>
+  <div class="row g-4">
+    <div class="col-md-4" *ngFor="let item of recentViews">
+      <div class="card wishlist-card position-relative">
+        <div class="badge badge-viewed">Recently Viewed</div>
+        <img [src]="item.image" class="card-img-top" [alt]="item.title">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ item.brand }}</h5>
+          <p class="card-text">{{ item.title }}</p>
+          <p class="text-muted mb-1">Viewed on: {{ item.viewedOn }}</p>
+          <p class="price fw-bold">\${{ item.price }}</p>
+          <a class="btn btn-outline-primary w-100" href="#">
+            <i class="fas fa-eye me-1"></i> View Product
+          </a>
         </div>
-  
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <!-- Messages  -->
         <div *ngSwitchCase="'Message'">
           <h3>Messages <i class="fas fa-comments ms-2"></i></h3>
           <div class="list-group">
-            <a 
-              *ngFor="let msg of messages" 
-              href="#" 
-              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-              [class.bg-light]="msg.unread"
-            >
-              <div>
-                <strong>{{ msg.from }}</strong>: {{ msg.content }}
-              </div>
+            <a *ngFor="let msg of messages" href="#" 
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+               [class.bg-light]="msg.unread">
+              <div><strong>{{ msg.from }}</strong>: {{ msg.content }}</div>
               <small class="text-muted">{{ msg.date }}</small>
               <span *ngIf="msg.unread" class="badge bg-danger rounded-pill ms-2">New</span>
             </a>
           </div>
-  
           <div class="chatbot mt-4 p-3 border rounded">
             <h5><i class="fas fa-robot"></i> Chatbot</h5>
             <p>Hi! How can I assist you today?</p>
           </div>
         </div>
-  
+
+        <!-- Chats with Sellers -->
         <div *ngSwitchCase="'Chats with Sellers'">
           <h3>Chats with Sellers</h3>
           <div class="list-group">
-            <a 
-              *ngFor="let chat of chats" 
-              href="#" 
-              class="list-group-item list-group-item-action d-flex align-items-center"
-              [class.bg-light]="chat.unread"
-            >
+            <a *ngFor="let chat of chats" href="#" 
+               class="list-group-item list-group-item-action d-flex align-items-center"
+               [class.bg-light]="chat.unread">
               <img [src]="chat.icon" alt="Seller Icon" width="40" height="40" class="rounded-circle me-3">
               <div class="flex-grow-1">
                 <strong>{{ chat.seller }}</strong><br>
@@ -189,12 +305,13 @@
             </a>
           </div>
         </div>
-  
+
+        <!-- Fallback -->
         <div *ngSwitchDefault>
           <h3>Page Not Found</h3>
           <p>The selected page does not exist.</p>
         </div>
-  
+
       </ng-container>
     </div>
   </div>
