@@ -1,103 +1,201 @@
-<div class="account-wrapper d-flex">
-  <div class="sidebar bg-light p-3">
-    <div class="text-center mb-4">
-      <img [src]="user.image" class="rounded-circle mb-2" width="80" height="80" alt="Profile">
-      <h5>{{ user.name }}</h5>
-      <p class="text-muted">{{ user.email }}</p>
-    </div>
+<div class="container">
 
-    <ul class="list-group">
-      <li 
-        *ngFor="let option of sidebarOptions" 
-        class="list-group-item list-group-item-action d-flex align-items-center"
-        [class.active]="selectedOption === option"
-        (click)="selectOption(option)"
-        style="cursor: pointer;"
-      >
-        <i [class]="getSidebarIcon(option)" class="me-2"></i> {{ option }}
-      </li>
-    </ul>
-  </div>
-
-  <div class="main-content flex-grow-1 p-4">
-    <ng-container [ngSwitch]="selectedOption">
-      
-      <div *ngSwitchCase="'My Account'" class="section-content">
-        <h3>Account Overview</h3>
-        <p><strong>Name:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Phone:</strong> {{ user.phone }}</p>
-        <p><strong>Address:</strong> {{ user.address }}</p>
+  <div class="account-wrapper d-flex">
+    <div class="sidebar bg-light p-3" style="min-width: 250px;">
+      <div class="text-center mb-4">
+        <img [src]="user.image" class="rounded-circle mb-2" width="80" height="80" alt="Profile">
+        <h5>{{ user.name }}</h5>
+        <p class="text-muted">{{ user.email }}</p>
       </div>
-
-      <div *ngSwitchCase="'My Orders'" class="section-content">
-        <h3>My Orders</h3>
-        <div *ngIf="orders.length > 0; else noOrders">
-          <div class="row g-4">
-            <div class="col-md-6" *ngFor="let order of orders">
-              <div class="card">
-                <img [src]="order.image" class="card-img-top" alt="Product">
+      <ul class="list-group">
+        <li 
+          *ngFor="let option of sidebarOptions" 
+          class="list-group-item list-group-item-action d-flex align-items-center"
+          [class.active]="selectedOption === option"
+          (click)="selectOption(option)"
+          style="cursor:pointer;"
+        >
+          <i [class]="getSidebarIcon(option)" class="me-2"></i> {{ option }}
+        </li>
+      </ul>
+    </div>
+  
+    <div class="main-content flex-grow-1 p-4">
+  
+      <ng-container [ngSwitch]="selectedOption">
+  
+        <div *ngSwitchCase="'My Account'">
+          <h3>Account Overview</h3>
+          <p><strong>Name:</strong> {{ user.name }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Phone:</strong> {{ user.phone }}</p>
+          <p><strong>Address:</strong> {{ user.address }}</p>
+        </div>
+  
+        <div *ngSwitchCase="'My Orders'">
+          <h3>My Orders</h3>
+          <div *ngFor="let order of orders" class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img [src]="order.image" class="img-fluid rounded-start" alt="Order Image">
+              </div>
+              <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">Order #{{ order.id }}</h5>
-                  <p class="card-text">
-                    <strong>Date:</strong> {{ order.date }}<br>
-                    <strong>Status:</strong> {{ order.status }}<br>
-                    <strong>Total:</strong> {{ order.total }}
-                  </p>
-                  <button class="btn btn-outline-success btn-sm">Track Order</button>
+                  <p class="card-text"><strong>Status:</strong> {{ order.status }}</p>
+                  <p class="card-text"><small class="text-muted">Date: {{ order.date }}</small></p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <ng-template #noOrders>
-          <div class="no-orders">
-            <img src="https://images.pexels.com/photos/3682292/pexels-photo-3682292.jpeg?auto=compress&cs=tinysrgb&w=600" alt="No Orders">
-            <p>No orders yet. Start shopping now!</p>
+  
+        <div *ngSwitchCase="'Unpaid Orders'">
+          <h3>Unpaid Orders</h3>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let order of unpaidOrders">
+              <div class="card mb-4">
+                <img [src]="order.image" class="card-img-top" alt="Unpaid Item">
+                <div class="card-body">
+                  <h5 class="card-title">{{ order.title }}</h5>
+                  <p><strong>Price:</strong> {{ order.price }}</p>
+                  <button class="btn btn-success btn-sm me-2" (click)="checkout(order)">Checkout</button>
+                  <button class="btn btn-outline-danger btn-sm" (click)="deleteOrder(order)">Delete</button>
+                </div>
+              </div>
+            </div>
           </div>
-        </ng-template>
-      </div>
-
-      <div *ngSwitchCase="'Unpaid Orders'" class="section-content">
-        <h3>Unpaid Orders</h3>
-        <p>You have 2 unpaid orders. Please complete the payment to avoid delays.</p>
-      </div>
-
-      <div *ngSwitchCase="'Paid Orders'" class="section-content">
-        <h3>Paid Orders</h3>
-        <p>You've successfully paid for 5 orders.</p>
-      </div>
-
-      <div *ngSwitchCase="'Return/Refund'" class="section-content">
-        <h3>Return & Refund</h3>
-        <p>Track your return/refund status here.</p>
-      </div>
-
-      <div *ngSwitchCase="'Wish List'" class="section-content">
-        <h3>Wish List</h3>
-        <p>Your favorite products will show here.</p>
-      </div>
-
-      <div *ngSwitchCase="'Recent Views'" class="section-content">
-        <h3>Recently Viewed</h3>
-        <p>See products you recently browsed.</p>
-      </div>
-
-      <div *ngSwitchCase="'Message'" class="section-content">
-        <h3>Messages</h3>
-        <p>Messages from system and sellers will appear here.</p>
-      </div>
-
-      <div *ngSwitchCase="'Chats with Sellers'" class="section-content">
-        <h3>Chats with Sellers</h3>
-        <p>Conversations with sellers are displayed here.</p>
-      </div>
-
-      <div *ngSwitchDefault class="section-content">
-        <h3>Welcome</h3>
-        <p>Select an option from the menu to begin.</p>
-      </div>
-
-    </ng-container>
+        </div>
+  
+        <div *ngSwitchCase="'Paid Orders'">
+          <h3>Paid Orders</h3>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let item of paidOrders">
+              <div class="card mb-4">
+                <img [src]="item.image" class="card-img-top" alt="Paid Item">
+                <div class="card-body">
+                  <h5 class="card-title">{{ item.title }}</h5>
+                  <p><strong>Paid:</strong> {{ item.price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngSwitchCase="'Return/Refund'">
+          <h3>Return & Refund Status</h3>
+          <div class="row">
+            <div class="col-md-6" *ngFor="let ret of returnRefunds">
+              <div class="card mb-4 shadow-sm">
+                <img [src]="ret.image" class="card-img-top" alt="Returned Item">
+                <div class="card-body">
+                  <h5 class="card-title">{{ ret.title }}</h5>
+                  <p><strong>Reason:</strong> {{ ret.reason }}</p>
+                  <p><strong>Date Returned:</strong> {{ ret.dateReturned }}</p>
+  
+                  <div class="progress mb-2" style="height: 25px;">
+                    <div 
+                      class="progress-bar progress-bar-striped progress-bar-animated" 
+                      role="progressbar" 
+                      [style.width.%]="ret.progress"
+                     [attr.aria-valuenow]="ret.progress"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      {{ ret.progress }}%
+                    </div>
+                  </div>
+  
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="fas fa-truck fa-2x text-primary"></i>
+                    <span *ngIf="ret.progress < 100">Processing your return...</span>
+                    <span *ngIf="ret.progress >= 100" class="text-success">Return Complete</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngSwitchCase="'Wish List'">
+          <h3>Wish List</h3>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let wish of wishList">
+              <div class="card mb-4">
+                <img [src]="wish.image" class="card-img-top" alt="Wish List Item">
+                <div class="card-body">
+                  <h5 class="card-title">{{ wish.title }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngSwitchCase="'Recent Views'">
+          <h3>Recent Views</h3>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let recent of recentViews">
+              <div class="card mb-4">
+                <img [src]="recent.image" class="card-img-top" alt="Recently Viewed Item">
+                <div class="card-body">
+                  <h5 class="card-title">{{ recent.title }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngSwitchCase="'Message'">
+          <h3>Messages <i class="fas fa-comments ms-2"></i></h3>
+          <div class="list-group">
+            <a 
+              *ngFor="let msg of messages" 
+              href="#" 
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              [class.bg-light]="msg.unread"
+            >
+              <div>
+                <strong>{{ msg.from }}</strong>: {{ msg.content }}
+              </div>
+              <small class="text-muted">{{ msg.date }}</small>
+              <span *ngIf="msg.unread" class="badge bg-danger rounded-pill ms-2">New</span>
+            </a>
+          </div>
+  
+          <div class="chatbot mt-4 p-3 border rounded">
+            <h5><i class="fas fa-robot"></i> Chatbot</h5>
+            <p>Hi! How can I assist you today?</p>
+          </div>
+        </div>
+  
+        <div *ngSwitchCase="'Chats with Sellers'">
+          <h3>Chats with Sellers</h3>
+          <div class="list-group">
+            <a 
+              *ngFor="let chat of chats" 
+              href="#" 
+              class="list-group-item list-group-item-action d-flex align-items-center"
+              [class.bg-light]="chat.unread"
+            >
+              <img [src]="chat.icon" alt="Seller Icon" width="40" height="40" class="rounded-circle me-3">
+              <div class="flex-grow-1">
+                <strong>{{ chat.seller }}</strong><br>
+                <small>{{ chat.message }}</small>
+              </div>
+              <div class="text-end">
+                <small class="text-muted">{{ chat.time }}</small><br>
+                <span *ngIf="chat.unread" class="badge bg-danger rounded-pill">New</span>
+              </div>
+            </a>
+          </div>
+        </div>
+  
+        <div *ngSwitchDefault>
+          <h3>Page Not Found</h3>
+          <p>The selected page does not exist.</p>
+        </div>
+  
+      </ng-container>
+    </div>
   </div>
 </div>

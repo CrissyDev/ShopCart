@@ -1,61 +1,72 @@
-<div *ngIf="!loading" class="cart-container">
+<div *ngIf="!loading" class="container">
   <h1>Your Cart</h1>
+  <div class="cart-container">
+    <div class="cart-content">
 
-  <div class="cart-content">
-    <div class="cart-items">
-      <div class="cart-item" *ngFor="let item of cart.products; let i = index">
-        <img [src]="item.thumbnail" alt="{{ item.title }}" class="product-img">
-
-        <div class="item-details">
-          <h4>{{ item.title }}</h4>
-          <p class="price">Quantity: {{ item.quantity }}</p>
-          <p class="price">Price: ${{ item.price }}</p>
-          <p class="price">Total: ${{ item.total }}</p>
-          <p class="price">Discounted Percentage: {{ item.discountedPercentage }}%</p>
-          <p class="price">Discounted Total: ${{ item.discountedTotal }}</p>
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cart.products; let i = index">
+          <img [src]="item.thumbnail" alt="{{ item.title }}" class="product-img">
+  
+          <div class="item-details">
+            <h4>{{ item.title }}</h4>
+            <p class="price">Quantity: {{ item.quantity }}</p>
+            <p class="price">Price: ${{ item.price }}</p>
+            <p class="price">Total: ${{ item.total }}</p>
+            <p class="price">Discounted Percentage: {{ item.discountedPercentage }}%</p>
+            <p class="price">Discounted Total: ${{ item.discountedTotal }}</p>
+          </div>
+  
+          <div class="item-actions">
+            <button (click)="decreaseQuantity(i)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="increaseQuantity(i)">+</button>
+          </div>
+  
+          <button class="delete-btn" title="Remove item" (click)="deleteItem(i)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </div>
-
-        <div class="item-actions">
-          <button (click)="decreaseQuantity(i)">-</button>
-          <span>{{ item.quantity }}</span>
-          <button (click)="increaseQuantity(i)">+</button>
+      </div>
+  
+      <div *ngIf="cart.products.length > 0" class="order-summary">
+        <h3>Order Summary</h3>
+  
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>${{ cart.total }}</span>
         </div>
+  
+        <div class="summary-row discount">
+          <span>Discount</span>
+          <span>- ${{ cart.discountedTotal }}</span>
+        </div>
+  
+        <div class="summary-row">
+          <span>Delivery Fee</span>
+          <span>$15</span>
+        </div>
+  
+        <div class="summary-row total">
+          <span>Total Products</span>
+          <span>{{ cart.totalProducts }}</span>
+        </div>
+  
+        <div class="promo-code">
+          <input type="text" placeholder="Add promo code">
+          <button>Apply</button>
+        </div>
+  
+        <button class="checkout-btn">Go to Checkout →</button>
+      </div>
 
-        <button class="delete-btn" title="Remove item" (click)="deleteItem(i)">
-          <i class="fa-solid fa-trash"></i>
+      <div *ngIf="cart.products.length == 0" class="alert">
+        <p>
+          Your cart is Empty
+        </p>
+        <button>Continue shopping
         </button>
       </div>
-    </div>
 
-    <div class="order-summary">
-      <h3>Order Summary</h3>
-
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <span>${{ cart.total }}</span>
-      </div>
-
-      <div class="summary-row discount">
-        <span>Discount</span>
-        <span>- ${{ cart.discountedTotal }}</span>
-      </div>
-
-      <div class="summary-row">
-        <span>Delivery Fee</span>
-        <span>$15</span>
-      </div>
-
-      <div class="summary-row total">
-        <span>Total Products</span>
-        <span>{{ cart.totalProducts }}</span>
-      </div>
-
-      <div class="promo-code">
-        <input type="text" placeholder="Add promo code">
-        <button>Apply</button>
-      </div>
-
-      <button class="checkout-btn">Go to Checkout →</button>
     </div>
   </div>
 </div>
