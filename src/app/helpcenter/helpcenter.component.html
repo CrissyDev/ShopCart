@@ -1,0 +1,48 @@
+<div class="help-center-container">
+  <h2>Hello,How can we help you? </h2>
+
+  <div class="search-box">
+    <input type="text" placeholder="ask a question…" />
+  </div>
+
+  <p class="most-asked">
+    Most asked questions:
+    <a href="#">what cities supported?</a>,
+    <a href="#">how can I pay?</a>,
+    <a href="#">return my order?</a>
+  </p>
+
+  <div class="category-section">
+    <div
+      class="category-card"
+      *ngFor="let cat of categories"
+      [class.active]="cat.title === 'Order&shipping'"
+    >
+      <span class="icon">{{ cat.icon }}</span>
+      <p>{{ cat.title }}</p>
+    </div>
+  </div>
+
+  <h3 class="faq-header">Asked Questions</h3>
+
+  <div class="faq-section">
+    <div
+      class="faq-item"
+      *ngFor="let faq of faqs; let i = index"
+      (click)="toggleFaq(i)"
+      [class.expanded]="faq.open"
+    >
+      <div class="question">{{ faq.question }}</div>
+      <div class="answer" *ngIf="faq.open">{{ faq.answer }}</div>
+    </div>
+  </div>
+
+  <div class="need-help">
+    <h4>Need more help?</h4>
+    <div class="contact-card">
+      <h5>Contact us</h5>
+      <p>📞 +254-712-345678</p>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,112 @@
+.help-center-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #222;
+  text-align: center;
+}
+
+h2 {
+  color: #1cc88a;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 20px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.most-asked a {
+  color: #0c8;
+  margin: 0 5px;
+  text-decoration: underline;
+}
+
+.category-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.category-card {
+  width: 130px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: #1cc88a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-card .icon {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.category-card.active {
+  border: 2px solid #1cc88a;
+}
+
+.faq-header {
+  color: #1cc88a;
+  margin-bottom: 20px;
+}
+
+.faq-section {
+  text-align: left;
+}
+
+.faq-item {
+  background: #f9f9f9;
+  margin: 10px 0;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  border: 1px solid #eee;
+  transition: background 0.3s;
+}
+
+.faq-item:hover {
+  background: #e6ffe6;
+}
+
+.faq-item.expanded {
+  border: 1px solid #1cc88a;
+}
+
+.question {
+  font-weight: bold;
+  color: #222;
+}
+
+.answer {
+  margin-top: 10px;
+  color: #555;
+}
+
+.need-help {
+  margin-top: 40px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.contact-card {
+  background: #eaffea;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0, 128, 0, 0.1);
+}

@@ -10,6 +10,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { AccountComponent } from './account/account.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component'; 
+import { HelpcenterComponent } from './helpcenter/helpcenter.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'delivery', component: DeliveryComponent },
   { path: 'account', component: AccountComponent },
   { path: 'cart', component: CartComponent },
+  {path: 'helpcenter', component: HelpcenterComponent},
   { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
   { path: '**', component: PageNotFoundComponent }
