@@ -49,7 +49,7 @@ export class CartComponent implements OnInit {
         el.classList.add('fade-out');
         setTimeout(() => {
           this.calculateCartTotals();
-        }, 300); // match CSS fade-out duration
+        }, 300); 
       }
     }
   }
@@ -57,7 +57,8 @@ export class CartComponent implements OnInit {
   recalculateItem(index: number) {
     const item = this.cart.products[index];
     item.total = item.price * item.quantity;
-    item.discountedTotal = item.total * (1 - item.discountedPercentage / 100);
+    const discount = (item.discountedPercentage || 0) / 100;
+    item.discountedTotal = item.total - (item.total * discount);
     this.calculateCartTotals();
   }
 
@@ -67,8 +68,15 @@ export class CartComponent implements OnInit {
     let totalProducts = 0;
 
     for (const product of this.cart.products) {
-      subtotal += product.price * product.quantity;
-      discounted += product.total * (product.discountedPercentage / 100);
+      const itemTotal = product.price * product.quantity;
+      const itemDiscountRate = (product.discountedPercentage || 0) / 100;
+      const itemDiscount = itemTotal * itemDiscountRate;
+
+      product.total = itemTotal;
+      product.discountedTotal = itemTotal - itemDiscount;
+
+      subtotal += itemTotal;
+      discounted += itemDiscount;
       totalProducts += product.quantity;
     }
 

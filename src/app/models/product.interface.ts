@@ -37,6 +37,7 @@ name: any;
   headphoneType?: 'Over-Ear' | 'In-Ear' | 'On-Ear'; 
   material?: "plastic" | "metal" | "leather";
   offer?: string;
+  discountPercantage?:number;
 }
 
 export interface Dimensions {

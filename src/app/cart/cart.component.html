@@ -11,9 +11,8 @@
             <h4>{{ item.title }}</h4>
             <p class="price">Quantity: {{ item.quantity }}</p>
             <p class="price">Price: ${{ item.price }}</p>
-            <p class="price">Total: ${{ item.total }}</p>
-            <p class="price">Discounted Percentage: {{ item.discountedPercentage }}%</p>
-            <p class="price">Discounted Total: ${{ item.discountedTotal }}</p>
+            <p class="price">Total: ${{ item.total.toFixed(2) }}</p>
+            <p class="price">Discounted Total: ${{ item.discountedTotal.toFixed(2) }}</p>
           </div>
   
           <div class="item-actions">
@@ -33,12 +32,12 @@
   
         <div class="summary-row">
           <span>Subtotal</span>
-          <span>${{ cart.total }}</span>
+          <span>${{ cart.total.toFixed(2) }}</span>
         </div>
   
         <div class="summary-row discount">
           <span>Discount</span>
-          <span>- ${{ cart.discountedTotal }}</span>
+          <span>- ${{ cart.discountedTotal.toFixed(2) }}</span>
         </div>
   
         <div class="summary-row">
