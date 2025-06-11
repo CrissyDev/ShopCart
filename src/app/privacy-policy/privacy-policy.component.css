@@ -1,0 +1,49 @@
+.privacy-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.header p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0 1.5rem;
+  color: #666;
+}
+
+.search-box {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.illustration {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.illustration img {
+  width: 180px;
+  max-width: 100%;
+}
+
+.policy-section {
+  line-height: 1.7;
+}
+
+.section-title {
+  color: #1565c0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}

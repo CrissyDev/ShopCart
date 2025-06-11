@@ -11,6 +11,9 @@ import { AccountComponent } from './account/account.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component'; 
 import { HelpcenterComponent } from './helpcenter/helpcenter.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,9 +23,15 @@ export const routes: Routes = [
   { path: 'deals', component: DealsComponent },
   { path: 'new', component: WhatsNewComponent },
   { path: 'delivery', component: DeliveryComponent },
-  { path: 'account', component: AccountComponent },
+  { 
+ path: 'account',
+  loadComponent: () => import('./account/account.component').then(m => m.AccountComponent),
+  canActivate: [AuthGuard]
+   },
   { path: 'cart', component: CartComponent },
   {path: 'helpcenter', component: HelpcenterComponent},
+  {path:'termsofservice' , component:TermsOfServiceComponent},
+  {path:'privacypolicy', component:PrivacyPolicyComponent},
   { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
   { path: '**', component: PageNotFoundComponent }
