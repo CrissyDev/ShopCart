@@ -1,5 +1,5 @@
 export interface User {
-createdAt: string|number|Date
+  createdAt: string|number|Date
   id: number
   firstName: string
   lastName: string
@@ -9,4 +9,11 @@ createdAt: string|number|Date
   email: string
   username:String
   image: string
+  phone?:string
+  birthDate?:string
+  royaltyPoints?:number
+  country?:string
+  billingAddress?:string
+  address?:string
+  joined?:string
 }

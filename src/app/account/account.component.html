@@ -2,9 +2,9 @@
   <div class="account-wrapper d-flex">
     <div class="sidebar bg-light p-3" style="min-width: 250px;">
       <div class="text-center mb-4">
-        <img [src]="user.image" class="rounded-circle mb-2" width="80" height="80" alt="Profile">
-        <h5>{{ user.name }}</h5>
-        <p class="text-muted">{{ user.email }}</p>
+        <img [src]="user?.image" class="rounded-circle mb-2" width="80" height="80" alt="Profile">
+        <h5>{{ user?.firstName }} {{ user?.lastName }}</h5>
+        <p class="text-muted">{{ user?.email }}</p>
       </div>
       <ul class="list-group">
         <li *ngFor="let option of sidebarOptions" 
@@ -27,21 +27,21 @@
     <div class="col-md-6">
       <table class="table">
         <tbody>
-          <tr><th>Name:</th><td>{{ user.name }}</td></tr>
-          <tr><th>Email:</th><td>{{ user.email }}</td></tr>
-          <tr><th>Phone:</th><td>{{ user.phone }}</td></tr>
-          <tr><th>Gender:</th><td>{{ user.gender }}</td></tr>
-          <tr><th>Date of Birth:</th><td>{{ user.dob }}</td></tr>
+          <tr><th>Name:</th><td>{{ user?.firstName }} {{ user?.lastName }}</td></tr>
+          <tr><th>Email:</th><td>{{ user?.email }}</td></tr>
+          <tr><th>Phone:</th><td>{{ user?.phone }}</td></tr>
+          <tr><th>Gender:</th><td>{{ user?.gender }}</td></tr>
+          <tr><th>Date of Birth:</th><td>{{ user?.birthDate }}</td></tr>
         </tbody>
       </table>
     </div>
     <div class="col-md-6">
       <table class="table">
         <tbody>
-          <tr><th>Country:</th><td>{{ user.country }}</td></tr>
-          <tr><th>Joined:</th><td>{{ user.joined }}</td></tr>
-          <tr><th>Address:</th><td>{{ user.address }}</td></tr>
-          <tr><th>Billing Address:</th><td>{{ user.billingAddress }}</td></tr>
+          <tr><th>Country:</th><td>{{ user?.country }}</td></tr>
+          <tr><th>Joined:</th><td>{{ user?.joined }}</td></tr>
+          <tr><th>Address:</th><td>{{ user?.address }}</td></tr>
+          <tr><th>Billing Address:</th><td>{{ user?.billingAddress }}</td></tr>
         </tbody>
       </table>
     </div>
@@ -71,7 +71,7 @@
         <div class="card-body">
           <img src="https://cdn-icons-png.flaticon.com/512/2583/2583171.png" alt="Gold Coin" width="40">
           <h5 class="card-title mt-2">Royalty Points</h5>
-          <p><strong>{{ user.royaltyPoints }}</strong> points</p>
+          <p><strong>{{ user?.royaltyPoints }}</strong> points</p>
         </div>
       </div>
     </div>

@@ -7,7 +7,6 @@ import { CategoriesComponent } from './categories/categories.component';
 import { DealsComponent } from './deals/deals.component';
 import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { DeliveryComponent } from './delivery/delivery.component';
-import { AccountComponent } from './account/account.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component'; 
 import { HelpcenterComponent } from './helpcenter/helpcenter.component';

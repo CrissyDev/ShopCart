@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { SearchComponent } from '../search/search.component';
-import { UserService } from '../services/user.service';
 import { User } from '../models/users.interface';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -21,13 +21,14 @@ export class HeaderComponent {
   languages = ['Eng', 'Swahili', 'French'];
   locations = ['Nairobi', 'Mombasa', 'Kisumu', 'Eldoret', 'Nakuru'];
 
-  constructor(private userService: UserService, private router: Router) {}
+  private authService = inject(AuthService); 
+  private router = inject(Router);
+
+  constructor() {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    this.userService.getCurrentUser().subscribe({
+  
+    this.authService.getCurrentUser().subscribe({
       next: (res) => this.user = res,
       error: (err) => console.error('User fetch error:', err)
     });
@@ -42,9 +43,7 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.user = null;
-    this.router.navigate(['/']);
+    this.authService.logout();
   }
 
   goToLogin(): void {

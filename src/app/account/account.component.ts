@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { User } from '../models/users.interface';
 
 @Component({
   selector: 'app-account',
@@ -8,10 +11,52 @@ import { Component } from '@angular/core';
   styleUrls: ['./account.component.css']
 })
 
-export class AccountComponent {
+export class AccountComponent implements OnInit{
+
+  private http = inject(HttpClient);
+  private authService = inject(AuthService); 
+  user: User | null = null;
+
+  ngOnInit(): void {
+   this.authService.getCurrentUser().subscribe({
+      next: (res) => {
+
+        console.log("Auth user",res);
+        
+        let userobj = {
+          email: res.email,
+          phone: res.phone,
+          address: '123 Green Street, Nairobi, Kenya',
+          gender: 'Male',
+          birthDate: res.birthDate,
+          country: 'Kenya',
+          joined: '2023-01-10',
+          image: res.image,
+          billingAddress: '456 Billing Lane, Nairobi, Kenya',
+          paymentMethods: ['PayPal', 'Mpesa'],
+          royaltyPoints: 320,
+          createdAt: res.createdAt,
+          id: res.id,
+          firstName: res.firstName,
+          lastName: res.lastName,
+          maidenName:res.maidenName,
+          age: res.age,
+          username: res.username  
+        };
+
+        this.user = userobj;
+
+      },
+      error: (err) => console.error('User fetch error:', err)
+    });
+  }
+
+
+
 buyNow(_t173: { title: string; image: string; }) {
-throw new Error('Method not implemented.');
+  throw new Error('Method not implemented.');
 }
+
 addToCart(_t173: { title: string; image: string; }) {
 throw new Error('Method not implemented.');
 }
@@ -29,20 +74,7 @@ throw new Error('Method not implemented.');
 
   selectedOption: string = 'My Account';
 
-  user = {
-    name: 'Chloem Moralez',
-    email: 'chloem@example.com',
-    phone: '+254 712 345678',
-    address: '123 Green Street, Nairobi, Kenya',
-    gender: 'Male',
-    dob: '1990-06-15',
-    country: 'Kenya',
-    joined: '2023-01-10',
-    image: 'https://images.pexels.com/photos/17300288/pexels-photo-17300288/free-photo-of-the-black-women.jpeg?auto=compress&cs=tinysrgb&w=600',
-    billingAddress: '456 Billing Lane, Nairobi, Kenya',
-    paymentMethods: ['PayPal', 'Mpesa'],
-    royaltyPoints: 320
-  };
+  
 
   orders = Array.from({ length: 6 }, (_, i) => ({
     id: `ORD-${1000 + i}`,
@@ -288,5 +320,7 @@ recentViews = [
     console.log('Delete order:', order);
   }
 }
+
+
 
 
