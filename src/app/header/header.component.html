@@ -1,15 +1,37 @@
-<div class="bg-success ">
+<div class="bg-success">
   <div class="container text-white py-1 px-3 d-flex justify-content-between small">
     <div>+0701234567890</div>
     <div>
       Get 50% Off on Selected Items |
       <a [routerLink]="'/deals'" class="text-white text-decoration-underline">Shop Now</a>
     </div>
-    <div>Eng ▼ | Location ▼</div>
+    <div class="d-flex gap-3">
+      <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle btn-sm text-white" type="button" data-bs-toggle="dropdown">
+          {{ selectedLanguage }}
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let lang of languages">
+            <a class="dropdown-item" (click)="changeLanguage(lang)">{{ lang }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle btn-sm text-white" type="button" data-bs-toggle="dropdown">
+          {{ selectedLocation }}
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let loc of locations">
+            <a class="dropdown-item" (click)="changeLocation(loc)">{{ loc }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
-<nav class="container navbar navbar-expand-lg navbar-light bg-white  px-4">
+<nav class="container navbar navbar-expand-lg navbar-light bg-white px-4">
   <a class="navbar-brand text-success fw-bold" [routerLink]="'/'">Shopcart</a>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -19,59 +41,37 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav me-auto ms-3">
       <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/categories'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          Categories
-        </a>
+        <a class="nav-link" [routerLink]="'/categories'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Categories</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/deals'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          Deals
-        </a>
+        <a class="nav-link" [routerLink]="'/deals'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Deals</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/new'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          What's New
-        </a>
+        <a class="nav-link" [routerLink]="'/new'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">What's New</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/delivery'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          Delivery
-        </a>
+        <a class="nav-link" [routerLink]="'/delivery'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Delivery</a>
       </li>
     </ul>
 
     <app-search></app-search>
 
     <ul class="navbar-nav ms-3">
-      <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/account'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          <i class="fa fa-user" aria-hidden="true"></i> My Account
-          @if(user != null){
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown">
+          <i class="fa fa-user"></i> My Account
+          @if (user != null) {
             ({{ user.firstName }})
           }
         </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" (click)="goToLogin()">Login</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link"
-           [routerLink]="'/cart'"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-          <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+        <a class="nav-link" [routerLink]="'/cart'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fa fa-shopping-cart"></i> Cart
         </a>
       </li>
     </ul>

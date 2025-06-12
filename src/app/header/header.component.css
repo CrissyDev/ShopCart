@@ -16,3 +16,8 @@
 .bi {
   vertical-align: middle;
 }
+
+
+.dropdown-menu {
+  font-size: 0.875rem;
+}
