@@ -3,6 +3,7 @@ import { CartService } from '../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../models/cart.interface';
 import { RouterModule } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-cart',
@@ -13,6 +14,8 @@ import { RouterModule } from '@angular/router';
 })
 export class CartComponent implements OnInit {
   private cartService = inject(CartService);
+  private cdr = inject(ChangeDetectorRef); 
+
   cart: Cart = {
     id: 0,
     userId: 0,
@@ -25,7 +28,14 @@ export class CartComponent implements OnInit {
   loading = true;
 
   ngOnInit(): void {
-    this.loadCart();
+    const storedCart = localStorage.getItem('userCart');
+    if (storedCart) {
+      this.cart = JSON.parse(storedCart);
+      this.calculateCartTotals();
+      this.loading = false;
+    } else {
+      this.loadCart();
+    }
   }
 
   loadCart() {
@@ -35,6 +45,7 @@ export class CartComponent implements OnInit {
         if (res.carts && res.carts.length > 0) {
           this.cart = res.carts[0];
           this.calculateCartTotals();
+          this.saveCartToStorage();
         } else {
           this.resetCart(); 
         }
@@ -57,6 +68,12 @@ export class CartComponent implements OnInit {
       totalQuantity: 0,
       products: []
     };
+    localStorage.removeItem('userCart');
+    this.cdr.detectChanges();
+  }
+
+  saveCartToStorage() {
+    localStorage.setItem('userCart', JSON.stringify(this.cart));
   }
 
   increaseQuantity(index: number) {
@@ -87,6 +104,7 @@ export class CartComponent implements OnInit {
             this.resetCart(); 
           } else {
             this.calculateCartTotals();
+            this.saveCartToStorage();
           }
         },
         error: (err) => {
@@ -125,6 +143,8 @@ export class CartComponent implements OnInit {
     this.cart.total = subtotal;
     this.cart.discountedTotal = subtotal - discounted;
     this.cart.totalProducts = totalProducts;
+
+    this.saveCartToStorage();
   }
 
   syncCart() {

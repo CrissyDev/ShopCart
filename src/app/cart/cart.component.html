@@ -1,7 +1,7 @@
 <div *ngIf="!loading" class="container">
   <h1>Your Cart</h1>
 
-  <ng-container *ngIf="cart.products && cart.products.length > 0; else emptyCart">
+  <ng-container *ngIf="cart && cart.products && cart.products.length > 0; else emptyCart">
     <div class="cart-container">
       <div class="cart-content">
         <div class="cart-items">
@@ -28,7 +28,7 @@
           </div>
         </div>
 
-        <!-- ✅ Order Summary only shown if cart has items -->
+        <!-- Order Summary only shown if cart has items -->
         <div *ngIf="cart.products.length > 0" class="order-summary">
           <h3>Order Summary</h3>
 
