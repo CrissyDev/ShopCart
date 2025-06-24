@@ -13,6 +13,7 @@ import { HelpcenterComponent } from './helpcenter/helpcenter.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { AuthGuard } from './auth.guard';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
   {path:'privacypolicy', component:PrivacyPolicyComponent},
   { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
+  {path:'checkout',component: CheckoutComponent },
   { path: '**', component: PageNotFoundComponent }
 ];

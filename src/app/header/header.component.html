@@ -65,15 +65,24 @@
           }
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" (click)="goToLogin()">Login</a></li>
-          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          <li *ngIf="!user">
+            <a class="dropdown-item" (click)="goToLogin()">Login</a>
+         </li>
+          <li *ngIf="user">
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </li>
         </ul>
+
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="'/cart'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <i class="fa fa-shopping-cart"></i> Cart
-        </a>
-      </li>
+      <li class="nav-item position-relative">
+  <a class="nav-link" [routerLink]="'/cart'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <i class="fa fa-shopping-cart"></i> Cart
+    <span *ngIf="totalProducts > 0" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+      {{ totalProducts }}
+    </span>
+  </a>
+</li>
+
     </ul>
   </div>
 </nav>

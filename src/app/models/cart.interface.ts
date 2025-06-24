@@ -18,3 +18,12 @@ export interface Product {
   discountedTotal: number
   thumbnail: string
 }
+
+export interface CartResponse {
+  carts: Cart[]
+  total: number
+  skip: number
+  limit: number
+}
+
+

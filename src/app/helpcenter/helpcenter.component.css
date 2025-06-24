@@ -110,3 +110,51 @@ h2 {
   margin-top: 10px;
   box-shadow: 0 4px 10px rgba(0, 128, 0, 0.1);
 }
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-box input {
+  flex: 1;
+}
+
+.btn-send {
+  background-color: #1cc88a;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-send:hover {
+  background-color: #17a673;
+}
+
+.notification {
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

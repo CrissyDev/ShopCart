@@ -1,9 +1,12 @@
 <div class="help-center-container">
-  <h2>Hello,How can we help you? </h2>
+  <h2>Hello, How can we help you?</h2>
 
-  <div class="search-box">
-    <input type="text" placeholder="ask a question…" />
+  <div class="search-box d-flex">
+    <input type="text" placeholder="Ask a question…" [(ngModel)]="userQuestion" />
+    <button class="btn-send" (click)="sendQuestion()">Send</button>
   </div>
+
+  <div *ngIf="questionSent" class="notification">Your question has been sent successfully!</div>
 
   <p class="most-asked">
     Most asked questions:
@@ -41,8 +44,7 @@
     <h4>Need more help?</h4>
     <div class="contact-card">
       <h5>Contact us</h5>
-      <p>📞 +254-712-345678</p>
+      <p>+254-712-345678</p>
     </div>
   </div>
 </div>
-
