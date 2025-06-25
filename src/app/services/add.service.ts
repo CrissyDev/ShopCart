@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = 'https://dummyjson.com/carts/add';
+  private updateCartUrl = environment.apiUrl + '/carts/add';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +16,7 @@ export class CartService {
       userId,
       products
     };
-    return this.http.post(this.apiUrl, body, {
+    return this.http.post(this.updateCartUrl, body, {
       headers: { 'Content-Type': 'application/json' }
     });
   }

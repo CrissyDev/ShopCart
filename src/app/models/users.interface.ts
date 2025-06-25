@@ -16,4 +16,8 @@ export interface User {
   billingAddress?:string
   address?:string
   joined?:string
+
+//  Added  these custom fields
+  paymentMethods?: string[];
+  
 }

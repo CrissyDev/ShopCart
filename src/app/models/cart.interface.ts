@@ -1,6 +1,6 @@
 export interface Cart {
   id: number
-  products: Product[]
+  products: CartProduct[]
   total: number
   discountedTotal: number
   userId: number
@@ -8,7 +8,7 @@ export interface Cart {
   totalQuantity: number
 }
 
-export interface Product {
+export interface CartProduct {
   id: number
   title: string
   price: number
