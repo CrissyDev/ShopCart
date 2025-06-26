@@ -1,14 +1,27 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-import { Cart, CartResponse } from '../models/cart.interface';
+import { tap, catchError, switchMap } from 'rxjs/operators';
+import { Cart, CartResponse, CartProduct } from '../models/cart.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+addToCart(userId: number, product: CartProduct): Observable<Cart> {
+  const url = `${this.apiUrl}/users/${userId}/cart`;
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.post<Cart>(url, product, { headers }).pipe(
+    catchError(error => {
+      console.error('Failed to add to cart:', error);
+      return throwError(() => new Error('Add to cart failed'));
+    })
+  );
+}
+
   private apiUrl = environment.apiUrl;
 
   private cartSubject = new BehaviorSubject<Cart | null>(null);
@@ -16,6 +29,8 @@ export class CartService {
 
   cart$ = this.cartSubject.asObservable();
   totalProducts$ = this.totalProductsSubject.asObservable();
+
+  private lastDeletedItem: { product: CartProduct, index: number } | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -29,23 +44,9 @@ export class CartService {
   }
 
   getUserCart(user_id: any): Observable<CartResponse> {
-    
-    return this.http.get<CartResponse>(`${this.apiUrl}/carts/user/${user_id}`, { headers: this.getAuthHeaders() }).pipe(
-      // tap(response => {
-      //   if (response?.carts?.length > 0) {
-      //     const userCart = response.carts[0];
-      //     this.cartSubject.next(userCart);
-      //     this.totalProductsSubject.next(this.calculateTotalProducts(userCart));
-      //   } else {
-      //     this.cartSubject.next(null);
-      //     this.totalProductsSubject.next(0);
-      //   }
-      // }),
-      // catchError(error => {
-      //   console.error('Failed to fetch user cart:', error);
-      //   return throwError(() => new Error('Cart fetch failed'));
-      // })
-    );
+    return this.http.get<CartResponse>(`${this.apiUrl}/carts/user/${user_id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
   updateCart(userId: number, product_id: number, product_quantity: number): Observable<Cart> {
@@ -55,10 +56,10 @@ export class CartService {
       products: [product]
     };
 
-    return this.http.put<Cart>(`${this.apiUrl}/carts/${userId}`, body, { headers: this.getAuthHeaders() }).pipe(
-      tap(cart => {
-        this.setCart(cart);
-      }),
+    return this.http.put<Cart>(`${this.apiUrl}/carts/${userId}`, body, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      tap(cart => this.setCart(cart)),
       catchError(error => {
         console.error('Cart update failed:', error);
         return throwError(() => new Error('Cart update failed'));
@@ -67,18 +68,51 @@ export class CartService {
   }
 
   deleteCartItem(cartId: number, productId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/carts/${cartId}/items/${productId}`, { headers: this.getAuthHeaders() }).pipe(
-      tap(() => {
-        const currentCart = this.cartSubject.value;
-        if (currentCart) {
-          const updatedProducts = currentCart.products.filter(p => p.id !== productId);
-          const updatedCart = { ...currentCart, products: updatedProducts };
-          this.setCart(updatedCart);
-        }
+    const url = `${this.apiUrl}/carts/${cartId}`;
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(url, { headers }).pipe(
+      switchMap((cart: any) => {
+        const index = cart.products.findIndex((p: any) => p.id === productId);
+        if (index === -1) return throwError(() => new Error('Product not found in cart'));
+
+        this.lastDeletedItem = {
+          product: cart.products[index],
+          index
+        };
+
+        const updatedProducts = cart.products.filter((p: any) => p.id !== productId);
+        const updatedCart = { ...cart, products: updatedProducts };
+        return this.http.put<any>(url, updatedCart, { headers });
       }),
       catchError(error => {
         console.error('Failed to delete cart item:', error);
         return throwError(() => new Error('Delete cart item failed'));
+      })
+    );
+  }
+
+  restoreLastDeletedItem(cartId: number): Observable<any> {
+    if (!this.lastDeletedItem) return throwError(() => new Error('No deleted item to restore'));
+
+    const url = `${this.apiUrl}/carts/${cartId}`;
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(url, { headers }).pipe(
+      switchMap((cart: any) => {
+        const updatedProducts = [...cart.products];
+        updatedProducts.splice(this.lastDeletedItem!.index, 0, this.lastDeletedItem!.product);
+
+        const updatedCart = { ...cart, products: updatedProducts };
+        return this.http.put<any>(url, updatedCart, { headers }).pipe(
+          tap(() => this.lastDeletedItem = null)
+        );
+      }),
+      catchError(error => {
+        console.error('Failed to restore deleted item:', error);
+        return throwError(() => new Error('Restore failed'));
       })
     );
   }
@@ -93,6 +127,23 @@ export class CartService {
     return cart.products.reduce((acc, item) => acc + item.quantity, 0);
   }
 
+  recalculateCartTotals(products: CartProduct[]): Partial<Cart> {
+    let total = 0;
+    let totalQuantity = 0;
+
+    products.forEach(item => {
+      item.total = item.price * item.quantity;
+      total += item.total;
+      totalQuantity += item.quantity;
+    });
+
+    return {
+      total,
+      discountedTotal: total * 0.9,
+      totalProducts: totalQuantity
+    };
+  }
+
   saveCartToStorage(cart: Cart) {
     localStorage.setItem('userCart', JSON.stringify(cart));
   }
@@ -105,7 +156,7 @@ export class CartService {
       } catch {
         return null;
       }
-    } 
+    }
     return null;
   }
 }

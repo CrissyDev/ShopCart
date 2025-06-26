@@ -17,54 +17,46 @@ export class CartComponent implements OnInit {
   private authService = inject(AuthService);
 
   cart!: Cart;
-
   loading = false;
+  cartId!: number;
+  lastDeletedItem: { product: CartProduct; index: number } | null = null;
 
   ngOnInit(): void {
-    // this.loading = true;
-    
-    // this.cartService.cart$.subscribe(cart => {
-    //   if (cart) {
-    //     this.cart = cart;
-    //   }
-    //   this.loading = false;
-    // });
-
-    // this.loadCart();
     this.loadCartFromLocalStorage();
-
   }
 
-  loadCartFromLocalStorage(){
+  loadCartFromLocalStorage() {
     this.loading = true;
     const storedCart = this.cartService.readCartFromStorage();
-    console.log('storedCart', storedCart);
-    
+
     if (storedCart != null) {
-      this.loading = false;
       this.cart = storedCart;
-    } else{
+      this.cartId = storedCart.id;
+      this.recalculateCartTotals();
+      this.loading = false;
+    } else {
       this.loadCartFromAPI();
     }
   }
 
   loadCartFromAPI() {
     const authUser = this.authService.readAuthUserFromStorage();
-    if (authUser != null) {
-
+    if (authUser) {
       this.cartService.getUserCart(authUser.id).subscribe({
         next: (res) => {
           if (res.carts && res.carts.length > 0) {
             this.cart = res.carts[0];
+            this.cartId = this.cart.id;
+            this.recalculateCartTotals();
             this.cartService.saveCartToStorage(this.cart);
           }
           this.loading = false;
         },
-        error: () => {
+        error: (err) => {
+          console.error('Error loading cart from API:', err);
           this.loading = false;
         }
       });
-
     }
   }
 
@@ -87,16 +79,59 @@ export class CartComponent implements OnInit {
   }
 
   deleteItem(index: number) {
-    const productId = this.cart.products[index].id;
-    const cartId = this.cart.id;
-    this.cartService.deleteCartItem(cartId, productId).subscribe({
-      next: () => {
-        this.cart.products.splice(index, 1);
-        this.cartService.saveCartToStorage(this.cart);
-      },
-      error: (err) => {
-        console.error('Failed to delete item from cart:', err);
-      }
+    const product = this.cart.products[index];
+    this.lastDeletedItem = { product: { ...product }, index }; 
+    this.cart.products.splice(index, 1);
+    this.recalculateCartTotals();
+    this.cartService.saveCartToStorage(this.cart);
+
+    if (this.cartId && product) {
+      this.cartService.deleteCartItem(this.cartId, product.id).subscribe({
+        next: () => {
+          console.log('Item deleted and tracked for undo');
+        },
+        error: (err) => {
+          console.error('Failed to sync delete with server:', err);
+        }
+      });
+    }
+  }
+
+  restoreLastDeletedItem() {
+    if (!this.lastDeletedItem) return;
+
+    const { product, index } = this.lastDeletedItem;
+    this.cart.products.splice(index, 0, product);
+    this.recalculateCartTotals();
+    this.cartService.saveCartToStorage(this.cart);
+
+    const authUser = this.authService.readAuthUserFromStorage();
+    if (authUser) {
+      this.cartService.addToCart(authUser.id, product).subscribe({
+        next: () => {
+          console.log('Restored item to server cart');
+        },
+        error: (err: any) => {
+          console.error('Failed to restore item on server:', err);
+        }
+      });
+    }
+
+    this.lastDeletedItem = null; 
+  }
+
+  recalculateCartTotals() {
+    let total = 0;
+    let totalQuantity = 0;
+
+    this.cart.products.forEach((item) => {
+      item.total = item.price * item.quantity;
+      total += item.total;
+      totalQuantity += item.quantity;
     });
+
+    this.cart.total = total;
+    this.cart.discountedTotal = total * 0.9;
+    this.cart.totalProducts = totalQuantity;
   }
 }

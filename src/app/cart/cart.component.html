@@ -21,7 +21,6 @@
                 <p class="price">Quantity: {{ item.quantity }}</p>
                 <p class="price">Price: ${{ item.price }}</p>
                 <p class="price">Total: ${{ item.total.toFixed(2) }}</p>
-                <!-- <p class="price">Discounted Total: ${{ item.discountedTotal.toFixed(2) }}</p> -->
               </div>
 
               <div class="item-actions">
@@ -70,11 +69,20 @@
             </button>
           </div>
         </div>
+
+        
+        <div class="undo-msg text-center mt-3" *ngIf="lastDeletedItem">
+          <span>Item removed.</span>
+          <button *ngIf="lastDeletedItem" (click)="restoreLastDeletedItem()" class="btn btn-warning">
+                   Undo Delete
+              </button>
+
+        </div>
       </div>
     </ng-container>
   </ng-container>
 
-  
+ 
   <ng-template #emptyCart>
     <div class="empty-cart text-center mt-5">
       <img
