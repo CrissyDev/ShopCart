@@ -118,9 +118,11 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
   }
 
   setCart(cart: Cart): void {
-    this.cartSubject.next(cart);
-    this.totalProductsSubject.next(this.calculateTotalProducts(cart));
     this.saveCartToStorage(cart);
+
+
+    this.cartSubject.next(this.readCartFromStorage());
+    this.totalProductsSubject.next(this.calculateTotalProducts(cart));
   }
 
   calculateTotalProducts(cart: Cart): number {
@@ -149,14 +151,8 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
   }
 
   readCartFromStorage(): Cart | null {
-    const storedCart = localStorage.getItem('userCart');
-    if (storedCart) {
-      try {
-        return JSON.parse(storedCart);
-      } catch {
-        return null;
-      }
-    }
-    return null;
+    let storedCart = localStorage.getItem('userCart');
+    return storedCart ? JSON.parse(storedCart) : null;
   }
+  
 }

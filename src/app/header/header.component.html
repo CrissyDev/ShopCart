@@ -68,9 +68,14 @@
           <li *ngIf="!user">
             <a class="dropdown-item" (click)="goToLogin()">Login</a>
          </li>
+
+         <li *ngIf="user">
+            <a class="dropdown-item" [routerLink]="'/account'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My Profile</a>
+          </li>
           <li *ngIf="user">
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </li>
+
         </ul>
 
       </li>

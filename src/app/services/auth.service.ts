@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../models/users.interface';
 import { environment } from '../../environments/environment';
@@ -14,6 +14,10 @@ export class AuthService {
 
   private loginUrl = environment.apiUrl + '/auth/login';
   private userUrl = environment.apiUrl + '/auth/me';
+
+  private userSubject = new BehaviorSubject<User | null>(null);
+  
+  user$ = this.userSubject.asObservable();
 
   
   login(username: string, password: string): Observable<any> {
@@ -32,6 +36,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userCart');
     localStorage.removeItem('authUser');
+    this.userSubject.next(null);
     this.router.navigate(['/']);
   }
 
@@ -61,9 +66,9 @@ export class AuthService {
   
   saveAuthUserToStorage(user: any): void {
     localStorage.setItem('authUser', JSON.stringify(user));
+    this.userSubject.next(user);
   }
 
-  
   readAuthUserFromStorage(): User | null {
     const storedUser = localStorage.getItem('authUser');
     return storedUser ? JSON.parse(storedUser) : null;

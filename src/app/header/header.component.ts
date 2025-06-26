@@ -31,20 +31,18 @@ export class HeaderComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
+    
 
-    if (token) {
-      this.authService.getCurrentUser().subscribe({
-        next: (res) => this.user = res,
-        error: (err) => console.error('User fetch error:', err)
-      });
-
-      this.cartService.totalProducts$.subscribe(count => {
+    this.cartService.totalProducts$.subscribe(count => {
         this.totalProducts = count;
       });
-    } else {
-      console.warn('No token found. Skipping user/cart load.');
-    }
+
+    this.authService.user$.subscribe({
+      next:(user)=> {
+     this.user = user;
+      }
+    })
+    
   }
 
   changeLanguage(lang: string): void {

@@ -29,9 +29,9 @@ export const routes: Routes = [
   canActivate: [AuthGuard]
    },
   { path: 'cart', component: CartComponent },
-  {path: 'helpcenter', component: HelpcenterComponent},
-  {path:'termsofservice' , component:TermsOfServiceComponent},
-  {path:'privacypolicy', component:PrivacyPolicyComponent},
+  {path: 'help-center', component: HelpcenterComponent},
+  {path:'terms-of-service' , component:TermsOfServiceComponent},
+  {path:'privacy-policy', component:PrivacyPolicyComponent},
   { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
   {path:'checkout',component: CheckoutComponent },

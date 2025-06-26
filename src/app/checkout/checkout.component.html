@@ -1,5 +1,35 @@
 <div class="checkout-container">
-  <h1>Processing your order...</h1>
+  <h1>Checkout Process</h1>
+
+  <div class="steps">
+    <div class="step" [class.active]="step >= 1">Review</div>
+    <div class="step" [class.active]="step >= 2">Payment</div>
+    <div class="step" [class.active]="step >= 3">Confirmation</div>
+    <div class="step" [class.active]="success">Success</div>
+  </div>
+
+  <div *ngIf="step === 1">
+    <h2>Step 1: Review Your Order</h2>
+    <p>Your cart items and order summary would appear here.</p>
+    <button (click)="nextStep()">Continue to Payment</button>
+  </div>
+
+  <div *ngIf="step === 2">
+    <h2>Step 2: Payment Information</h2>
+    <form class="payment-form">
+      <input type="text" placeholder="Cardholder Name" [(ngModel)]="paymentDetails.name" name="name" required>
+      <input type="text" placeholder="Card Number" [(ngModel)]="paymentDetails.cardNumber" name="cardNumber" required>
+      <input type="text" placeholder="Expiry Date (MM/YY)" [(ngModel)]="paymentDetails.expiry" name="expiry" required>
+      <input type="text" placeholder="CVV" [(ngModel)]="paymentDetails.cvv" name="cvv" required>
+    </form>
+    <button (click)="nextStep()">Continue to Confirmation</button>
+  </div>
+
+  <div *ngIf="step === 3">
+    <h2>Step 3: Confirming Your Order...</h2>
+    <p>Please wait while we confirm your purchase.</p>
+    <button (click)="nextStep()">Finish</button>
+  </div>
 
   <div *ngIf="success" class="success-message">
     <i class="fa fa-check-circle"></i>
@@ -7,4 +37,3 @@
     <p>Thank you for your purchase. Redirecting to home...</p>
   </div>
 </div>
-
