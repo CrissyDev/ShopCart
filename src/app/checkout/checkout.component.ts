@@ -1,21 +1,25 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { CartService } from '../services/cart.service';
 import { Cart } from '../models/cart.interface';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports:[CommonModule, FormsModule, RouterModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
-  step = 1;
-  success = false;
   cart: Cart | null = null;
-  orderId = '';
+  orderId: string = '';
+  totalAmount: number = 0;
+  discount: number = 0;
+  finalAmount: number = 0;
+
+  step: number = 1;
+  success: boolean = false;
 
   paymentDetails = {
     name: '',
@@ -24,56 +28,53 @@ export class CheckoutComponent implements OnInit {
     cvv: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    const storedCart = localStorage.getItem('user_cart');
+    this.loadCartFromStorage();
+
+    this.cartService.cart$.subscribe(updatedCart => {
+      if (updatedCart) {
+        this.cart = updatedCart;
+        this.calculateOrderSummary();
+      }
+    });
+
+    this.orderId = this.generateOrderId();
+  }
+
+  loadCartFromStorage(): void {
+    const storedCart = this.cartService.readCartFromStorage();
     if (storedCart) {
-      this.cart = JSON.parse(storedCart);
-      this.recalculateCartTotals();
-      this.orderId = this.generateOrderId();
+      this.cart = storedCart;
+      this.calculateOrderSummary();
     }
   }
 
-recalculateCartTotals() {
-  if (!this.cart) return;
+  calculateOrderSummary(): void {
+    if (!this.cart) return;
 
-  let total = 0;
-  let totalQuantity = 0;
-
-  this.cart.products.forEach(item => {
-    item.total = item.price * item.quantity;
-    total += item.total;
-    totalQuantity += item.quantity;
-  });
-
-  this.cart.total = total;
-  this.cart.discountedTotal = total * 0.9; 
-  this.cart.totalProducts = totalQuantity;
-  this.cart.totalQuantity = totalQuantity;
-}
+    this.totalAmount = this.cart.total || 0;
+    this.discount = this.cart.discountedTotal ? this.cart.total - this.cart.discountedTotal : 0;
+    this.finalAmount = (this.cart.discountedTotal || this.cart.total) + 15; 
+  }
 
   generateOrderId(): string {
-    return 'ORDER-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+    const now = new Date();
+    return 'ORD-' + now.getTime().toString().slice(-8);
   }
 
   nextStep(): void {
-    if (this.step === 2 && !this.validatePayment()) {
-      alert('Please fill in all payment details.');
-      return;
+    if (this.step < 3) {
+      this.step += 1;
+    } else {
+      this.completePurchase();
     }
-
-    if (this.step === 3) {
-      this.success = true;
-      setTimeout(() => this.router.navigate(['/']), 3000);
-      return;
-    }
-
-    this.step++;
   }
 
-  validatePayment(): boolean {
-    const { name, cardNumber, expiry, cvv } = this.paymentDetails;
-    return !!(name && cardNumber && expiry && cvv);
+  completePurchase(): void {
+    this.success = true;
+    this.cartService.readCartFromStorage();
+    this.cart = null;
   }
 }

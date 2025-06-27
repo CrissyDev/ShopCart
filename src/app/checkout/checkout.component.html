@@ -1,61 +1,85 @@
-<div class="checkout-container">
-  <h1>Checkout Process</h1>
+<div class="container py-5">
+  <h2 class="text-center mb-4">Checkout</h2>
 
-  <div class="steps">
-    <div class="step" [class.active]="step >= 1">Review</div>
-    <div class="step" [class.active]="step >= 2">Payment</div>
-    <div class="step" [class.active]="step >= 3">Confirmation</div>
-    <div class="step" [class.active]="success">Success</div>
-  </div>
-
+  <!--Order Summary-->  
   <div *ngIf="step === 1">
-    <h2>Step 1: Review Your Order</h2>
-
-    <div *ngIf="cart">
-      <p><strong>Order ID:</strong> {{ orderId }}</p>
-      <div class="cart-items-review">
-        <div class="review-item" *ngFor="let item of cart.products">
-          <img [src]="item.thumbnail" class="thumbnail" alt="{{ item.title }}">
-          <div class="details">
-            <h4>{{ item.title }}</h4>
-            <p>Qty: {{ item.quantity }}</p>
-            <p>Price: ${{ item.price }}</p>
-            <p>Total: ${{ (item.price * item.quantity).toFixed(2) }}</p>
+    <h4>Order Summary</h4>
+    <div *ngIf="cart && cart.products.length > 0; else emptyCart">
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let product of cart.products">
+          <div>
+            <h6 class="my-0">{{ product.title }}</h6>
+            <small class="text-muted">Qty: {{ product.quantity }}</small>
           </div>
-        </div>
-      </div>
+          <span class="text-muted">Ksh {{ product.total | number:'1.2-2'}}</span>
+        </li>
+      </ul>
 
-      <div class="summary">
-        <p><strong>Subtotal:</strong> ${{ cart.total.toFixed(2) }}</p>
-        <p><strong>Discount:</strong> - ${{ (cart.total - cart.discountedTotal).toFixed(2) }}</p>
-        <p><strong>Delivery:</strong> $15.00</p>
-        <p><strong>Final Total:</strong> ${{ (cart.discountedTotal + 15).toFixed(2) }}</p>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Subtotal</span>
+          <strong>Ksh {{ cart.total | number:'1.2-2' }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between text-success">
+          <span>Discount</span>
+          <strong>- Ksh {{ cart.discountedTotal | number:'1.2-2' }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Delivery</span>
+          <strong>Ksh 15</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total</span>
+          <strong>Ksh {{ cart.totalProducts}}</strong>
+        </li>
+      </ul>
+
+      <div class="text-end">
+        <button class="btn btn-success" (click)="nextStep()">Proceed to Payment</button>
       </div>
     </div>
 
-    <button (click)="nextStep()">Continue to Payment</button>
+    <ng-template #emptyCart>
+      <p class="text-muted">Your cart is empty.</p>
+    </ng-template>
   </div>
 
+  <!-- Step 2: Payment Info -->
   <div *ngIf="step === 2">
-    <h2>Step 2: Payment Information</h2>
-    <form class="payment-form">
-      <input type="text" placeholder="Cardholder Name" [(ngModel)]="paymentDetails.name" name="name" required>
-      <input type="text" placeholder="Card Number" [(ngModel)]="paymentDetails.cardNumber" name="cardNumber" required>
-      <input type="text" placeholder="Expiry Date (MM/YY)" [(ngModel)]="paymentDetails.expiry" name="expiry" required>
-      <input type="text" placeholder="CVV" [(ngModel)]="paymentDetails.cvv" name="cvv" required>
+    <h4>Payment Details</h4>
+    <form>
+      <div class="mb-3">
+        <label for="name" class="form-label">Name on Card</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="paymentDetails.name" name="name">
+      </div>
+      <div class="mb-3">
+        <label for="cardNumber" class="form-label">Card Number</label>
+        <input type="text" id="cardNumber" class="form-control" [(ngModel)]="paymentDetails.cardNumber" name="cardNumber">
+      </div>
+      <div class="mb-3 row">
+        <div class="col">
+          <label for="expiry" class="form-label">Expiry</label>
+          <input type="text" id="expiry" class="form-control" [(ngModel)]="paymentDetails.expiry" name="expiry">
+        </div>
+        <div class="col">
+          <label for="cvv" class="form-label">CVV</label>
+          <input type="text" id="cvv" class="form-control" [(ngModel)]="paymentDetails.cvv" name="cvv">
+        </div>
+      </div>
+      <div class="text-end">
+        <button class="btn btn-primary" (click)="nextStep()">Pay Ksh {{ finalAmount }}</button>
+      </div>
     </form>
-    <button (click)="nextStep()">Continue to Confirmation</button>
   </div>
 
-  <div *ngIf="step === 3">
-    <h2>Step 3: Confirming Your Order...</h2>
-    <p>Please wait while we confirm your purchase.</p>
-    <button (click)="nextStep()">Finish</button>
-  </div>
-
-  <div *ngIf="success" class="success-message">
-    <i class="fa fa-check-circle"></i>
-    <h2>Checkout Successful!</h2>
-    <p>Thank you for your purchase. Redirecting to home...</p>
+  <!-- Step 3: Success Message -->
+  <div *ngIf="step === 3 && success">
+    <div class="alert alert-success text-center">
+      <h4 class="alert-heading">Order Confirmed!</h4>
+      <p>Your payment was successful.</p>
+      <hr>
+      <p class="mb-0">Order ID: <strong>{{ orderId }}</strong></p>
+    </div>
   </div>
 </div>
