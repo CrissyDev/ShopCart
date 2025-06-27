@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { tap, catchError, switchMap } from 'rxjs/operators';
+import { tap, catchError, switchMap, map } from 'rxjs/operators';
 import { Cart, CartResponse, CartProduct } from '../models/cart.interface';
 import { environment } from '../../environments/environment';
 
@@ -9,19 +9,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CartService {
-addToCart(userId: number, product: CartProduct): Observable<Cart> {
-  const url = `${this.apiUrl}/users/${userId}/cart`;
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-  return this.http.post<Cart>(url, product, { headers }).pipe(
-    catchError(error => {
-      console.error('Failed to add to cart:', error);
-      return throwError(() => new Error('Add to cart failed'));
-    })
-  );
-}
-
   private apiUrl = environment.apiUrl;
 
   private cartSubject = new BehaviorSubject<Cart | null>(null);
@@ -43,10 +30,33 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
     });
   }
 
+  addToCart(userId: number, product: CartProduct): Observable<Cart> {
+    const url = `${this.apiUrl}/users/${userId}/cart`;
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<any>(url, product, { headers }).pipe(
+      switchMap(() => this.getUserCart(userId)),
+      map(response => this.transformCartResponseToCart(response)),
+      tap(cart => this.setCart(cart)),
+      catchError(error => {
+        console.error('Failed to add to cart:', error);
+        return throwError(() => new Error('Add to cart failed'));
+      })
+    );
+  }
+
   getUserCart(user_id: any): Observable<CartResponse> {
+    console.log(`Fetching cart for user id: ${user_id}`);
     return this.http.get<CartResponse>(`${this.apiUrl}/carts/user/${user_id}`, {
       headers: this.getAuthHeaders()
-    });
+    }).pipe(
+      tap(res => console.log('CartService.getUserCart response:', res)),
+      catchError(error => {
+        console.error('CartService.getUserCart error:', error);
+        return throwError(() => new Error('Failed to get user cart'));
+      })
+    );
   }
 
   updateCart(userId: number, product_id: number, product_quantity: number): Observable<Cart> {
@@ -119,9 +129,7 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
 
   setCart(cart: Cart): void {
     this.saveCartToStorage(cart);
-
-
-    this.cartSubject.next(this.readCartFromStorage());
+    this.cartSubject.next(cart);
     this.totalProductsSubject.next(this.calculateTotalProducts(cart));
   }
 
@@ -147,6 +155,7 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
   }
 
   saveCartToStorage(cart: Cart) {
+    console.log('Saving cart to storage:', cart);
     localStorage.setItem('userCart', JSON.stringify(cart));
   }
 
@@ -154,5 +163,10 @@ addToCart(userId: number, product: CartProduct): Observable<Cart> {
     let storedCart = localStorage.getItem('userCart');
     return storedCart ? JSON.parse(storedCart) : null;
   }
-  
+
+  private transformCartResponseToCart(response: CartResponse): Cart {
+    const cart = response.carts?.[0];
+    if (!cart) throw new Error('Cart not found in response');
+    return cart;
+  }
 }

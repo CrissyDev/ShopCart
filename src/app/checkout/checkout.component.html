@@ -10,7 +10,29 @@
 
   <div *ngIf="step === 1">
     <h2>Step 1: Review Your Order</h2>
-    <p>Your cart items and order summary would appear here.</p>
+
+    <div *ngIf="cart">
+      <p><strong>Order ID:</strong> {{ orderId }}</p>
+      <div class="cart-items-review">
+        <div class="review-item" *ngFor="let item of cart.products">
+          <img [src]="item.thumbnail" class="thumbnail" alt="{{ item.title }}">
+          <div class="details">
+            <h4>{{ item.title }}</h4>
+            <p>Qty: {{ item.quantity }}</p>
+            <p>Price: ${{ item.price }}</p>
+            <p>Total: ${{ (item.price * item.quantity).toFixed(2) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <p><strong>Subtotal:</strong> ${{ cart.total.toFixed(2) }}</p>
+        <p><strong>Discount:</strong> - ${{ (cart.total - cart.discountedTotal).toFixed(2) }}</p>
+        <p><strong>Delivery:</strong> $15.00</p>
+        <p><strong>Final Total:</strong> ${{ (cart.discountedTotal + 15).toFixed(2) }}</p>
+      </div>
+    </div>
+
     <button (click)="nextStep()">Continue to Payment</button>
   </div>
 

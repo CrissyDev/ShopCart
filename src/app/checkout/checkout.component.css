@@ -83,3 +83,39 @@ button:hover {
     transform: scale(1);
   }
 }
+
+.cart-items-review {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.review-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.details {
+  flex: 1;
+  text-align: left;
+}
+
+.summary {
+  text-align: left;
+  margin-top: 1rem;
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 8px;
+}
