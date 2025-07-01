@@ -1,85 +1,160 @@
-<div class="container py-5">
-  <h2 class="text-center mb-4">Checkout</h2>
+<div class="checkout-container" *ngIf="!success; else successMessage">
+  <h1>Checkout</h1>
 
-  <!--Order Summary-->  
-  <div *ngIf="step === 1">
-    <h4>Order Summary</h4>
-    <div *ngIf="cart && cart.products.length > 0; else emptyCart">
-      <ul class="list-group mb-3">
-        <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let product of cart.products">
-          <div>
-            <h6 class="my-0">{{ product.title }}</h6>
-            <small class="text-muted">Qty: {{ product.quantity }}</small>
-          </div>
-          <span class="text-muted">Ksh {{ product.total | number:'1.2-2'}}</span>
-        </li>
-      </ul>
+  <!-- Step Navigation -->
+  <div class="step-navigation">
+    <div [class.active]="step === 1">1. Review Order</div>
+    <div [class.active]="step === 2">2. Payment Info</div>
+    <div [class.active]="step === 3">3. Confirm</div>
+  </div>
 
-      <ul class="list-group mb-3">
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Subtotal</span>
-          <strong>Ksh {{ cart.total | number:'1.2-2' }}</strong>
-        </li>
-        <li class="list-group-item d-flex justify-content-between text-success">
-          <span>Discount</span>
-          <strong>- Ksh {{ cart.discountedTotal | number:'1.2-2' }}</strong>
-        </li>
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Delivery</span>
-          <strong>Ksh 15</strong>
-        </li>
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Total</span>
-          <strong>Ksh {{ cart.totalProducts}}</strong>
-        </li>
-      </ul>
+  <!-- Step 1: Review Your Order -->
+  <div *ngIf="step === 1" class="card step-card-content">
+    <h2>Step 1: Review Your Order</h2>
 
-      <div class="text-end">
-        <button class="btn btn-success" (click)="nextStep()">Proceed to Payment</button>
-      </div>
-    </div>
+    <ng-container *ngIf="cart?.products as products; else emptyCart">
+      <ng-container *ngIf="products.length > 0; else emptyCart">
+        <div class="cart-items-review">
+          <table>
+            <thead>
+              <tr>
+                <th>Thumbnail</th>
+                <th>Title</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of products">
+                <td><img [src]="item.thumbnail" alt="{{ item.title }}" class="thumbnail" /></td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price.toFixed(2) }}</td>
+                <td>${{ (item.price * item.quantity).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary">
+          <p><strong>Subtotal:</strong> ${{ subtotal.toFixed(2) }}</p>
+          <p><strong>Discount:</strong> - ${{ discount.toFixed(2) }}</p>
+          <p><strong>Delivery:</strong> ${{ deliveryFee.toFixed(2) }}</p>
+          <p><strong>Final Total:</strong> ${{ finalAmount.toFixed(2) }}</p>
+        </div>
+
+        <button (click)="nextStep()">Continue to Payment</button>
+      </ng-container>
+    </ng-container>
 
     <ng-template #emptyCart>
-      <p class="text-muted">Your cart is empty.</p>
+      <p>Your cart is empty. Please add products to proceed.</p>
     </ng-template>
   </div>
 
   <!-- Step 2: Payment Info -->
-  <div *ngIf="step === 2">
-    <h4>Payment Details</h4>
-    <form>
-      <div class="mb-3">
-        <label for="name" class="form-label">Name on Card</label>
-        <input type="text" id="name" class="form-control" [(ngModel)]="paymentDetails.name" name="name">
-      </div>
-      <div class="mb-3">
-        <label for="cardNumber" class="form-label">Card Number</label>
-        <input type="text" id="cardNumber" class="form-control" [(ngModel)]="paymentDetails.cardNumber" name="cardNumber">
-      </div>
-      <div class="mb-3 row">
-        <div class="col">
-          <label for="expiry" class="form-label">Expiry</label>
-          <input type="text" id="expiry" class="form-control" [(ngModel)]="paymentDetails.expiry" name="expiry">
-        </div>
-        <div class="col">
-          <label for="cvv" class="form-label">CVV</label>
-          <input type="text" id="cvv" class="form-control" [(ngModel)]="paymentDetails.cvv" name="cvv">
-        </div>
-      </div>
-      <div class="text-end">
-        <button class="btn btn-primary" (click)="nextStep()">Pay Ksh {{ finalAmount }}</button>
-      </div>
+  <div *ngIf="step === 2" class="card step-card-content">
+    <h2>Step 2: Payment Info</h2>
+
+    <div class="payment-options">
+      <button (click)="paymentMethod = 'mpesa'" [class.active]="paymentMethod === 'mpesa'">
+        <i class="fa fa-phone"></i> M-Pesa
+      </button>
+      <button (click)="paymentMethod = 'paypal'" [class.active]="paymentMethod === 'paypal'">
+        <i class="fa fa-smile"></i> PayPal
+      </button>
+      <button (click)="paymentMethod = 'card'" [class.active]="paymentMethod === 'card'">
+        <i class="fa fa-credit-card"></i> Card
+      </button>
+    </div>
+
+    <form class="payment-form" *ngIf="paymentMethod === 'mpesa'">
+      <label for="mpesaName">Name:</label>
+      <input id="mpesaName" type="text" [(ngModel)]="paymentDetails.name" name="mpesaName" placeholder="Full Name" />
+
+      <label for="mpesaPhone">Phone Number:</label>
+      <input
+        id="mpesaPhone"
+        type="tel"
+        [(ngModel)]="paymentDetails.phone"
+        name="mpesaPhone"
+        placeholder="07XXXXXXXX"
+        pattern="[0-9]{10}"
+      />
     </form>
+
+    <form class="payment-form" *ngIf="paymentMethod === 'paypal'">
+      <label for="paypalEmail">PayPal Email:</label>
+      <input
+        id="paypalEmail"
+        type="email"
+        [(ngModel)]="paymentDetails.paypal"
+        name="paypalEmail"
+        placeholder="example@email.com"
+        pattern="^[^\\d]+@[^\\d]+\\.[^\\d]+$"
+      />
+    </form>
+
+    <form class="payment-form" *ngIf="paymentMethod === 'card'">
+      <label for="cardName">Name on Card:</label>
+      <input id="cardName" type="text" [(ngModel)]="paymentDetails.name" name="cardName" />
+
+      <label for="cardNumber">Card Number:</label>
+      <input
+        id="cardNumber"
+        type="text"
+        [(ngModel)]="paymentDetails.cardNumber"
+        name="cardNumber"
+        maxlength="16"
+        pattern="[0-9]{16}"
+      />
+
+      <label for="expiryDate">Expiry Date:</label>
+      <input id="expiryDate" type="text" [(ngModel)]="paymentDetails.expiry" name="expiryDate" placeholder="MM/YY" />
+
+      <label for="cvv">CVV:</label>
+      <input
+        id="cvv"
+        type="text"
+        [(ngModel)]="paymentDetails.cvv"
+        name="cvv"
+        maxlength="3"
+        pattern="[0-9]{3}"
+      />
+    </form>
+
+    <div class="summary">
+      <p><strong>Total to Pay:</strong> ${{ finalAmount.toFixed(2) }}</p>
+    </div>
+
+    <button (click)="nextStep()">Continue to Confirm</button>
   </div>
 
-  <!-- Step 3: Success Message -->
-  <div *ngIf="step === 3 && success">
-    <div class="alert alert-success text-center">
-      <h4 class="alert-heading">Order Confirmed!</h4>
-      <p>Your payment was successful.</p>
-      <hr>
-      <p class="mb-0">Order ID: <strong>{{ orderId }}</strong></p>
+  <!-- Step 3: Confirm -->
+  <div *ngIf="step === 3" class="card step-card-content">
+    <h2>Step 3: Confirm Your Order</h2>
+    <p>Order ID: <strong>{{ orderId }}</strong></p>
+    <p>Payment Method: <strong>{{ paymentMethod | uppercase }}</strong></p>
+    <p>Total to Pay: <strong>KES {{ finalAmount.toFixed(2) }}</strong></p>
+
+    <div *ngIf="loading" class="loader-container">
+      <p>Please wait as we confirm your order...</p>
+      <div class="loader"></div>
     </div>
   </div>
+
+  <div class="actions">
+    <button *ngIf="step === 3 && !loading" (click)="completePurchase()">Place Order</button>
+  </div>
 </div>
+
+<!-- Success message -->
+<ng-template #successMessage>
+  <div class="success-message">
+    <i class="fa fa-check-circle"></i>
+    <h2>Order Placed Successfully!</h2>
+    <p>Your order <strong>{{ orderId }}</strong> has been placed.</p>
+    <p>Thank you for shopping with us!</p>
+  </div>
+</ng-template>

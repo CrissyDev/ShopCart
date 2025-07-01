@@ -7,26 +7,43 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
-  imports:[CommonModule, FormsModule, RouterModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
+placeOrder() {
+throw new Error('Method not implemented.');
+}
+mpesaNumber: any;
+paypalEmail: any;
+selectPayment(arg0: string) {
+throw new Error('Method not implemented.');
+}
   cart: Cart | null = null;
   orderId: string = '';
-  totalAmount: number = 0;
+  subtotal: number = 0;
   discount: number = 0;
+  deliveryFee: number = 15;
   finalAmount: number = 0;
 
   step: number = 1;
   success: boolean = false;
+  loading: boolean = false;
 
-  paymentDetails = {
+  paymentMethod: string = '';
+
+  paymentDetails: any = {
     name: '',
     cardNumber: '',
     expiry: '',
-    cvv: ''
+    cvv: '',
+    phone: '',
+    paypal: ''
   };
+selectedPayment: any;
+mpesaName: any;
 
   constructor(private cartService: CartService) {}
 
@@ -52,11 +69,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   calculateOrderSummary(): void {
-    if (!this.cart) return;
+    if (!this.cart || !this.cart.products) return;
 
-    this.totalAmount = this.cart.total || 0;
-    this.discount = this.cart.discountedTotal ? this.cart.total - this.cart.discountedTotal : 0;
-    this.finalAmount = (this.cart.discountedTotal || this.cart.total) + 15; 
+    this.subtotal = this.cart.products.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    this.discount = this.cart.products.reduce((sum, item) => {
+      const originalTotal = item.price * item.quantity;
+      return sum + (originalTotal - item.discountedTotal);
+    }, 0);
+
+    this.finalAmount = parseFloat(
+      (this.subtotal - this.discount + this.deliveryFee).toFixed(2)
+    );
   }
 
   generateOrderId(): string {
@@ -65,16 +92,65 @@ export class CheckoutComponent implements OnInit {
   }
 
   nextStep(): void {
-    if (this.step < 3) {
-      this.step += 1;
-    } else {
+    if (this.step === 2 && !this.validatePaymentDetails()) {
+      alert('Please fill in all required payment details correctly.');
+      return;
+    }
+
+    if (this.step === 3) {
       this.completePurchase();
+    } else {
+      this.step += 1;
     }
   }
 
+  validatePaymentDetails(): boolean {
+    if (this.paymentMethod === 'mpesa') {
+      return /^[0-9]{10}$/.test(this.paymentDetails.phone);
+    }
+
+    if (this.paymentMethod === 'paypal') {
+      return (
+        this.paymentDetails.paypal &&
+        this.paymentDetails.paypal.includes('@') &&
+        !/^\d+$/.test(this.paymentDetails.paypal)
+      );
+    }
+
+    if (this.paymentMethod === 'card') {
+      const cardValid = /^[0-9]{16}$/.test(this.paymentDetails.cardNumber);
+      const cvvValid = /^[0-9]{3}$/.test(this.paymentDetails.cvv);
+      const nameValid = this.paymentDetails.name.trim().length > 0;
+      const expiryValid = this.paymentDetails.expiry.trim().length > 0;
+      return cardValid && cvvValid && nameValid && expiryValid;
+    }
+
+    return false;
+  }
+
   completePurchase(): void {
-    this.success = true;
-    this.cartService.readCartFromStorage();
-    this.cart = null;
+    this.loading = true;
+
+    setTimeout(() => {
+      this.triggerConfetti();
+      this.success = true;
+      this.loading = false;
+
+      setTimeout(() => {
+        this.cartService.clearCart();
+        this.cart = null;
+        window.location.href = '/';
+      }, 5000);
+    }, 2000);
+  }
+
+  triggerConfetti(): void {
+    import('canvas-confetti' as any).then((confetti: any) => {
+      confetti.default({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    });
   }
 }

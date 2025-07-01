@@ -169,4 +169,11 @@ export class CartService {
     if (!cart) throw new Error('Cart not found in response');
     return cart;
   }
+
+  
+  clearCart(): void {
+    this.cartSubject.next(null);
+    this.totalProductsSubject.next(0);
+    localStorage.removeItem('userCart');
+  }
 }
