@@ -144,6 +144,12 @@ mpesaName: any;
     }, 2000);
   }
 
+  goBack(): void {
+  if (this.step > 1) {
+    this.step--;
+  }
+}
+
   triggerConfetti(): void {
     import('canvas-confetti' as any).then((confetti: any) => {
       confetti.default({
@@ -153,4 +159,5 @@ mpesaName: any;
       });
     });
   }
+
 }

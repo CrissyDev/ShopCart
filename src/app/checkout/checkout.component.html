@@ -128,7 +128,10 @@
       <p><strong>Total to Pay:</strong> ${{ finalAmount.toFixed(2) }}</p>
     </div>
 
-    <button (click)="nextStep()">Continue to Confirm</button>
+    <div class="step-actions">
+      <button (click)="goBack()" class="back-btn">Back</button>
+      <button (click)="nextStep()">Continue to Confirm</button>
+    </div>
   </div>
 
   <!-- Step 3: Confirm -->
@@ -142,19 +145,21 @@
       <p>Please wait as we confirm your order...</p>
       <div class="loader"></div>
     </div>
-  </div>
 
-  <div class="actions">
-    <button *ngIf="step === 3 && !loading" (click)="completePurchase()">Place Order</button>
+    <div class="step-actions" *ngIf="!loading">
+      <button (click)="goBack()" class="back-btn">Back</button>
+      <button (click)="completePurchase()">Place Order</button>
+    </div>
   </div>
 </div>
 
-<!-- Success message -->
 <ng-template #successMessage>
-  <div class="success-message">
-    <i class="fa fa-check-circle"></i>
-    <h2>Order Placed Successfully!</h2>
-    <p>Your order <strong>{{ orderId }}</strong> has been placed.</p>
-    <p>Thank you for shopping with us!</p>
+  <div class="success-message-container">
+    <div class="success-message">
+      <i class="fa fa-check-circle"></i>
+      <h2>Order Placed Successfully!</h2>
+      <p>Your order <strong>{{ orderId }}</strong> has been placed.</p>
+      <p>Thank you for shopping with us!</p>
+    </div>
   </div>
 </ng-template>

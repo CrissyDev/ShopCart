@@ -140,7 +140,7 @@
 
 .payment-options button img,
 .payment-options button i {
-  height: 28px;  /* slightly larger icons */
+  height: 28px;  
   width: 28px;
 }
 
@@ -268,4 +268,37 @@ button:hover {
   padding: 1.5rem;
   box-shadow: 0 0 12px rgba(0,0,0,0.1);
   margin-bottom: 1rem;
+}
+
+.success-message-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 300px; 
+}
+
+.success-message {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.success-message i {
+  color: #28a745;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.success-message h2 {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #28a745;
 }
