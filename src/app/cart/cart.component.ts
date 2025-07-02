@@ -89,7 +89,7 @@ export class CartComponent implements OnInit {
           this.recalculateCartTotals();
           this.cartService.saveCartToStorage(this.cart);
           this.loading = false;
-          this.cdr.detectChanges(); // ensure UI updates after API load
+          this.cdr.detectChanges(); 
         },
         error: (err) => {
           console.error('Error loading cart from API:', err);

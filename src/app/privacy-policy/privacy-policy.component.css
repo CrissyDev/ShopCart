@@ -1,49 +1,50 @@
-.privacy-container {
-  max-width: 800px;
-  margin: auto;
+.container {
   padding: 2rem 1rem;
-  font-family: 'Segoe UI', sans-serif;
+}
+
+.terms-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+  background-color: #ffffff;
   color: #333;
-  background-color: #fff;
+  font-family: 'Helvetica Neue', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.header h1 {
-  font-size: 2.5rem;
+.terms-container h1 {
+  font-size: 2rem;
   font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #1cc88a;
 }
 
-.header p {
-  font-size: 1.1rem;
-  margin: 0.5rem 0 1.5rem;
-  color: #666;
-}
-
-.search-box {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-}
-
-.illustration {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.illustration img {
-  width: 180px;
-  max-width: 100%;
-}
-
-.policy-section {
-  line-height: 1.7;
-}
-
-.section-title {
-  color: #1565c0;
-  font-size: 1.3rem;
-  font-weight: 600;
+.terms-container h2 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
   margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.terms-container p,
+.terms-container ul {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.terms-container ul {
+  padding-left: 1.5rem;
+}
+
+.terms-container li {
+  margin-bottom: 0.5rem;
+}
+
+.terms-container {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+  margin-top: 2rem;
 }

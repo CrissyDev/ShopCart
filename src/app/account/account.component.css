@@ -40,11 +40,11 @@
 
 .sidebar li:hover {
   background-color: #f0f0f0;
-  color: #007bff;
+  color: #00ff4c;
 }
 
 .sidebar li.active {
-  background-color: #d9534f;
+  background-color: rgb(61, 100, 3);
   color: white;
   font-weight: bold;
 }
@@ -73,13 +73,13 @@
 }
 
 .order-tabs span:hover {
-  color: #007bff;
+  color: green;
 }
 
 .order-tabs span.active {
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid green;
   font-weight: bold;
-  color: #d9534f;
+  color: rgb(53, 80, 8);
 }
 
 .tab-icon {
@@ -177,7 +177,7 @@
 
 .list-group-item:hover {
   background-color: #f0f0f0;
-  color: #007bff;
+  color: green;
 }
 
 .main-content {
@@ -245,7 +245,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #ff385c;
+  background-color: greenyellow;
   color: #fff;
   font-size: 0.75rem;
   padding: 5px 10px;
@@ -262,7 +262,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #007bff;
+  background-color: green;
   color: #fff;
   font-size: 0.75rem;
   padding: 5px 10px;
@@ -276,12 +276,12 @@
 
 .btn-outline-primary {
   background-color: #fff;
-  color: #007bff;
-  border: 1px solid #007bff;
+  color: green;
+  border: 1px solid green;
 }
 
 .btn-outline-primary:hover {
-  background-color: #007bff;
+  background-color:green;
   color: #fff;
 }
 
@@ -304,5 +304,35 @@
 
 input[type="checkbox"] {
   transform: scale(1.2);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status-badge.pending {
+  background-color: #ffc107; 
+}
+
+.status-badge.completed {
+  background-color: #28a745; 
+}
+
+.status-badge.shipped {
+  background-color: #17a2b8; 
+}
+
+.status-badge.cancelled {
+  background-color: #dc3545; 
+}
+
+.status-badge.delivered {
+  background-color: #007bff; 
 }
 

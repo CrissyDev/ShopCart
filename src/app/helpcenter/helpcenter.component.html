@@ -15,17 +15,6 @@
     <a href="#">return my order?</a>
   </p>
 
-  <div class="category-section">
-    <div
-      class="category-card"
-      *ngFor="let cat of categories"
-      [class.active]="cat.title === 'Order&shipping'"
-    >
-      <span class="icon">{{ cat.icon }}</span>
-      <p>{{ cat.title }}</p>
-    </div>
-  </div>
-
   <h3 class="faq-header">Asked Questions</h3>
 
   <div class="faq-section">

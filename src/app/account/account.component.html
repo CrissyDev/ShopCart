@@ -80,26 +80,31 @@
 
         <!-- My Orders -->
         <div *ngSwitchCase="'My Orders'">
-          <h3>My Orders</h3>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of orders">
-                <td>{{ order.id }}</td>
-                <td>{{ order.date }}</td>
-                <td>{{ order.status }}</td>
-                <td>{{ order.total }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <h3 class="mb-3">My Orders</h3>
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-success">
+      <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.date }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="order.status.toLowerCase()">
+            {{ order.status }}
+          </span>
+        </td>
+        <td>{{ order.total | currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
         <!-- Unpaid Orders -->
         <div *ngSwitchCase="'Unpaid Orders'" class="table-responsive">
@@ -128,7 +133,7 @@
         <td>
           <span>-</span>
         </td>
-        <td>\${{ order.totalCost }}</td>
+        <td>${{ order.totalCost }}</td>
         <td>{{ order.createdDate }}</td>
         <td>
           <span class="text-warning fw-semibold">{{ order.status }}</span>
@@ -170,7 +175,7 @@
           <i *ngIf="order.paid" class="fas fa-check text-success"></i>
           <span *ngIf="!order.paid">-</span>
         </td>
-        <td>\${{ order.totalCost }}</td>
+        <td>${{ order.totalCost }}</td>
         <td>{{ order.createdDate }}</td>
         <td>
           <span class="text-success fw-semibold">{{ order.status }}</span>
@@ -228,8 +233,8 @@
           <h5 class="card-title fw-bold">{{ item.brand }}</h5>
           <p class="card-text">{{ item.title }}</p>
           <p class="price">
-            <span class="fw-bold">\${{ item.price }}</span>
-            <span *ngIf="item.originalPrice" class="text-muted text-decoration-line-through ms-2">\${{ item.originalPrice }}</span>
+            <span class="fw-bold">${{ item.price }}</span>
+            <span *ngIf="item.originalPrice" class="text-muted text-decoration-line-through ms-2">${{ item.originalPrice }}</span>
           </p>
           <button
             class="btn btn-dark w-100"
@@ -257,7 +262,7 @@
           <h5 class="card-title fw-bold">{{ item.brand }}</h5>
           <p class="card-text">{{ item.title }}</p>
           <p class="text-muted mb-1">Viewed on: {{ item.viewedOn }}</p>
-          <p class="price fw-bold">\${{ item.price }}</p>
+          <p class="price fw-bold">${{ item.price }}</p>
           <a class="btn btn-outline-primary w-100" href="#">
             <i class="fas fa-eye me-1"></i> View Product
           </a>

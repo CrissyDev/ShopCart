@@ -67,12 +67,13 @@ export class AccountComponent implements OnInit {
 
   selectedOption: string = 'My Account';
 
-  orders = Array.from({ length: 6 }, (_, i) => ({
-    id: `ORD-${1000 + i}`,
-    date: `2024-0${(i % 9) + 1}-12`,
-    status: ['Shipped', 'Pending', 'Delivered'][i % 3],
-    total: `$${(50 + i * 10).toFixed(2)}`
-  }));
+ orders = Array.from({ length: 6 }, (_, i) => ({
+  id: `ORD-${1000 + i}`,
+  date: `2024-0${(i % 9) + 1}-12`,
+  status: ['Shipped', 'Pending', 'Delivered'][i % 3],
+  total: 50 + i * 10 
+}));
+
 
   unpaidOrders = [
     {

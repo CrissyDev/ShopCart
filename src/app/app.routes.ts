@@ -9,7 +9,7 @@ import { WhatsNewComponent } from './whatsnew/whatsnew.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { CartComponent } from './cart/cart.component';
 import { LoginComponent } from './login/login.component'; 
-import { HelpcenterComponent } from './helpcenter/helpcenter.component';
+import { HelpCenterComponent } from './helpcenter/helpcenter.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { AuthGuard } from './auth.guard';
@@ -29,7 +29,7 @@ export const routes: Routes = [
   canActivate: [AuthGuard]
    },
   { path: 'cart', component: CartComponent },
-  {path: 'help-center', component: HelpcenterComponent},
+  {path: 'help-center', component: HelpCenterComponent},
   {path:'terms-of-service' , component:TermsOfServiceComponent},
   {path:'privacy-policy', component:PrivacyPolicyComponent},
   { path: 'products', component: ProductListComponent },
