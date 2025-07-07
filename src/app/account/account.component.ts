@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/users.interface';
+import { ProductService } from '../services/product.service'; 
 
 @Component({
   selector: 'app-account',
@@ -15,6 +16,8 @@ export class AccountComponent implements OnInit {
 
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private productService = inject(ProductService); 
+
   user: User | null = null;
 
   ngOnInit(): void {
@@ -43,6 +46,26 @@ export class AccountComponent implements OnInit {
         username: authUser.username
       };
     }
+
+    this.loadWishListFromProducts(); 
+  }
+
+  loadWishListFromProducts() {
+    this.productService.getProducts().subscribe({
+      next: (res) => {
+        const randomProducts = res.products.sort(() => 0.5 - Math.random()).slice(0, 6);
+        this.wishList = randomProducts.map((p: any) => ({
+          brand: p.brand,
+          title: p.title,
+          image: p.thumbnail,
+          price: p.price,
+          originalPrice: Math.floor(p.price * 1.2),
+          discount: p.discountPercentage ? `${Math.round(p.discountPercentage)}% Off` : null,
+          inBag: false
+        }));
+      },
+      error: (err) => console.error('Failed to fetch wishlist products:', err)
+    });
   }
 
   buyNow(_t173: { title: string; image: string; }) {
@@ -67,13 +90,12 @@ export class AccountComponent implements OnInit {
 
   selectedOption: string = 'My Account';
 
- orders = Array.from({ length: 6 }, (_, i) => ({
-  id: `ORD-${1000 + i}`,
-  date: `2024-0${(i % 9) + 1}-12`,
-  status: ['Shipped', 'Pending', 'Delivered'][i % 3],
-  total: 50 + i * 10 
-}));
-
+  orders = Array.from({ length: 6 }, (_, i) => ({
+    id: `ORD-${1000 + i}`,
+    date: `2024-0${(i % 9) + 1}-12`,
+    status: ['Shipped', 'Pending', 'Delivered'][i % 3],
+    total: 50 + i * 10 
+  }));
 
   unpaidOrders = [
     {
@@ -168,52 +190,7 @@ export class AccountComponent implements OnInit {
     }
   ];
 
-  wishList = [
-    {
-      brand: 'Louis Vuitton',
-      title: 'Star Trail ankle boot 8CM',
-      image: 'https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg',
-      price: 1350,
-      originalPrice: 1500,
-      discount: '10% Off',
-      inBag: false
-    },
-    {
-      brand: 'Prada',
-      title: 'Saffiano leather medium bag',
-      image: 'https://images.pexels.com/photos/3689163/pexels-photo-3689163.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 1990,
-      inBag: true
-    },
-    {
-      brand: 'Valentino',
-      title: 'Roman stud handle bag',
-      image: 'https://images.pexels.com/photos/1394882/pexels-photo-1394882.jpeg',
-      price: 3150,
-      inBag: false
-    },
-    {
-      brand: 'Balmain',
-      title: 'B-Bold low-top sneakers',
-      image: 'https://images.pexels.com/photos/2529147/pexels-photo-2529147.jpeg',
-      price: 1100,
-      inBag: true
-    },
-    {
-      brand: 'Dior',
-      title: 'Striped handbag',
-      image: 'https://images.pexels.com/photos/12428342/pexels-photo-12428342.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 1980,
-      inBag: false
-    },
-    {
-      brand: 'Gucci',
-      title: 'Monogram leather handbag',
-      image: 'https://images.pexels.com/photos/27035625/pexels-photo-27035625/free-photo-of-a-woman-wearing-black-heels-and-holding-a-bag.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 2200,
-      inBag: false
-    }
-  ];
+  wishList: any[] = []; 
 
   toggleBag(item: any) {
     item.inBag = !item.inBag;

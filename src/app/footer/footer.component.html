@@ -33,9 +33,28 @@
       <p class="text-success mb-2 fw-semibold">— Try it now!</p>
       <h2 class="fw-bold mb-3">Unlock Exclusive Discounts & Cashback Offers</h2>
       <p class="text-muted mb-3">We curate the latest and most valuable discounts from your online stores, helping you save more on every purchase.</p>
-      <div class="input-group w-75">
-        <input type="email" class="form-control rounded-start" placeholder="Enter your email">
-        <button class="btn btn-success rounded-end">Get Started</button>
+
+      <form #emailForm="ngForm" (ngSubmit)="sendEmail(emailForm)" class="input-group w-75">
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          #emailInput="ngModel"
+          class="form-control rounded-start"
+          placeholder="Enter your email"
+          required
+          email
+        />
+        <button class="btn btn-success rounded-end" type="submit" [disabled]="emailForm.invalid">Send</button>
+      </form>
+
+      <div *ngIf="emailInput.invalid && emailInput.touched" class="text-danger mt-2">
+        <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
+        <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</div>
+      </div>
+
+      <div *ngIf="emailSent" class="text-success mt-2">
+        Thanks! Your email has been received.
       </div>
     </div>
   </div>

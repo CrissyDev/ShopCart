@@ -42,16 +42,6 @@ export class ProductDetailComponent implements OnInit {
   const cartId = 1; 
   const productData = [{ id: this.product.id, quantity: this.quantity }];
 
-  // this.cartService.updateCart(cartId, productData).subscribe({
-  //   next: (res) => {
-  //     console.log('Cart updated:', res);
-  //     alert(`${this.product.title} added to cart!`);
-  //   },
-  //   error: (err) => {
-  //     console.error('Error updating cart:', err);
-  //     alert('Failed to add to cart.');
-  //   }
-  // });
 }
 
   buyNow(): void {
