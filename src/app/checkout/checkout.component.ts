@@ -13,14 +13,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
-placeOrder() {
-throw new Error('Method not implemented.');
-}
-mpesaNumber: any;
-paypalEmail: any;
-selectPayment(arg0: string) {
-throw new Error('Method not implemented.');
-}
   cart: Cart | null = null;
   orderId: string = '';
   subtotal: number = 0;
@@ -42,8 +34,6 @@ throw new Error('Method not implemented.');
     phone: '',
     paypal: ''
   };
-selectedPayment: any;
-mpesaName: any;
 
   constructor(private cartService: CartService) {}
 
@@ -105,24 +95,30 @@ mpesaName: any;
   }
 
   validatePaymentDetails(): boolean {
-    if (this.paymentMethod === 'mpesa') {
-      return /^[0-9]{10}$/.test(this.paymentDetails.phone);
-    }
+    const nameRegex = /^[A-Za-z ]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[^\d][\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const cardNumberRegex = /^[0-9]{16}$/;
+    const cvvRegex = /^[0-9]{3}$/;
 
-    if (this.paymentMethod === 'paypal') {
+    if (this.paymentMethod === 'mpesa') {
       return (
-        this.paymentDetails.paypal &&
-        this.paymentDetails.paypal.includes('@') &&
-        !/^\d+$/.test(this.paymentDetails.paypal)
+        nameRegex.test(this.paymentDetails.name) &&
+        phoneRegex.test(this.paymentDetails.phone)
       );
     }
 
+    if (this.paymentMethod === 'paypal') {
+      return emailRegex.test(this.paymentDetails.paypal);
+    }
+
     if (this.paymentMethod === 'card') {
-      const cardValid = /^[0-9]{16}$/.test(this.paymentDetails.cardNumber);
-      const cvvValid = /^[0-9]{3}$/.test(this.paymentDetails.cvv);
-      const nameValid = this.paymentDetails.name.trim().length > 0;
-      const expiryValid = this.paymentDetails.expiry.trim().length > 0;
-      return cardValid && cvvValid && nameValid && expiryValid;
+      return (
+        nameRegex.test(this.paymentDetails.name) &&
+        cardNumberRegex.test(this.paymentDetails.cardNumber) &&
+        this.paymentDetails.expiry.trim().length > 0 &&
+        cvvRegex.test(this.paymentDetails.cvv)
+      );
     }
 
     return false;
@@ -145,10 +141,23 @@ mpesaName: any;
   }
 
   goBack(): void {
-  if (this.step > 1) {
-    this.step--;
+    if (this.step > 1) {
+      this.step--;
+    }
   }
-}
+
+  navigateToCart(): void {
+    window.location.href = '/cart';
+  }
+
+  placeOrder(): void {
+    if (!this.cart || this.finalAmount <= 0) {
+      alert('Your cart is empty or total amount is invalid.');
+      return;
+    }
+
+    this.nextStep();
+  }
 
   triggerConfetti(): void {
     import('canvas-confetti' as any).then((confetti: any) => {
@@ -159,5 +168,4 @@ mpesaName: any;
       });
     });
   }
-
 }

@@ -9,7 +9,7 @@
   </div>
 
   <!-- Step 1: Review Your Order -->
-  <div *ngIf="step === 1" class="card step-card-content">
+  <div *ngIf="step === 1" class="card step-card-content step-section">
     <h2>Step 1: Review Your Order</h2>
 
     <ng-container *ngIf="cart?.products as products; else emptyCart">
@@ -44,7 +44,10 @@
           <p><strong>Final Total:</strong> ${{ finalAmount.toFixed(2) }}</p>
         </div>
 
-        <button (click)="nextStep()">Continue to Payment</button>
+        <div class="step-actions">
+          <button class="back-btn" (click)="navigateToCart()">Back to Cart</button>
+          <button (click)="nextStep()">Continue to Payment</button>
+        </div>
       </ng-container>
     </ng-container>
 
@@ -54,7 +57,7 @@
   </div>
 
   <!-- Step 2: Payment Info -->
-  <div *ngIf="step === 2" class="card step-card-content">
+  <div *ngIf="step === 2" class="card step-card-content step-section">
     <h2>Step 2: Payment Info</h2>
 
     <div class="payment-options">
@@ -69,9 +72,19 @@
       </button>
     </div>
 
+    <!-- M-Pesa Form -->
     <form class="payment-form" *ngIf="paymentMethod === 'mpesa'">
       <label for="mpesaName">Name:</label>
-      <input id="mpesaName" type="text" [(ngModel)]="paymentDetails.name" name="mpesaName" placeholder="Full Name" />
+      <input
+        id="mpesaName"
+        type="text"
+        [(ngModel)]="paymentDetails.name"
+        name="mpesaName"
+        placeholder="Full Name"
+        pattern="^[A-Za-z\s]+$"
+        title="Only letters allowed"
+        required
+      />
 
       <label for="mpesaPhone">Phone Number:</label>
       <input
@@ -80,10 +93,13 @@
         [(ngModel)]="paymentDetails.phone"
         name="mpesaPhone"
         placeholder="07XXXXXXXX"
-        pattern="[0-9]{10}"
+        pattern="^[0-9]{10}$"
+        title="Enter 10-digit phone number"
+        required
       />
     </form>
 
+    <!-- PayPal Form -->
     <form class="payment-form" *ngIf="paymentMethod === 'paypal'">
       <label for="paypalEmail">PayPal Email:</label>
       <input
@@ -92,13 +108,24 @@
         [(ngModel)]="paymentDetails.paypal"
         name="paypalEmail"
         placeholder="example@email.com"
-        pattern="^[^\\d]+@[^\\d]+\\.[^\\d]+$"
+        pattern="^[^\d][\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+        title="Enter a valid email address"
+        required
       />
     </form>
 
+    <!-- Card Form -->
     <form class="payment-form" *ngIf="paymentMethod === 'card'">
       <label for="cardName">Name on Card:</label>
-      <input id="cardName" type="text" [(ngModel)]="paymentDetails.name" name="cardName" />
+      <input
+        id="cardName"
+        type="text"
+        [(ngModel)]="paymentDetails.name"
+        name="cardName"
+        pattern="^[A-Za-z\s]+$"
+        title="Only letters allowed"
+        required
+      />
 
       <label for="cardNumber">Card Number:</label>
       <input
@@ -107,11 +134,22 @@
         [(ngModel)]="paymentDetails.cardNumber"
         name="cardNumber"
         maxlength="16"
-        pattern="[0-9]{16}"
+        pattern="^[0-9]{16}$"
+        title="Enter a 16-digit card number"
+        required
       />
 
       <label for="expiryDate">Expiry Date:</label>
-      <input id="expiryDate" type="text" [(ngModel)]="paymentDetails.expiry" name="expiryDate" placeholder="MM/YY" />
+      <input
+        id="expiryDate"
+        type="text"
+        [(ngModel)]="paymentDetails.expiry"
+        name="expiryDate"
+        placeholder="MM/YY"
+        pattern="^(0[1-9]|1[0-2])\/\d{2}$"
+        title="Format must be MM/YY"
+        required
+      />
 
       <label for="cvv">CVV:</label>
       <input
@@ -120,7 +158,9 @@
         [(ngModel)]="paymentDetails.cvv"
         name="cvv"
         maxlength="3"
-        pattern="[0-9]{3}"
+        pattern="^[0-9]{3}$"
+        title="3-digit CVV code"
+        required
       />
     </form>
 
@@ -129,13 +169,13 @@
     </div>
 
     <div class="step-actions">
-      <button (click)="goBack()" class="back-btn">Back</button>
+      <button class="back-btn" (click)="goBack()">Back</button>
       <button (click)="nextStep()">Continue to Confirm</button>
     </div>
   </div>
 
   <!-- Step 3: Confirm -->
-  <div *ngIf="step === 3" class="card step-card-content">
+  <div *ngIf="step === 3" class="card step-card-content step-section">
     <h2>Step 3: Confirm Your Order</h2>
     <p>Order ID: <strong>{{ orderId }}</strong></p>
     <p>Payment Method: <strong>{{ paymentMethod | uppercase }}</strong></p>
@@ -147,7 +187,7 @@
     </div>
 
     <div class="step-actions" *ngIf="!loading">
-      <button (click)="goBack()" class="back-btn">Back</button>
+      <button class="back-btn" (click)="goBack()">Back</button>
       <button (click)="completePurchase()">Place Order</button>
     </div>
   </div>

@@ -136,7 +136,17 @@
         <td>${{ order.totalCost }}</td>
         <td>{{ order.createdDate }}</td>
         <td>
-          <span class="text-warning fw-semibold">{{ order.status }}</span>
+          <span 
+            class="badge fw-semibold px-2 py-1" 
+            [ngClass]="{
+              'bg-warning text-dark': order.status === 'Pending',
+              'bg-danger': order.status === 'Overdue',
+              'bg-secondary': order.status === 'Processing',
+              'bg-info text-dark': order.status === 'Awaiting Payment',
+              'bg-success': order.status === 'Paid'
+            }">
+            {{ order.status }}
+          </span>
         </td>
         <td>
           <button class="btn btn-sm btn-outline-primary me-1">View</button>
