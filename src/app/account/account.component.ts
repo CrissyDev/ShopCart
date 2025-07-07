@@ -216,6 +216,7 @@ export class AccountComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (res) => {
         const lastProducts = res.products.slice(-6).map((p: any) => ({
+          id: p.id, 
           brand: p.brand,
           title: p.title,
           image: p.thumbnail,
