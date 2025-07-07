@@ -4,6 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/users.interface';
 import { ProductService } from '../services/product.service'; 
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-account',
@@ -17,64 +18,14 @@ export class AccountComponent implements OnInit {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private productService = inject(ProductService); 
+  private router = inject(Router);  
 
   user: User | null = null;
 
-  ngOnInit(): void {
-    const authUser = this.authService.readAuthUserFromStorage();
-    console.log("Auth user:", authUser);
+  wishList: any[] = []; 
 
-    if (authUser !== null) {
-      this.user = {
-        email: authUser.email,
-        phone: authUser.phone,
-        address: '123 Green Street, Nairobi, Kenya',
-        gender: 'Male',
-        birthDate: authUser.birthDate,
-        country: 'Kenya',
-        joined: '2023-01-10',
-        image: authUser.image,
-        billingAddress: '456 Billing Lane, Nairobi, Kenya',
-        paymentMethods: ['PayPal', 'Mpesa'],
-        royaltyPoints: 320,
-        createdAt: authUser.createdAt,
-        id: authUser.id,
-        firstName: authUser.firstName,
-        lastName: authUser.lastName,
-        maidenName: authUser.maidenName,
-        age: authUser.age,
-        username: authUser.username
-      };
-    }
-
-    this.loadWishListFromProducts(); 
-  }
-
-  loadWishListFromProducts() {
-    this.productService.getProducts().subscribe({
-      next: (res) => {
-        const randomProducts = res.products.sort(() => 0.5 - Math.random()).slice(0, 6);
-        this.wishList = randomProducts.map((p: any) => ({
-          brand: p.brand,
-          title: p.title,
-          image: p.thumbnail,
-          price: p.price,
-          originalPrice: Math.floor(p.price * 1.2),
-          discount: p.discountPercentage ? `${Math.round(p.discountPercentage)}% Off` : null,
-          inBag: false
-        }));
-      },
-      error: (err) => console.error('Failed to fetch wishlist products:', err)
-    });
-  }
-
-  buyNow(_t173: { title: string; image: string; }) {
-    throw new Error('Method not implemented.');
-  }
-
-  addToCart(_t173: { title: string; image: string; }) {
-    throw new Error('Method not implemented.');
-  }
+ 
+  recentViews: any[] = [];
 
   sidebarOptions: string[] = [
     'My Account',
@@ -190,57 +141,6 @@ export class AccountComponent implements OnInit {
     }
   ];
 
-  wishList: any[] = []; 
-
-  toggleBag(item: any) {
-    item.inBag = !item.inBag;
-  }
-
-  recentViews = [
-    {
-      brand: 'Fendi',
-      title: 'Mini leather shoulder bag',
-      image: 'https://images.pexels.com/photos/8801089/pexels-photo-8801089.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 1450,
-      viewedOn: 'June 3, 2025'
-    },
-    {
-      brand: 'Versace',
-      title: 'Baroque Print Shirt',
-      image: 'https://images.pexels.com/photos/32408965/pexels-photo-32408965/free-photo-of-stylish-man-in-vintage-floral-shirt-posing-indoors.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 890,
-      viewedOn: 'June 3, 2025'
-    },
-    {
-      brand: 'Chanel',
-      title: 'Leather Flap Bag',
-      image: 'https://images.pexels.com/photos/6538433/pexels-photo-6538433.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 3000,
-      viewedOn: 'June 4, 2025'
-    },
-    {
-      brand: 'Nike',
-      title: 'Air Max 270',
-      image: 'https://images.pexels.com/photos/4252970/pexels-photo-4252970.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 120,
-      viewedOn: 'June 4, 2025'
-    },
-    {
-      brand: 'Adidas',
-      title: 'Ultraboost 22',
-      image: 'https://images.pexels.com/photos/7394378/pexels-photo-7394378.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 140,
-      viewedOn: 'June 5, 2025'
-    },
-    {
-      brand: 'Burberry',
-      title: 'Plaid Trench Coat',
-      image: 'https://images.pexels.com/photos/4057673/pexels-photo-4057673.jpeg?auto=compress&cs=tinysrgb&w=600',
-      price: 1850,
-      viewedOn: 'June 5, 2025'
-    }
-  ];
-
   messages = [
     { from: 'Support', content: 'Your order is confirmed', date: '2025-06-01', unread: true },
     { from: 'Jane Doe', content: 'Can we talk?', date: '2025-06-02', unread: false }
@@ -263,6 +163,75 @@ export class AccountComponent implements OnInit {
     }
   ];
 
+  ngOnInit(): void {
+    const authUser = this.authService.readAuthUserFromStorage();
+    console.log("Auth user:", authUser);
+
+    if (authUser !== null) {
+      this.user = {
+        email: authUser.email,
+        phone: authUser.phone,
+        address: '123 Green Street, Nairobi, Kenya',
+        gender: 'Male',
+        birthDate: authUser.birthDate,
+        country: 'Kenya',
+        joined: '2023-01-10',
+        image: authUser.image,
+        billingAddress: '456 Billing Lane, Nairobi, Kenya',
+        paymentMethods: ['PayPal', 'Mpesa'],
+        royaltyPoints: 320,
+        createdAt: authUser.createdAt,
+        id: authUser.id,
+        firstName: authUser.firstName,
+        lastName: authUser.lastName,
+        maidenName: authUser.maidenName,
+        age: authUser.age,
+        username: authUser.username
+      };
+    }
+
+    this.loadWishListFromProducts();
+    this.loadRecentViewsFromProducts();
+  }
+
+  loadWishListFromProducts() {
+    this.productService.getProducts().subscribe({
+      next: (res) => {
+        const randomProducts = res.products.sort(() => 0.5 - Math.random()).slice(0, 6);
+        this.wishList = randomProducts.map((p: any) => ({
+          brand: p.brand,
+          title: p.title,
+          image: p.thumbnail,
+          price: p.price,
+          originalPrice: Math.floor(p.price * 1.2),
+          discount: p.discountPercentage ? `${Math.round(p.discountPercentage)}% Off` : null,
+          inBag: false
+        }));
+      },
+      error: (err) => console.error('Failed to fetch wishlist products:', err)
+    });
+  }
+
+  loadRecentViewsFromProducts() {
+    this.productService.getProducts().subscribe({
+      next: (res) => {
+        const lastProducts = res.products.slice(-6).map((p: any) => ({
+          brand: p.brand,
+          title: p.title,
+          image: p.thumbnail,
+          price: p.price,
+          viewedOn: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        }));
+        this.recentViews = lastProducts;
+      },
+      error: (err) => console.error('Failed to fetch recent views:', err)
+    });
+  }
+
+  toggleBag(item: any) {
+    item.inBag = !item.inBag;
+  }
+
   selectOption(option: string) {
     this.selectedOption = option;
   }
@@ -282,11 +251,24 @@ export class AccountComponent implements OnInit {
     }
   }
 
+ 
+  viewProduct(productId: number) {
+    this.router.navigate(['/product', productId]);
+  }
+
   checkout(order: any) {
     console.log('Checkout for:', order);
   }
 
   deleteOrder(order: any) {
     console.log('Delete order:', order);
+  }
+
+  buyNow(_t173: { title: string; image: string; }) {
+    throw new Error('Method not implemented.');
+  }
+
+  addToCart(_t173: { title: string; image: string; }) {
+    throw new Error('Method not implemented.');
   }
 }

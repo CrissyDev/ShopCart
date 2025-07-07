@@ -260,28 +260,27 @@
   </div>
 </div>
 
-        <!-- Recent Views -->
-       <div *ngSwitchCase="'Recent Views'" class="wishlist-section">
+    <!-- Recent Views -->
+<div *ngSwitchCase="'Recent Views'" class="wishlist-section">
   <h3 class="mb-4">Recently Viewed Items</h3>
   <div class="row g-4">
     <div class="col-md-4" *ngFor="let item of recentViews">
       <div class="card wishlist-card position-relative">
         <div class="badge badge-viewed">Recently Viewed</div>
-        <img [src]="item.image" class="card-img-top" [alt]="item.title">
+        <img [src]="item.image" class="card-img-top" [alt]="item.title" />
         <div class="card-body">
           <h5 class="card-title fw-bold">{{ item.brand }}</h5>
           <p class="card-text">{{ item.title }}</p>
           <p class="text-muted mb-1">Viewed on: {{ item.viewedOn }}</p>
           <p class="price fw-bold">${{ item.price }}</p>
-          <a class="btn btn-outline-primary w-100" href="#">
+          <button class="btn btn-outline-primary w-100" (click)="viewProduct(item.id)">
             <i class="fas fa-eye me-1"></i> View Product
-          </a>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 
         <!-- Messages  -->
         <div *ngSwitchCase="'Message'">
