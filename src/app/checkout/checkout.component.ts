@@ -34,6 +34,9 @@ export class CheckoutComponent implements OnInit {
     phone: '',
     paypal: ''
   };
+mpesaForm: any;
+paypalForm: any;
+cardForm: any;
 
   constructor(private cartService: CartService) {}
 
@@ -81,7 +84,6 @@ export class CheckoutComponent implements OnInit {
       ((this.subtotal - this.discount) + this.deliveryFee).toFixed(2)
     );
 
-    // Prevent any NaN in display
     if (isNaN(this.subtotal)) this.subtotal = 0;
     if (isNaN(this.discount)) this.discount = 0;
     if (isNaN(this.finalAmount)) this.finalAmount = 0;
@@ -181,3 +183,4 @@ export class CheckoutComponent implements OnInit {
     });
   }
 }
+
