@@ -59,21 +59,32 @@ export class CheckoutComponent implements OnInit {
   }
 
   calculateOrderSummary(): void {
-    if (!this.cart || !this.cart.products) return;
+    if (!this.cart || !Array.isArray(this.cart.products) || this.cart.products.length === 0) {
+      this.subtotal = 0;
+      this.discount = 0;
+      this.finalAmount = 0;
+      return;
+    }
 
-    this.subtotal = this.cart.products.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+    this.subtotal = this.cart.products.reduce((sum, item) => {
+      const productTotal = item.price && item.quantity ? item.price * item.quantity : 0;
+      return sum + productTotal;
+    }, 0);
 
     this.discount = this.cart.products.reduce((sum, item) => {
       const originalTotal = item.price * item.quantity;
-      return sum + (originalTotal - item.discountedTotal);
+      const discounted = item.discountedTotal ?? originalTotal;
+      return sum + (originalTotal - discounted);
     }, 0);
 
     this.finalAmount = parseFloat(
-      (this.subtotal - this.discount + this.deliveryFee).toFixed(2)
+      ((this.subtotal - this.discount) + this.deliveryFee).toFixed(2)
     );
+
+    // Prevent any NaN in display
+    if (isNaN(this.subtotal)) this.subtotal = 0;
+    if (isNaN(this.discount)) this.discount = 0;
+    if (isNaN(this.finalAmount)) this.finalAmount = 0;
   }
 
   generateOrderId(): string {
@@ -100,28 +111,29 @@ export class CheckoutComponent implements OnInit {
     const emailRegex = /^[^\d][\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const cardNumberRegex = /^[0-9]{16}$/;
     const cvvRegex = /^[0-9]{3}$/;
+    const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
 
-    if (this.paymentMethod === 'mpesa') {
-      return (
-        nameRegex.test(this.paymentDetails.name) &&
-        phoneRegex.test(this.paymentDetails.phone)
-      );
+    switch (this.paymentMethod) {
+      case 'mpesa':
+        return (
+          nameRegex.test(this.paymentDetails.name) &&
+          phoneRegex.test(this.paymentDetails.phone)
+        );
+
+      case 'paypal':
+        return emailRegex.test(this.paymentDetails.paypal);
+
+      case 'card':
+        return (
+          nameRegex.test(this.paymentDetails.name) &&
+          cardNumberRegex.test(this.paymentDetails.cardNumber) &&
+          expiryRegex.test(this.paymentDetails.expiry) &&
+          cvvRegex.test(this.paymentDetails.cvv)
+        );
+
+      default:
+        return false;
     }
-
-    if (this.paymentMethod === 'paypal') {
-      return emailRegex.test(this.paymentDetails.paypal);
-    }
-
-    if (this.paymentMethod === 'card') {
-      return (
-        nameRegex.test(this.paymentDetails.name) &&
-        cardNumberRegex.test(this.paymentDetails.cardNumber) &&
-        this.paymentDetails.expiry.trim().length > 0 &&
-        cvvRegex.test(this.paymentDetails.cvv)
-      );
-    }
-
-    return false;
   }
 
   completePurchase(): void {
@@ -151,7 +163,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   placeOrder(): void {
-    if (!this.cart || this.finalAmount <= 0) {
+    if (!this.cart || this.finalAmount <= 0 || isNaN(this.finalAmount)) {
       alert('Your cart is empty or total amount is invalid.');
       return;
     }

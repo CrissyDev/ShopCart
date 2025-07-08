@@ -9,6 +9,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CartService {
+  updateCartCount(cart: Cart) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = environment.apiUrl;
 
   private cartSubject = new BehaviorSubject<Cart | null>(null);

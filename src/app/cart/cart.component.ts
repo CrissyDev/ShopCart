@@ -119,17 +119,17 @@ export class CartComponent implements OnInit {
     if (authUser) {
       this.cartService.updateCart(authUser.id, cartProduct.id, cartProduct.quantity).subscribe({
         next: (updatedCart) => {
-          this.cart = updatedCart; // replace entire cart with updated from server
+          this.cart = updatedCart; 
           this.recalculateCartTotals();
           this.cartService.saveCartToStorage(this.cart);
-          this.cdr.detectChanges(); // trigger UI update immediately
+          this.cdr.detectChanges(); 
         },
         error: (err) => {
           console.error('Failed to update cart on server:', err);
         }
       });
     } else {
-      // Update locally if no user (optional)
+     
       this.recalculateCartTotals();
       this.cartService.saveCartToStorage(this.cart);
       this.cdr.detectChanges();

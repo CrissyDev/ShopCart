@@ -265,15 +265,24 @@
   <h3 class="mb-4">Recently Viewed Items</h3>
   <div class="row g-4">
     <div class="col-md-4" *ngFor="let item of recentViews">
-      <div class="card wishlist-card position-relative">
-        <div class="badge badge-viewed">Recently Viewed</div>
-        <img [src]="item.thumbnail" class="card-img-top" [alt]="item.title" />
-        <div class="card-body">
-          <h5 class="card-title fw-bold">{{ item.brand }}</h5>
-          <p class="card-text">{{ item.title }}</p>
-          <p class="text-muted mb-1">Viewed on: {{ item.viewedOn | date:'mediumDate' }}</p>
-          <p class="price fw-bold">${{ item.price }}</p>
-          <button class="btn btn-outline-primary w-100" (click)="viewProduct(item.id)">
+      <div class="card wishlist-card position-relative h-100">
+        <div class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Recently Viewed</div>
+        <img
+          [src]="item.image"
+          class="card-img-top object-fit-cover"
+          [alt]="item.title"
+          style="height: 250px; object-fit: cover;"
+        />
+
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div>
+            <h5 class="card-title fw-bold mb-2">{{ item.brand }}</h5>
+            <p class="card-text mb-2">{{ item.title }}</p>
+            <p class="text-muted mb-1">Viewed on: {{ item.viewedOn | date: 'mediumDate' }}</p>
+            <p class="price fw-bold text-success">${{ item.price }}</p>
+          </div>
+
+          <button class="btn btn-outline-primary mt-3 w-100" (click)="viewProduct(item.id)">
             <i class="fas fa-eye me-1"></i> View Product
           </button>
         </div>
@@ -281,6 +290,7 @@
     </div>
   </div>
 </div>
+
 
         <!-- Messages  -->
         <div *ngSwitchCase="'Message'">

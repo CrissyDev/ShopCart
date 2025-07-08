@@ -38,10 +38,10 @@
         </div>
 
         <div class="summary">
-          <p><strong>Subtotal:</strong> ${{ subtotal.toFixed(2) }}</p>
-          <p><strong>Discount:</strong> - ${{ discount.toFixed(2) }}</p>
-          <p><strong>Delivery:</strong> ${{ deliveryFee.toFixed(2) }}</p>
-          <p><strong>Final Total:</strong> ${{ finalAmount.toFixed(2) }}</p>
+          <p><strong>Subtotal:</strong> ${{ subtotal?.toFixed(2) || '0.00' }}</p>
+          <p><strong>Discount:</strong> - ${{ discount?.toFixed(2) || '0.00' }}</p>
+          <p><strong>Delivery:</strong> ${{ deliveryFee?.toFixed(2) || '0.00' }}</p>
+          <p><strong>Final Total:</strong> ${{ finalAmount?.toFixed(2) || '0.00' }}</p>
         </div>
 
         <div class="step-actions">
@@ -165,12 +165,12 @@
     </form>
 
     <div class="summary">
-      <p><strong>Total to Pay:</strong> ${{ finalAmount.toFixed(2) }}</p>
+      <p><strong>Total to Pay:</strong> ${{ finalAmount?.toFixed(2) || '0.00' }}</p>
     </div>
 
     <div class="step-actions">
       <button class="back-btn" (click)="goBack()">Back</button>
-      <button (click)="nextStep()">Continue to Confirm</button>
+      <button *ngIf="paymentMethod" (click)="nextStep()">Continue to Confirm</button>
     </div>
   </div>
 
@@ -179,7 +179,7 @@
     <h2>Step 3: Confirm Your Order</h2>
     <p>Order ID: <strong>{{ orderId }}</strong></p>
     <p>Payment Method: <strong>{{ paymentMethod | uppercase }}</strong></p>
-    <p>Total to Pay: <strong>KES {{ finalAmount.toFixed(2) }}</strong></p>
+    <p>Total to Pay: <strong>KES {{ finalAmount?.toFixed(2) || '0.00' }}</strong></p>
 
     <div *ngIf="loading" class="loader-container">
       <p>Please wait as we confirm your order...</p>
