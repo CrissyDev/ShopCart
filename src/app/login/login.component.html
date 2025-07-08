@@ -11,31 +11,35 @@
       <div class="right-side">
         <div class="login-box">
           <h2>Login</h2>
-          <form #loginForm="ngForm" (ngSubmit)="onLogin()" novalidate>
+          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
             <input
               type="text"
-              name="username"
-              [(ngModel)]="username"
+              formControlName="username"
               placeholder="Email or Username"
               required
-              #usernameField="ngModel"
             />
-            <div class="text-danger" *ngIf="usernameField.invalid && usernameField.touched">
+
+            <div class="text-danger" *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched">
               Username is required.
+            </div>
+
+            <div class="text-danger" *ngIf="loginForm.controls['username'].hasError('minLength') && loginForm.controls['username'].touched">
+              Username must be atleast 3 characters.
             </div>
 
             <input
               type="password"
-              name="password"
-              [(ngModel)]="password"
+              formControlName="password"
               placeholder="Password"
               required
-              minlength="6"
-              #passwordField="ngModel"
             />
-            <div class="text-danger" *ngIf="passwordField.invalid && passwordField.touched">
-              <span *ngIf="passwordField.errors?.['required']">Password is required.</span>
-              <span *ngIf="passwordField.errors?.['minlength']">Password must be at least 6 characters.</span>
+
+            <div class="text-danger" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
+              Password is required.
+            </div>
+
+            <div class="text-danger" *ngIf="loginForm.controls['password'].hasError('minLength') && loginForm.controls['password'].touched">
+              Password must be atleast 6 characters.
             </div>
 
             <div class="options">
@@ -47,7 +51,13 @@
               type="submit"
               class="login-btn"
               [disabled]="loginForm.invalid"
-            >Login</button>
+              [ngClass]="{
+                'disabled-btn': loginForm.invalid,
+                'active-btn': loginForm.valid
+              }"
+            >
+              Login
+            </button>
 
             <div class="divider">
               <span>OR</span>

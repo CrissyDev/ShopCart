@@ -1,0 +1,114 @@
+.not-found-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #f6fff7;
+  color: #2d572c;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.number-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.number {
+  font-size: 160px;
+  font-weight: bold;
+  color: #cde8cd;
+}
+
+.avocado-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.avocado {
+  width: 160px;
+  height: auto;
+}
+
+.face {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* .eye {
+  width: 12px;
+  height: 12px;
+  background-color: #2d572c;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+} */
+
+/* .eye.left {
+  left: -25px;
+  transform: rotate(45deg);
+}
+
+.eye.right {
+  right: -25px;
+  transform: rotate(-45deg);
+} */
+
+/* .mouth {
+  width: 25px;
+  height: 25px;
+  background-color: #2d572c;
+  border-radius: 50%;
+  margin: 30px auto 0;
+} */
+
+.arms {
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  border: 3px solid #2d572c;
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 50% 50%;
+}
+
+.left-arm {
+  transform: rotate(-45deg);
+  top: -100px;
+  left: -60px;
+}
+
+.right-arm {
+  transform: rotate(45deg);
+  top: -100px;
+  right: -60px;
+}
+
+.message {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  color: #3e6143;
+}
+
+.go-back-btn {
+  margin-top: 20px;
+  background-color: #c1eac5;
+  color: #2d572c;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.go-back-btn:hover {
+  background-color: #a9ddb0;
+}

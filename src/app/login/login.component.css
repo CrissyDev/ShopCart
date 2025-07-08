@@ -68,7 +68,7 @@ input[type="password"] {
 
 .login-btn {
   width: 100%;
-  background: #ff3378;
+  background: green;
   color: white;
   padding: 12px;
   border: none;
@@ -79,7 +79,7 @@ input[type="password"] {
 }
 
 .login-btn:hover {
-  background: #e72e6b;
+  background: green;
 }
 
 .divider {
@@ -136,4 +136,26 @@ input[type="password"] {
   margin-top: 15px;
   color: red;
   text-align: center;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  color: white;
+}
+
+.disabled-btn {
+  background-color: #999;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.active-btn {
+  background-color: #28a745;
+  opacity: 1;
+  cursor: pointer;
 }

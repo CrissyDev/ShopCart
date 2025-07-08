@@ -2,7 +2,13 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 
 import { LottieComponent } from 'ngx-lottie';
 
@@ -14,12 +20,11 @@ import { LottieComponent } from 'ngx-lottie';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     LottieComponent
   ]
 })
 export class LoginComponent {
-  username = '';
-  password = '';
   error = '';
 
   lottieOptions = {
@@ -28,41 +33,50 @@ export class LoginComponent {
     autoplay: true
   };
 
+  loginForm = new FormGroup({
+    username: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
+
   constructor(private auth: AuthService, private router: Router) {}
 
   onLogin(): void {
-    this.auth.login(this.username, this.password).subscribe({
-      next: (res) => {
-        
-        localStorage.setItem('token', res.accessToken);
-
-        this.auth.getCurrentUser().subscribe({
+    if (this.loginForm.valid) {
+      this.auth
+        .login(
+          this.loginForm.get('username')?.value || '',
+          this.loginForm.get('password')?.value || ''
+        )
+        .subscribe({
           next: (res) => {
+            localStorage.setItem('token', res.accessToken);
 
-            console.log("Auth user",res);
-            
-            let userobj = {
-              email: res.email,
-              phone: res.phone,
-              birthDate: res.birthDate,
-              image: res.image,
-              createdAt: res.createdAt,
-              id: res.id,
-              firstName: res.firstName,
-              lastName: res.lastName,
-              maidenName:res.maidenName,
-              age: res.age,
-              username: res.username  
-            };
+            this.auth.getCurrentUser().subscribe({
+              next: (res) => {
+                console.log('Auth user', res);
 
-            this.auth.saveAuthUserToStorage(userobj);
-            this.router.navigate(['/account']);
+                let userobj = {
+                  email: res.email,
+                  phone: res.phone,
+                  birthDate: res.birthDate,
+                  image: res.image,
+                  createdAt: res.createdAt,
+                  id: res.id,
+                  firstName: res.firstName,
+                  lastName: res.lastName,
+                  maidenName: res.maidenName,
+                  age: res.age,
+                  username: res.username
+                };
 
+                this.auth.saveAuthUserToStorage(userobj);
+                this.router.navigate(['/account']);
+              },
+              error: (err) => console.error('User fetch error:', err)
+            });
           },
-          error: (err) => console.error('User fetch error:', err)
+          error: () => (this.error = 'Login failed. Please check your credentials.')
         });
-      },
-      error: () => this.error = 'Login failed. Please check your credentials.'
-    });
+    }
   }
 }
