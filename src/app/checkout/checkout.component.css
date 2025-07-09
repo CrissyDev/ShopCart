@@ -14,8 +14,8 @@
   justify-content: space-between;
   margin-bottom: 2rem;
   padding: 0 10px;
+  gap: 10px;
   user-select: none;
-  gap: 10px; 
 }
 
 .step-navigation div {
@@ -32,18 +32,6 @@
   position: relative;
 }
 
-.step-navigation div:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 30px;
-  height: 4px;
-  background: #ccc;
-  transform: translateY(-50%);
-  z-index: -1;
-}
-
 .step-navigation div.active {
   background-color: #28a745;
   color: white;
@@ -52,14 +40,9 @@
   transform: translateY(-3px);
 }
 
-.step-navigation div.active::after {
-  background: #28a745;
-}
-
 .cart-items-review {
   margin: 1rem 0;
   width: 100%;
-  overflow: visible;
 }
 
 .cart-items-review table {
@@ -67,7 +50,7 @@
   border-collapse: collapse;
   background-color: #f5f5f5;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .cart-items-review th,
@@ -84,18 +67,7 @@
   height: 80px;
   border-radius: 6px;
   object-fit: cover;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.summary {
-  text-align: left;
-  margin-top: 1rem;
-  background: #f0f0f0;
-  padding: 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  color: #333;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .payment-options {
@@ -120,8 +92,7 @@
   font-size: 1.1rem;
   color: #155724;
   box-shadow: 0 0 8px rgba(40, 167, 69, 0.15);
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  user-select: none;
+  transition: all 0.3s ease;
 }
 
 .payment-options button:hover {
@@ -131,11 +102,10 @@
 }
 
 .payment-options button.active {
-  background-color: #d4edda;
-  color: #155724;
-  font-weight: 800;
+  background-color: #28a745;
+  color: #fff;
   border-color: #28a745;
-  box-shadow: 0 0 12px rgba(40, 167, 69, 0.7);
+  box-shadow: 0 0 12px rgba(40, 167, 69, 0.5);
 }
 
 .payment-options button img,
@@ -143,6 +113,7 @@
   height: 24px;
   width: 24px;
 }
+
 
 .payment-form {
   display: flex;
@@ -174,25 +145,60 @@
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
+/* Buttons */
 button {
   background-color: #28a745;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
-  cursor: pointer;
   font-size: 1rem;
   margin-top: 1rem;
   transition: background 0.3s ease;
   width: 100%;
   max-width: 250px;
-  align-self: center;
   box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
 }
 
-button:hover {
+/* Disabled button */
+button.disabled-btn,
+.btn-dull-green {
+  background-color: #c5e7c5 !important;
+  color: #3e663e !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+  box-shadow: none !important;
+}
+
+/* Active button */
+.btn-bright-green {
+  background-color: #28a745 !important;
+  color: white !important;
+  box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
+}
+
+button:hover:not(.disabled-btn):not(.btn-dull-green) {
   background-color: #218838;
 }
+
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #28a745;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 1rem auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .success-message {
   background: #e6ffe6;
@@ -201,6 +207,7 @@ button:hover {
   border-radius: 10px;
   animation: fadeIn 1s ease-in-out;
   margin-top: 2rem;
+  text-align: center;
 }
 
 .success-message i {
@@ -221,68 +228,6 @@ button:hover {
   }
 }
 
-.loader {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #28a745;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin: 1rem auto;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.actions {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.step-card-content {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
-}
-
-.success-message-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 300px; 
-}
-
-.success-message h2 {
-  margin-bottom: 1rem;
-  font-weight: bold;
-  color: #28a745;
-}
-
-.step-section {
-  margin-bottom: 2rem;
-}
 
 .step-actions {
   display: flex;
@@ -296,19 +241,6 @@ button:hover {
   max-width: 45%;
 }
 
-.continue-btn {
-  background-color: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  transition: opacity 0.3s ease;
-}
-
-.continue-btn.disabled-btn {
-  opacity: 0.5;
-  pointer-events: none;
-}
 
 .back-btn {
   background-color: transparent;
@@ -316,7 +248,6 @@ button:hover {
   color: #333;
   padding: 10px 20px;
   border-radius: 5px;
-  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -324,19 +255,6 @@ button:hover {
   background-color: #f0f0f0;
 }
 
-.btn-dull-green {
-  background-color: #c5e7c5 !important;
-  color: #3e663e !important;
-  cursor: not-allowed;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.btn-bright-green {
-  background-color: #28a745 !important;
-  color: white !important;
-  box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
-}
 
 .payment-summary {
   background: #f4f4f4;
@@ -353,4 +271,20 @@ button:hover {
 
 .payment-summary p {
   margin: 0.25rem 0;
+}
+
+.active-payment {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.btn-dull-green {
+  background-color: #ccc;
+  color: #666;
+}
+
+.btn-bright-green {
+  background-color: #28a745;
+  color: white;
 }

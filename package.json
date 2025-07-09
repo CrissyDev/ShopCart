@@ -25,6 +25,7 @@
     "canvas-confetti": "^1.9.3",
     "lottie-web": "^5.12.2",
     "ngx-lottie": "^13.0.1",
+    "ngx-mask": "^19.0.7",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.8",
     "tslib": "^2.3.0",

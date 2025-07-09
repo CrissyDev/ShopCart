@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { Cart } from '../models/cart.interface';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
@@ -24,23 +24,12 @@ export class CheckoutComponent implements OnInit {
   success: boolean = false;
   loading: boolean = false;
 
+  paymentForm!: FormGroup;
+  selectedPaymentMethod: string = '';
   paymentMethod: string = '';
+  paymentDetails: any = {};
 
-  paymentDetails: any = {
-    name: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
-    phone: '',
-    paypal: ''
-  };
-
-  mpesaForm: any;
-  paypalForm: any;
-  cardForm: any;
-  paymentForm: any;
-
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.loadCartFromStorage();
@@ -53,6 +42,128 @@ export class CheckoutComponent implements OnInit {
     });
 
     this.orderId = this.generateOrderId();
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.paymentForm = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]],
+      phone: ['', [Validators.pattern(/^[0-9]{10}$/)]],
+      paypal: ['', [Validators.email]],
+      cardNumber: ['', [Validators.pattern(/^[0-9]{16}$/)]],
+      expiry: ['', [Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
+      cvv: ['', [Validators.pattern(/^[0-9]{3}$/)]]
+    });
+  }
+
+  // Form getters
+  get name() {
+    return this.paymentForm.get('name');
+  }
+
+  get phone() {
+    return this.paymentForm.get('phone');
+  }
+
+  get paypal() {
+    return this.paymentForm.get('paypal');
+  }
+
+  get cardNumber() {
+    return this.paymentForm.get('cardNumber');
+  }
+
+  get expiry() {
+    return this.paymentForm.get('expiry');
+  }
+
+  get cvv() {
+    return this.paymentForm.get('cvv');
+  }
+
+  // Payment logic
+  selectPayment(method: string): void {
+    this.paymentMethod = method;
+    this.selectedPaymentMethod = method;
+
+    this.paymentForm.reset();
+    this.initForm();
+
+    if (method === 'mpesa') {
+      this.name?.setValidators([Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]);
+      this.phone?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+    }
+
+    if (method === 'paypal') {
+      this.paypal?.setValidators([Validators.required, Validators.email]);
+    }
+
+    if (method === 'card') {
+      this.name?.setValidators([Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]);
+      this.cardNumber?.setValidators([Validators.required, Validators.pattern(/^[0-9]{16}$/)]);
+      this.expiry?.setValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]);
+      this.cvv?.setValidators([Validators.required, Validators.pattern(/^[0-9]{3}$/)]);
+    }
+
+    this.paymentForm.updateValueAndValidity();
+  }
+
+  nextStep(): void {
+    if (this.step === 2 && this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched();
+      return;
+    }
+
+    if (this.step === 3) {
+      this.completePurchase();
+    } else {
+      this.step += 1;
+    }
+  }
+
+  goBack(): void {
+    if (this.step > 1) {
+      this.step--;
+    }
+  }
+
+  navigateToCart(): void {
+    window.location.href = '/cart';
+  }
+
+  placeOrder(): void {
+    if (!this.cart || this.finalAmount <= 0 || isNaN(this.finalAmount)) {
+      alert('Your cart is empty or total amount is invalid.');
+      return;
+    }
+
+    this.nextStep();
+  }
+
+  completePurchase(): void {
+    this.loading = true;
+
+    setTimeout(() => {
+      this.triggerConfetti();
+      this.success = true;
+      this.loading = false;
+
+      setTimeout(() => {
+        this.cartService.clearCart();
+        this.cart = null;
+        window.location.href = '/';
+      }, 5000);
+    }, 2000);
+  }
+
+  triggerConfetti(): void {
+    import('canvas-confetti' as any).then((confetti: any) => {
+      confetti.default({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    });
   }
 
   loadCartFromStorage(): void {
@@ -96,96 +207,13 @@ export class CheckoutComponent implements OnInit {
     return 'ORD-' + now.getTime().toString().slice(-8);
   }
 
-  nextStep(): void {
-    if (this.step === 2 && !this.validatePaymentDetails()) {
-      alert('Please fill in all required payment details correctly.');
-      return;
-    }
-
-    if (this.step === 3) {
-      this.completePurchase();
-    } else {
-      this.step += 1;
-    }
-  }
-
-  validatePaymentDetails(): boolean {
-    const nameRegex = /^[A-Za-z ]+$/;
-    const phoneRegex = /^[0-9]{10}$/;
-    const emailRegex = /^[^\d][\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    const cardNumberRegex = /^[0-9]{16}$/;
-    const cvvRegex = /^[0-9]{3}$/;
-    const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-
-    switch (this.paymentMethod) {
-      case 'mpesa':
-        return (
-          nameRegex.test(this.paymentDetails.name) &&
-          phoneRegex.test(this.paymentDetails.phone)
-        );
-
-      case 'paypal':
-        return emailRegex.test(this.paymentDetails.paypal);
-
-      case 'card':
-        return (
-          nameRegex.test(this.paymentDetails.name) &&
-          cardNumberRegex.test(this.paymentDetails.cardNumber) &&
-          expiryRegex.test(this.paymentDetails.expiry) &&
-          cvvRegex.test(this.paymentDetails.cvv)
-        );
-
-      default:
-        return false;
-    }
-  }
-
-  completePurchase(): void {
-    this.loading = true;
-
-    setTimeout(() => {
-      this.triggerConfetti();
-      this.success = true;
-      this.loading = false;
-
-      setTimeout(() => {
-        this.cartService.clearCart();
-        this.cart = null;
-        window.location.href = '/';
-      }, 5000);
-    }, 2000);
-  }
-
-  goBack(): void {
-    if (this.step > 1) {
-      this.step--;
-    }
-  }
-
-  navigateToCart(): void {
-    window.location.href = '/cart';
-  }
-
-  placeOrder(): void {
-    if (!this.cart || this.finalAmount <= 0 || isNaN(this.finalAmount)) {
-      alert('Your cart is empty or total amount is invalid.');
-      return;
-    }
-
-    this.nextStep();
-  }
-
-  triggerConfetti(): void {
-    import('canvas-confetti' as any).then((confetti: any) => {
-      confetti.default({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    });
-  }
-
   formatMoney(value: number | null | undefined): string {
     return typeof value === 'number' ? value.toFixed(2) : '0.00';
+  }
+
+  getCardLast4(): string {
+    const cardNumber = this.paymentForm.get('cardNumber')?.value;
+    if (!cardNumber) return '';
+    return cardNumber.replace(/\s/g, '').slice(-4);
   }
 }

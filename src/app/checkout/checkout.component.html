@@ -11,44 +11,42 @@
   <!-- Step 1: Review -->
   <div *ngIf="step === 1" class="card step-card-content step-section">
     <h2>Step 1: Review Your Order</h2>
+    <ng-container *ngIf="cart?.products?.length; else emptyCart">
+      <div class="cart-items-review">
+        <table>
+          <thead>
+            <tr>
+              <th>Thumbnail</th>
+              <th>Title</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr *ngFor="let item of cart?.products">
+              <td><img [src]="item.thumbnail" alt="{{ item.title }}" class="thumbnail" /></td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>${{ formatMoney(item.price) }}</td>
+              <td>${{ formatMoney(item.price * item.quantity) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <ng-container *ngIf="cart?.products as products; else emptyCart">
-      <ng-container *ngIf="products.length > 0; else emptyCart">
-        <div class="cart-items-review">
-          <table>
-            <thead>
-              <tr>
-                <th>Thumbnail</th>
-                <th>Title</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of products">
-                <td><img [src]="item.thumbnail" alt="{{ item.title }}" class="thumbnail" /></td>
-                <td>{{ item.title }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>${{ formatMoney(item.price) }}</td>
-                <td>${{ formatMoney(item.price * item.quantity) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="summary">
+        <p><strong>Subtotal:</strong> ${{ formatMoney(subtotal) }}</p>
+        <p><strong>Discount:</strong> - ${{ formatMoney(discount) }}</p>
+        <p><strong>Delivery:</strong> ${{ formatMoney(deliveryFee) }}</p>
+        <p><strong>Final Total:</strong> ${{ formatMoney(finalAmount) }}</p>
+      </div>
 
-        <div class="summary">
-          <p><strong>Subtotal:</strong> ${{ formatMoney(subtotal) }}</p>
-          <p><strong>Discount:</strong> - ${{ formatMoney(discount) }}</p>
-          <p><strong>Delivery:</strong> ${{ formatMoney(deliveryFee) }}</p>
-          <p><strong>Final Total:</strong> ${{ formatMoney(finalAmount) }}</p>
-        </div>
-
-        <div class="step-actions">
-          <button class="back-btn" (click)="navigateToCart()">Back to Cart</button>
-          <button class="active-btn" (click)="nextStep()">Continue to Payment</button>
-        </div>
-      </ng-container>
+      <div class="step-actions">
+        <button class="back-btn" (click)="navigateToCart()">Back to Cart</button>
+        <button class="active-btn" (click)="nextStep()">Continue to Payment</button>
+      </div>
     </ng-container>
 
     <ng-template #emptyCart>
@@ -56,111 +54,98 @@
     </ng-template>
   </div>
 
-  <!-- Step 2: Payment -->
   <!-- Step 2: Payment Info -->
-<div *ngIf="step === 2" class="card step-card-content step-section">
-  <h2>Step 2: Payment Info</h2>
+  <div *ngIf="step === 2" class="card step-card-content step-section">
+    <h2>Step 2: Payment Info</h2>
 
-  <div class="payment-options">
-    <button (click)="paymentMethod = 'mpesa'" [class.active]="paymentMethod === 'mpesa'">
-      <i class="fa fa-phone"></i> M-Pesa
-    </button>
-    <button (click)="paymentMethod = 'paypal'" [class.active]="paymentMethod === 'paypal'">
-      <i class="fa fa-smile"></i> PayPal
-    </button>
-    <button (click)="paymentMethod = 'card'" [class.active]="paymentMethod === 'card'">
-      <i class="fa fa-credit-card"></i> Card
-    </button>
+    <!-- Payment Options -->
+    <div class="payment-options">
+      <button (click)="selectPayment('mpesa')" [class.active-payment]="selectedPaymentMethod === 'mpesa'">
+        <i class="fa fa-phone"></i> M-Pesa
+      </button>
+      <button (click)="selectPayment('paypal')" [class.active-payment]="selectedPaymentMethod === 'paypal'">
+        <i class="fa fa-smile"></i> PayPal
+      </button>
+      <button (click)="selectPayment('card')" [class.active-payment]="selectedPaymentMethod === 'card'">
+        <i class="fa fa-credit-card"></i> Card
+      </button>
+    </div>
+
+    <!-- Payment Form -->
+    <form [formGroup]="paymentForm" class="payment-form">
+      <ng-container [ngSwitch]="selectedPaymentMethod">
+        <!-- M-Pesa -->
+        <div *ngSwitchCase="'mpesa'">
+          <label>Name:</label>
+          <input formControlName="name" />
+          <div class="text-danger" *ngIf="name?.invalid && (name?.touched || name?.dirty)">
+            Name is required and must contain only letters.
+          </div>
+
+          <label>Phone Number:</label>
+          <input formControlName="phone" type="tel" />
+          <div class="text-danger" *ngIf="phone?.invalid && (phone?.touched || phone?.dirty)">
+            Enter a valid 10-digit phone number.
+          </div>
+        </div>
+
+        <!-- PayPal -->
+        <div *ngSwitchCase="'paypal'">
+          <label>PayPal Email:</label>
+          <input formControlName="paypal" type="email" />
+          <div class="text-danger" *ngIf="paypal?.invalid && (paypal?.touched || paypal?.dirty)">
+            Enter a valid PayPal email address.
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div *ngSwitchCase="'card'">
+          <label>Name on Card:</label>
+          <input formControlName="name" />
+          <div class="text-danger" *ngIf="name?.invalid && (name?.touched || name?.dirty)">
+            Name is required and must contain only letters.
+          </div>
+
+          <label>Card Number:</label>
+          <input formControlName="cardNumber" mask="0000 0000 0000 0000" />
+          <div class="text-danger" *ngIf="cardNumber?.invalid && (cardNumber?.touched || cardNumber?.dirty)">
+            Must be 16 digits.
+          </div>
+
+          <label>Expiry Date (MM/YY):</label>
+          <input formControlName="expiry" placeholder="MM/YY" />
+          <div class="text-danger" *ngIf="expiry?.invalid && (expiry?.touched || expiry?.dirty)">
+            Format must be MM/YY.
+          </div>
+
+          <label>CVV:</label>
+          <input formControlName="cvv" maxlength="3" />
+          <div class="text-danger" *ngIf="cvv?.invalid && (cvv?.touched || cvv?.dirty)">
+            Must be 3 digits.
+          </div>
+        </div>
+      </ng-container>
+    </form>
+
+    <!-- Summary and Actions -->
+    <div class="summary">
+      <p><strong>Total to Pay:</strong> ${{ formatMoney(finalAmount) }}</p>
+    </div>
+
+    <div class="step-actions">
+      <button class="back-btn" (click)="goBack()">Back</button>
+      <button
+        (click)="nextStep()"
+        [disabled]="paymentForm.invalid"
+        [ngClass]="{
+          'btn-dull-green': paymentForm.invalid,
+          'btn-bright-green': paymentForm.valid
+        }"
+      >
+        Continue to Confirm
+      </button>
+    </div>
   </div>
-
-  <!-- M-Pesa Form -->
-  <form #mpesaForm="ngForm" class="payment-form" *ngIf="paymentMethod === 'mpesa'">
-    <label>Name:</label>
-    <input name="mpesaName" [(ngModel)]="paymentDetails.name" required pattern="^[A-Za-z\s]+$" #mpesaName="ngModel" />
-    <div *ngIf="mpesaName.invalid && (mpesaName.dirty || mpesaName.touched)" class="text-danger">
-      Name is required and must contain only letters.
-    </div>
-
-    <label>Phone Number:</label>
-    <input name="mpesaPhone" type="tel" [(ngModel)]="paymentDetails.phone" required pattern="^[0-9]{10}$" #mpesaPhone="ngModel" />
-    <div *ngIf="mpesaPhone.invalid && (mpesaPhone.dirty || mpesaPhone.touched)" class="text-danger">
-      Enter a valid 10-digit phone number.
-    </div>
-  </form>
-
-  <!-- PayPal Form -->
-  <form #paypalForm="ngForm" class="payment-form" *ngIf="paymentMethod === 'paypal'">
-    <label>PayPal Email:</label>
-    <input
-      name="paypalEmail"
-      type="email"
-      [(ngModel)]="paymentDetails.paypal"
-      required
-      pattern="^[^\d][\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-      #paypalEmail="ngModel"
-    />
-    <div *ngIf="paypalEmail.invalid && (paypalEmail.dirty || paypalEmail.touched)" class="text-danger">
-      Enter a valid PayPal email address.
-    </div>
-  </form>
-
-  <!-- Card Form -->
-  <form #cardForm="ngForm" class="payment-form" *ngIf="paymentMethod === 'card'">
-    <label>Name on Card:</label>
-    <input name="cardName" [(ngModel)]="paymentDetails.name" required pattern="^[A-Za-z\s]+$" #cardName="ngModel" />
-    <div *ngIf="cardName.invalid && (cardName.dirty || cardName.touched)" class="text-danger">
-      Name is required.
-    </div>
-
-    <label>Card Number:</label>
-    <input name="cardNumber" maxlength="16" [(ngModel)]="paymentDetails.cardNumber" required pattern="^[0-9]{16}$" #cardNumber="ngModel" />
-    <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="text-danger">
-      Must be 16 digits.
-    </div>
-
-    <label>Expiry Date (MM/YY):</label>
-    <input name="expiryDate" placeholder="MM/YY" [(ngModel)]="paymentDetails.expiry" required pattern="^(0[1-9]|1[0-2])\/\d{2}$" #expiryDate="ngModel" />
-    <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)" class="text-danger">
-      Format: MM/YY.
-    </div>
-
-    <label>CVV:</label>
-    <input name="cvv" maxlength="3" [(ngModel)]="paymentDetails.cvv" required pattern="^[0-9]{3}$" #cvv="ngModel" />
-    <div *ngIf="cvv.invalid && (cvv.dirty || cvv.touched)" class="text-danger">
-      Must be 3 digits.
-    </div>
-  </form>
-
-  <div class="summary">
-    <p><strong>Total to Pay:</strong> ${{ formatMoney(finalAmount) }}</p>
-  </div>
-
-  <div class="step-actions">
-    <button class="back-btn" (click)="goBack()">Back</button>
-
-    <button
-      *ngIf="paymentMethod"
-      (click)="nextStep()"
-      [disabled]="
-        (paymentMethod === 'mpesa' && mpesaForm.invalid) ||
-        (paymentMethod === 'paypal' && paypalForm.invalid) ||
-        (paymentMethod === 'card' && cardForm.invalid)
-      "
-      [ngClass]="{
-        'btn-dull-green': 
-          (paymentMethod === 'mpesa' && mpesaForm.invalid) ||
-          (paymentMethod === 'paypal' && paypalForm.invalid) ||
-          (paymentMethod === 'card' && cardForm.invalid),
-        'btn-bright-green': 
-          (paymentMethod === 'mpesa' && mpesaForm.valid) ||
-          (paymentMethod === 'paypal' && paypalForm.valid) ||
-          (paymentMethod === 'card' && cardForm.valid)
-      }"
-    >
-      Continue to Confirm
-    </button>
-  </div>
-</div>
 
   <!-- Step 3: Confirm -->
   <div *ngIf="step === 3" class="card step-card-content step-section">
@@ -170,23 +155,22 @@
     <p>Total to Pay: <strong>KES {{ formatMoney(finalAmount) }}</strong></p>
 
     <div class="payment-summary">
-    <h3>Payment Details</h3>
-<ng-container [ngSwitch]="paymentMethod">
-      <div *ngSwitchCase="'mpesa'">
-        <p><strong>Name:</strong> {{ paymentDetails.name }}</p>
-        <p><strong>Phone:</strong> {{ paymentDetails.phone }}</p>
-      </div>
-      <div *ngSwitchCase="'paypal'">
-        <p><strong>Email:</strong> {{ paymentDetails.paypal }}</p>
-      </div>
-      <div *ngSwitchCase="'card'">
-        <p><strong>Name on Card:</strong> {{ paymentDetails.name }}</p>
-        <p><strong>Card Number:</strong> **** **** **** {{ paymentDetails.cardNumber?.slice(-4) }}</p>
-        <p><strong>Expiry:</strong> {{ paymentDetails.expiry }}</p>
-      </div>
-    </ng-container>
-  </div>
-
+      <h3>Payment Details</h3>
+      <ng-container [ngSwitch]="paymentMethod">
+        <div *ngSwitchCase="'mpesa'">
+          <p><strong>Name:</strong> {{ paymentForm.get('name')?.value }}</p>
+          <p><strong>Phone:</strong> {{ paymentForm.get('phone')?.value }}</p>
+        </div>
+        <div *ngSwitchCase="'paypal'">
+          <p><strong>Email:</strong> {{ paymentForm.get('paypal')?.value }}</p>
+        </div>
+        <div *ngSwitchCase="'card'">
+          <p><strong>Name on Card:</strong> {{ paymentForm.get('name')?.value }}</p>
+          <p><strong>Card Number:</strong> **** **** **** {{ getCardLast4() }}</p>
+          <p><strong>Expiry:</strong> {{ paymentForm.get('expiry')?.value }}</p>
+        </div>
+      </ng-container>
+    </div>
 
     <div *ngIf="loading" class="loader-container">
       <p>Please wait as we confirm your order...</p>
@@ -200,6 +184,7 @@
   </div>
 </div>
 
+<!-- Success Message -->
 <ng-template #successMessage>
   <div class="success-message-container">
     <div class="success-message">
