@@ -169,6 +169,25 @@
     <p>Payment Method: <strong>{{ paymentMethod | uppercase }}</strong></p>
     <p>Total to Pay: <strong>KES {{ formatMoney(finalAmount) }}</strong></p>
 
+    <div class="payment-summary">
+    <h3>Payment Details</h3>
+<ng-container [ngSwitch]="paymentMethod">
+      <div *ngSwitchCase="'mpesa'">
+        <p><strong>Name:</strong> {{ paymentDetails.name }}</p>
+        <p><strong>Phone:</strong> {{ paymentDetails.phone }}</p>
+      </div>
+      <div *ngSwitchCase="'paypal'">
+        <p><strong>Email:</strong> {{ paymentDetails.paypal }}</p>
+      </div>
+      <div *ngSwitchCase="'card'">
+        <p><strong>Name on Card:</strong> {{ paymentDetails.name }}</p>
+        <p><strong>Card Number:</strong> **** **** **** {{ paymentDetails.cardNumber?.slice(-4) }}</p>
+        <p><strong>Expiry:</strong> {{ paymentDetails.expiry }}</p>
+      </div>
+    </ng-container>
+  </div>
+
+
     <div *ngIf="loading" class="loader-container">
       <p>Please wait as we confirm your order...</p>
       <div class="loader"></div>

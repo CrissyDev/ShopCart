@@ -35,11 +35,10 @@ export class CheckoutComponent implements OnInit {
     paypal: ''
   };
 
-
   mpesaForm: any;
   paypalForm: any;
   cardForm: any;
-paymentForm: any;
+  paymentForm: any;
 
   constructor(private cartService: CartService) {}
 
@@ -185,7 +184,6 @@ paymentForm: any;
       });
     });
   }
-
 
   formatMoney(value: number | null | undefined): string {
     return typeof value === 'number' ? value.toFixed(2) : '0.00';
