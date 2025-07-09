@@ -4,11 +4,14 @@ import { Cart } from '../models/cart.interface';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, NgxMaskDirective],
+   providers: [provideNgxMask()],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
@@ -56,7 +59,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  // Form getters
+ 
   get name() {
     return this.paymentForm.get('name');
   }
@@ -81,7 +84,7 @@ export class CheckoutComponent implements OnInit {
     return this.paymentForm.get('cvv');
   }
 
-  // Payment logic
+  
   selectPayment(method: string): void {
     this.paymentMethod = method;
     this.selectedPaymentMethod = method;

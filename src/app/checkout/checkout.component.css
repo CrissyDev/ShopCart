@@ -101,7 +101,7 @@
   box-shadow: 0 0 12px rgba(40, 167, 69, 0.7);
 }
 
-.payment-options button.active {
+.payment-options button.active-payment {
   background-color: #28a745;
   color: #fff;
   border-color: #28a745;
@@ -113,7 +113,6 @@
   height: 24px;
   width: 24px;
 }
-
 
 .payment-form {
   display: flex;
@@ -145,7 +144,6 @@
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
-/* Buttons */
 button {
   background-color: #28a745;
   color: white;
@@ -160,7 +158,10 @@ button {
   box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
 }
 
-/* Disabled button */
+button:hover:not(.disabled-btn):not(.btn-dull-green) {
+  background-color: #218838;
+}
+
 button.disabled-btn,
 .btn-dull-green {
   background-color: #c5e7c5 !important;
@@ -171,17 +172,11 @@ button.disabled-btn,
   box-shadow: none !important;
 }
 
-/* Active button */
 .btn-bright-green {
   background-color: #28a745 !important;
   color: white !important;
   box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
 }
-
-button:hover:not(.disabled-btn):not(.btn-dull-green) {
-  background-color: #218838;
-}
-
 
 .loader {
   border: 6px solid #f3f3f3;
@@ -199,6 +194,12 @@ button:hover:not(.disabled-btn):not(.btn-dull-green) {
   }
 }
 
+.success-message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
 
 .success-message {
   background: #e6ffe6;
@@ -228,7 +229,6 @@ button:hover:not(.disabled-btn):not(.btn-dull-green) {
   }
 }
 
-
 .step-actions {
   display: flex;
   justify-content: space-between;
@@ -240,7 +240,6 @@ button:hover:not(.disabled-btn):not(.btn-dull-green) {
   flex: 1;
   max-width: 45%;
 }
-
 
 .back-btn {
   background-color: transparent;
@@ -254,7 +253,6 @@ button:hover:not(.disabled-btn):not(.btn-dull-green) {
 .back-btn:hover {
   background-color: #f0f0f0;
 }
-
 
 .payment-summary {
   background: #f4f4f4;
@@ -271,20 +269,4 @@ button:hover:not(.disabled-btn):not(.btn-dull-green) {
 
 .payment-summary p {
   margin: 0.25rem 0;
-}
-
-.active-payment {
-  background-color: #28a745;
-  color: white;
-  border-color: #28a745;
-}
-
-.btn-dull-green {
-  background-color: #ccc;
-  color: #666;
-}
-
-.btn-bright-green {
-  background-color: #28a745;
-  color: white;
 }

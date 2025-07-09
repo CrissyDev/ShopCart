@@ -11,7 +11,7 @@
   <!-- Step 1: Review -->
   <div *ngIf="step === 1" class="card step-card-content step-section">
     <h2>Step 1: Review Your Order</h2>
-    <ng-container *ngIf="cart?.products?.length; else emptyCart">
+   <ng-container *ngIf="(cart?.products?.length ?? 0) > 0; else emptyCart">
       <div class="cart-items-review">
         <table>
           <thead>
@@ -24,7 +24,6 @@
             </tr>
           </thead>
           <tbody>
-            
             <tr *ngFor="let item of cart?.products">
               <td><img [src]="item.thumbnail" alt="{{ item.title }}" class="thumbnail" /></td>
               <td>{{ item.title }}</td>
@@ -107,7 +106,7 @@
           </div>
 
           <label>Card Number:</label>
-          <input formControlName="cardNumber" mask="0000 0000 0000 0000" />
+          <input formControlName="cardNumber" mask="0000 0000 0000 0000" placeholder="1234 5678 9012 3456" />
           <div class="text-danger" *ngIf="cardNumber?.invalid && (cardNumber?.touched || cardNumber?.dirty)">
             Must be 16 digits.
           </div>
