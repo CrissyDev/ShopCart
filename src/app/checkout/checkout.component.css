@@ -70,11 +70,16 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* Payment Options Section */
 .payment-options {
   display: flex;
   justify-content: space-around;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 2rem 0; /* More spacing from top and bottom */
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fdfdfd;
 }
 
 .payment-options button {
@@ -118,7 +123,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 1rem 0 2rem 0;
+  margin: 1rem 0 1rem 0;
   max-width: 100%;
   text-align: left;
 }
@@ -144,6 +149,7 @@
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
+/* Buttons */
 button {
   background-color: #28a745;
   color: white;
@@ -178,6 +184,7 @@ button.disabled-btn,
   box-shadow: 0 3px 6px rgba(40, 167, 69, 0.4);
 }
 
+/* Loader */
 .loader {
   border: 6px solid #f3f3f3;
   border-top: 6px solid #28a745;
@@ -194,6 +201,7 @@ button.disabled-btn,
   }
 }
 
+/* Success Message */
 .success-message-container {
   display: flex;
   justify-content: center;
@@ -229,17 +237,31 @@ button.disabled-btn,
   }
 }
 
+
 .step-actions {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ddd;
 }
 
 .step-actions button {
   flex: 1;
   max-width: 45%;
 }
+
+.step-actions.button-spacing {
+  margin-top: 2rem;
+  margin-bottom: 2rem; 
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 
 .back-btn {
   background-color: transparent;

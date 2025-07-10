@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { Cart } from '../models/cart.interface';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, NgxMaskDirective],
-   providers: [provideNgxMask()],
+  providers: [provideNgxMask()],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
@@ -27,10 +26,25 @@ export class CheckoutComponent implements OnInit {
   success: boolean = false;
   loading: boolean = false;
 
-  paymentForm!: FormGroup;
   selectedPaymentMethod: string = '';
   paymentMethod: string = '';
   paymentDetails: any = {};
+
+  mpesaForm = new FormGroup({
+    mpesaName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z ]+$/)]),
+    mpesaPhone: new FormControl('', [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]+$/)])
+  });
+
+  paypalForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+
+  cardForm = new FormGroup({
+    name: new FormControl('',[Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]),
+    cardNumber: new FormControl('',[Validators.required, Validators.pattern(/^[0-9]+$/)]),
+    expiry: new FormControl('',[Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]),
+    cvv: new FormControl('',[Validators.required, Validators.maxLength(3),Validators.pattern(/^[0-9]+$/)]),
+  });
 
   constructor(private cartService: CartService, private fb: FormBuilder) {}
 
@@ -45,83 +59,56 @@ export class CheckoutComponent implements OnInit {
     });
 
     this.orderId = this.generateOrderId();
-    this.initForm();
   }
 
-  initForm(): void {
-    this.paymentForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]],
-      phone: ['', [Validators.pattern(/^[0-9]{10}$/)]],
-      paypal: ['', [Validators.email]],
-      cardNumber: ['', [Validators.pattern(/^[0-9]{16}$/)]],
-      expiry: ['', [Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-      cvv: ['', [Validators.pattern(/^[0-9]{3}$/)]]
-    });
+  get mpesa_name() { 
+    return this.mpesaForm.get('mpesaName');
   }
 
- 
-  get name() {
-    return this.paymentForm.get('name');
+  get mpesa_phone() { 
+    return this.mpesaForm.get('mpesaPhone');
   }
 
-  get phone() {
-    return this.paymentForm.get('phone');
-  }
-
-  get paypal() {
-    return this.paymentForm.get('paypal');
-  }
-
-  get cardNumber() {
-    return this.paymentForm.get('cardNumber');
-  }
-
-  get expiry() {
-    return this.paymentForm.get('expiry');
-  }
-
-  get cvv() {
-    return this.paymentForm.get('cvv');
-  }
-
-  
   selectPayment(method: string): void {
     this.paymentMethod = method;
     this.selectedPaymentMethod = method;
 
-    this.paymentForm.reset();
-    this.initForm();
-
-    if (method === 'mpesa') {
-      this.name?.setValidators([Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]);
-      this.phone?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+    switch (method) {
+      case 'mpesa':
+        this.mpesaForm.reset();
+        break;
+      case 'paypal':
+        this.paypalForm.reset();
+        break;
+      case 'card':
+        this.cardForm.reset();
+        break;
     }
 
-    if (method === 'paypal') {
-      this.paypal?.setValidators([Validators.required, Validators.email]);
-    }
-
-    if (method === 'card') {
-      this.name?.setValidators([Validators.required, Validators.pattern(/^[A-Za-z\s]{3,}$/)]);
-      this.cardNumber?.setValidators([Validators.required, Validators.pattern(/^[0-9]{16}$/)]);
-      this.expiry?.setValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]);
-      this.cvv?.setValidators([Validators.required, Validators.pattern(/^[0-9]{3}$/)]);
-    }
-
-    this.paymentForm.updateValueAndValidity();
+    //this.paymentForm.updateValueAndValidity();
   }
 
-  nextStep(): void {
-    if (this.step === 2 && this.paymentForm.invalid) {
-      this.paymentForm.markAllAsTouched();
-      return;
-    }
+  isPaymentInfoValid(): boolean {
+    return (this.mpesaForm.valid || this.paypalForm.valid || this.cardForm.valid);
+  }
 
-    if (this.step === 3) {
-      this.completePurchase();
-    } else {
-      this.step += 1;
-    }
+
+  nextStep(): void {
+    // if (this.step === 2 && this.isPaymentInfoValid()) {
+    //   this.mpesaForm.markAllAsTouched();
+    //   this.paypalForm.markAllAsTouched();
+    //   this.cardForm.markAllAsTouched();
+    //   return;
+    // }
+
+    // if (this.step === 3) {
+    //   this.completePurchase();
+    // } else {
+    //   this.step += 1;
+    // }
+
+    console.log('prev step ', this.step);
+    this.step += 1;
   }
 
   goBack(): void {
@@ -215,7 +202,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getCardLast4(): string {
-    const cardNumber = this.paymentForm.get('cardNumber')?.value;
+    const cardNumber = this.cardForm.get('cardNumber')?.value;
     if (!cardNumber) return '';
     return cardNumber.replace(/\s/g, '').slice(-4);
   }

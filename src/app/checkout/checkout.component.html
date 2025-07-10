@@ -1,7 +1,6 @@
 <div class="checkout-container" *ngIf="!success; else successMessage">
   <h1>Checkout</h1>
 
-  <!-- Step Navigation -->
   <div class="step-navigation">
     <div [class.active]="step === 1">1. Review Order</div>
     <div [class.active]="step === 2">2. Payment Info</div>
@@ -12,6 +11,7 @@
   <div *ngIf="step === 1" class="card step-card-content step-section">
     <h2>Step 1: Review Your Order</h2>
    <ng-container *ngIf="(cart?.products?.length ?? 0) > 0; else emptyCart">
+
       <div class="cart-items-review">
         <table>
           <thead>
@@ -42,7 +42,7 @@
         <p><strong>Final Total:</strong> ${{ formatMoney(finalAmount) }}</p>
       </div>
 
-      <div class="step-actions">
+      <div class="step-actions button-spacing px-4">
         <button class="back-btn" (click)="navigateToCart()">Back to Cart</button>
         <button class="active-btn" (click)="nextStep()">Continue to Payment</button>
       </div>
@@ -55,10 +55,10 @@
 
   <!-- Step 2: Payment Info -->
   <div *ngIf="step === 2" class="card step-card-content step-section">
-    <h2>Step 2: Payment Info</h2>
+    <h2 class="my-2">Step 2: Payment Info</h2>
 
     <!-- Payment Options -->
-    <div class="payment-options">
+    <div class="payment-options mx-2">
       <button (click)="selectPayment('mpesa')" [class.active-payment]="selectedPaymentMethod === 'mpesa'">
         <i class="fa fa-phone"></i> M-Pesa
       </button>
@@ -71,74 +71,145 @@
     </div>
 
     <!-- Payment Form -->
-    <form [formGroup]="paymentForm" class="payment-form">
+    
       <ng-container [ngSwitch]="selectedPaymentMethod">
-        <!-- M-Pesa -->
-        <div *ngSwitchCase="'mpesa'">
-          <label>Name:</label>
-          <input formControlName="name" />
-          <div class="text-danger" *ngIf="name?.invalid && (name?.touched || name?.dirty)">
-            Name is required and must contain only letters.
-          </div>
 
-          <label>Phone Number:</label>
-          <input formControlName="phone" type="tel" />
-          <div class="text-danger" *ngIf="phone?.invalid && (phone?.touched || phone?.dirty)">
-            Enter a valid 10-digit phone number.
-          </div>
-        </div>
+        <form [formGroup]="mpesaForm" class="payment-form">
+          <!-- M-Pesa -->
+          <div *ngSwitchCase="'mpesa'">
+            <label for="mpesa-name">FullName:</label>
+            <input id="mpesa-name" formControlName="mpesaName" required/>
 
-        <!-- PayPal -->
-        <div *ngSwitchCase="'paypal'">
-          <label>PayPal Email:</label>
-          <input formControlName="paypal" type="email" />
-          <div class="text-danger" *ngIf="paypal?.invalid && (paypal?.touched || paypal?.dirty)">
-            Enter a valid PayPal email address.
-          </div>
-        </div>
+            @if (mpesa_name?.invalid && (mpesa_name?.dirty || mpesa_name?.touched)) { 
+              <div class="alert alert-danger"> 
 
-        <!-- Card -->
-        <div *ngSwitchCase="'card'">
-          <label>Name on Card:</label>
-          <input formControlName="name" />
-          <div class="text-danger" *ngIf="name?.invalid && (name?.touched || name?.dirty)">
-            Name is required and must contain only letters.
-          </div>
+                @if (mpesa_name?.hasError('required')) { 
+                  <div>Name is required.</div> 
+                } 
+                
+                @if (mpesa_name?.hasError('minlength')) {  
+                  <div> Name must be at least 3 characters long. </div> 
+                }
+              
+                @if (mpesa_name?.invalid) {  
+                  <div> Enter a Valid Name </div>   
+                }               
+              </div>
+            }
 
-          <label>Card Number:</label>
-          <input formControlName="cardNumber" mask="0000 0000 0000 0000" placeholder="1234 5678 9012 3456" />
-          <div class="text-danger" *ngIf="cardNumber?.invalid && (cardNumber?.touched || cardNumber?.dirty)">
-            Must be 16 digits.
-          </div>
+            <label for="mpesa-phone">Phone Number:</label>
+            <input id="mpesa-phone" formControlName="mpesaPhone" type="tel" required/>
 
-          <label>Expiry Date (MM/YY):</label>
-          <input formControlName="expiry" placeholder="MM/YY" />
-          <div class="text-danger" *ngIf="expiry?.invalid && (expiry?.touched || expiry?.dirty)">
-            Format must be MM/YY.
-          </div>
+             @if (mpesa_phone?.invalid && (mpesa_phone?.dirty || mpesa_phone?.touched)) { 
+              <div class="alert alert-danger"> 
+                @if (mpesa_phone?.hasError('required')) { 
+                  <div>Enter a valid 10-digit phone number.</div> 
+                }
+                @if (mpesa_phone?.hasError('minlength')) {  
+                  <div> Number must be at least 10 characters long. </div> 
+                }              
+                @if (mpesa_phone?.invalid) {  
+                  <div> Enter a valid Phone Number .</div> 
+                }               
+              </div>  
+            }
 
-          <label>CVV:</label>
-          <input formControlName="cvv" maxlength="3" />
-          <div class="text-danger" *ngIf="cvv?.invalid && (cvv?.touched || cvv?.dirty)">
-            Must be 3 digits.
           </div>
-        </div>
+        </form>
+
+        <form [formGroup]="paypalForm" class="payment-form">
+          <!-- PayPal -->
+          <div *ngSwitchCase="'paypal'">
+            <label>PayPal Email:</label>
+            <input formControlName="email" type="email" />
+
+            <div class="text-danger" *ngIf="paypalForm.invalid && (paypalForm.controls['email'].touched || paypalForm.controls['email'].dirty)">
+              Enter a valid email address.
+            </div>
+
+            <div class="text-danger" *ngIf="paypalForm.controls['email'].hasError('required') && (paypalForm.controls['email'].touched || paypalForm.controls['email'].dirty)">
+              Phone Number is required.
+            </div>
+
+          </div>
+        </form>
+
+        <form [formGroup]="cardForm" class="payment-form">
+          <!-- Card -->
+          <div *ngSwitchCase="'card'" class="m-2">
+
+            <div class="my-2">
+              <label>Name on Card:</label>
+              <input formControlName="name" />
+  
+              <div class="text-danger" *ngIf="cardForm.invalid && (cardForm.controls['name'].touched || cardForm.controls['name'].dirty)">
+                Enter a valid name .
+              </div>
+  
+              <div class="text-danger" *ngIf="cardForm.controls['name'].hasError('required') && (cardForm.controls['name'].touched || cardForm.controls['name'].dirty)">
+                Name is required.
+              </div>
+
+            </div>
+
+            <div class="my-2">
+              <label>Card Number:</label>
+              <input formControlName="cardNumber" mask="0000 0000 0000 0000" placeholder="1234 5678 9012 3456" />
+              <div class="text-danger" *ngIf="cardForm.invalid && (cardForm.controls['cardNumber'].touched || cardForm.controls['cardNumber'].dirty)">
+                Must be 16 digits.
+              </div>
+    
+              <div class="text-danger" *ngIf="cardForm.controls['cardNumber'].hasError('required') && (cardForm.controls['cardNumber'].touched || cardForm.controls['cardNumber'].dirty)">
+                Card Number is required.
+              </div>
+
+            </div>
+  
+            <div class="my-2">
+              <label>Expiry Date (MM/YY):</label>
+              <input formControlName="expiry" placeholder="MM/YY" />
+              <div class="text-danger" *ngIf="cardForm.invalid && (cardForm.controls['expiry'].touched || cardForm.controls['expiry'].dirty)">
+                Format must be MM/YY.
+              </div>
+
+              <div class="text-danger" *ngIf="cardForm.controls['expiry'].hasError('required') && (cardForm.controls['expiry'].touched || cardForm.controls['expiry'].dirty)">
+                Use the Correct Format
+              </div>
+
+            </div>
+
+            <div class="my-2">
+              <label>CVV:</label>
+              <input formControlName="cvv" maxlength="3" />
+              <div class="text-danger" *ngIf="cardForm.invalid && (cardForm.controls['cvv'].touched || cardForm.controls['cvv'].dirty)">
+                Must be 3 digits.
+              </div>
+              <div class="text-danger" *ngIf="cardForm.controls['cvv'].hasError('required') && (cardForm.controls['cvv'].touched || cardForm.controls['cvv'].dirty)">
+                Use the Correct Format
+              </div>
+
+            </div>
+
+
+          </div>
+        </form>
+
       </ng-container>
-    </form>
+    
 
     <!-- Summary and Actions -->
     <div class="summary">
       <p><strong>Total to Pay:</strong> ${{ formatMoney(finalAmount) }}</p>
     </div>
 
-    <div class="step-actions">
+    <div class="step-actions button-spacing">
       <button class="back-btn" (click)="goBack()">Back</button>
       <button
         (click)="nextStep()"
-        [disabled]="paymentForm.invalid"
+        [disabled]="!isPaymentInfoValid()"
         [ngClass]="{
-          'btn-dull-green': paymentForm.invalid,
-          'btn-bright-green': paymentForm.valid
+          'btn-dull-green': !isPaymentInfoValid(),
+          'btn-bright-green': isPaymentInfoValid()
         }"
       >
         Continue to Confirm
@@ -157,16 +228,16 @@
       <h3>Payment Details</h3>
       <ng-container [ngSwitch]="paymentMethod">
         <div *ngSwitchCase="'mpesa'">
-          <p><strong>Name:</strong> {{ paymentForm.get('name')?.value }}</p>
-          <p><strong>Phone:</strong> {{ paymentForm.get('phone')?.value }}</p>
+          <p><strong>Name:</strong> {{ mpesaForm.get('mpesaName')?.value }}</p>
+          <p><strong>Phone:</strong> {{ mpesaForm.get('mpesaPhone')?.value }}</p>
         </div>
         <div *ngSwitchCase="'paypal'">
-          <p><strong>Email:</strong> {{ paymentForm.get('paypal')?.value }}</p>
+          <p><strong>Paypal Email:</strong> {{ paypalForm.get('email')?.value }}</p>
         </div>
         <div *ngSwitchCase="'card'">
-          <p><strong>Name on Card:</strong> {{ paymentForm.get('name')?.value }}</p>
+          <p><strong>Name on Card:</strong> {{ cardForm.get('name')?.value }}</p>
           <p><strong>Card Number:</strong> **** **** **** {{ getCardLast4() }}</p>
-          <p><strong>Expiry:</strong> {{ paymentForm.get('expiry')?.value }}</p>
+          <p><strong>Expiry:</strong> {{ cardForm.get('expiry')?.value }}</p>
         </div>
       </ng-container>
     </div>
@@ -176,7 +247,7 @@
       <div class="loader"></div>
     </div>
 
-    <div class="step-actions" *ngIf="!loading">
+    <div class="step-actions button-spacing" *ngIf="!loading">
       <button class="back-btn" (click)="goBack()">Back</button>
       <button class="active-btn" (click)="completePurchase()">Place Order</button>
     </div>
