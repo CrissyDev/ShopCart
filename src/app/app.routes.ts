@@ -14,6 +14,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { AuthGuard } from './auth.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -35,5 +36,6 @@ export const routes: Routes = [
   { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
   {path:'checkout',component: CheckoutComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', component: PageNotFoundComponent }
 ];

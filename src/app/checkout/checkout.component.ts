@@ -5,6 +5,27 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, F
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+
+export function fullNameValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value?.trim();
+
+    if (!value) return null;
+
+    const words = value.split(/\s+/);
+
+    const allWordsValid = words.every((word: string) => /^[A-Za-z]{3,}$/.test(word));
+
+    if (!allWordsValid) {
+      return { invalidCharactersOrTooShort: true };
+    }
+
+    return null;
+  };
+}
+
+
 
 @Component({
   selector: 'app-checkout',
@@ -40,7 +61,7 @@ export class CheckoutComponent implements OnInit {
   });
 
   cardForm = new FormGroup({
-    name: new FormControl('',[Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]),
+    name: new FormControl('', [Validators.required, fullNameValidator()]),
     cardNumber: new FormControl('',[Validators.required, Validators.pattern(/^[0-9]+$/)]),
     expiry: new FormControl('',[Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]),
     cvv: new FormControl('',[Validators.required, Validators.maxLength(3),Validators.pattern(/^[0-9]+$/)]),

@@ -12,6 +12,8 @@ import {
 
 import { LottieComponent } from 'ngx-lottie';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -78,5 +80,23 @@ export class LoginComponent {
           error: () => (this.error = 'Login failed. Please check your credentials.')
         });
     }
+  }
+
+  openForgotPasswordModal(event: Event): void {
+    event.preventDefault();
+    const modalElement = document.getElementById('forgotPasswordModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  navigateToForgotPassword(): void {
+    const modalElement = document.getElementById('forgotPasswordModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+    }
+    this.router.navigate(['/forgot-password']);
   }
 }

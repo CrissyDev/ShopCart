@@ -1,78 +1,81 @@
-<div class="container">
+<div class="container py-5">
   <div class="row">
     <div class="col-md-6">
-      <ng-lottie
-        [options]="lottieOptions"
-        style="height: auto;">
-      </ng-lottie>
+      <ng-lottie [options]="lottieOptions" style="height: auto;"></ng-lottie>
     </div>
 
     <div class="col-md-6">
-      <div class="right-side">
-        <div class="login-box">
-          <h2>Login</h2>
-          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-            <input
-              type="text"
-              formControlName="username"
-              placeholder="Username"
-              required
-            />
+      <div class="right-side bg-white p-4 shadow rounded">
+       
 
-            <div class="text-danger" *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched">
-              Username is required.
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <input
+            type="text"
+            formControlName="username"
+            class="form-control mb-2"
+            placeholder="Username"
+          />
+          <div class="text-danger" *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched">
+            Username is required.
+          </div>
+
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control mb-2"
+            placeholder="Password"
+          />
+          <div class="text-danger" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
+            Password is required.
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <label><input type="checkbox" /> Remember me</label>
+            <a href="#" (click)="openForgotPasswordModal($event)" class="text-success">Forgot Password?</a>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-success w-100"
+            [disabled]="loginForm.invalid"
+          >
+            Login
+          </button>
+
+          <div class="text-center my-3 text-muted">OR</div>
+
+          <div class="text-center">
+            <p>Login with</p>
+            <div class="d-flex justify-content-center gap-3">
+              <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" width="32" />
+              <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" width="32" />
             </div>
+          </div>
+        </form>
 
-            <div class="text-danger" *ngIf="loginForm.controls['username'].hasError('minLength') && loginForm.controls['username'].touched">
-              Username must be atleast 3 characters.
-            </div>
+        <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+      </div>
+    </div>
+  </div>
 
-            <input
-              type="password"
-              formControlName="password"
-              placeholder="Password"
-              required
-            />
-
-            <div class="text-danger" *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
-              Password is required.
-            </div>
-
-            <div class="text-danger" *ngIf="loginForm.controls['password'].hasError('minLength') && loginForm.controls['password'].touched">
-              Password must be atleast 6 characters.
-            </div>
-
-            <div class="options">
-              <label><input type="checkbox" /> Remember me</label>
-              <a href="#">Forgot Password?</a>
-            </div>
-
-            <button
-              type="submit"
-              class="login-btn"
-              [disabled]="loginForm.invalid"
-              [ngClass]="{
-                'disabled-btn': loginForm.invalid,
-                'active-btn': loginForm.valid
-              }"
-            >
-              Login
-            </button>
-
-            <div class="divider">
-              <span>OR</span>
-            </div>
-
-            <div class="social-login">
-              <p>Login with</p>
-              <div class="icons">
-                <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" />
-                <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google" />
-              </div>
-            </div>
-          </form>
-
-          <div *ngIf="error" class="error">{{ error }}</div>
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-3 rounded-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="forgotPasswordLabel">
+            <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" width="30" class="me-2" />
+            Forgot Password
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          Are you sure you want to reset your password?<br />
+          A message will be sent to Shopcart Pro Support.
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" (click)="navigateToForgotPassword()">Yes, I'm sure</button>
         </div>
       </div>
     </div>

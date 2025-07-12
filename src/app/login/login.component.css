@@ -159,3 +159,80 @@ input[type="password"] {
   opacity: 1;
   cursor: pointer;
 }
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.modal-content {
+  border-radius: 16px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 8px 30px rgba(0, 128, 0, 0.1);
+  text-align: center;
+}
+
+.modal-header {
+  border: none;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #28a745;
+  margin-top: 0.5rem;
+}
+
+.modal-header img {
+  width: 40px;
+  height: 40px;
+}
+
+.modal-body {
+  color: #444;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+.modal-footer {
+  border: none;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 0;
+  padding-bottom: 1rem;
+}
+
+.btn-outline-secondary {
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #555;
+  font-weight: 500;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #eee;
+  border-color: #bbb;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
